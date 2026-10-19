@@ -1,0 +1,501 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctor Dashboard - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+.stat-card,
+.section-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.stat-card {
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.stat-title {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.icon-blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.icon-green {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.icon-orange {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.icon-purple {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 18px rgba(0,0,0,0.08);
+}
+
+.quick-action i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.quick-action span {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.quick-primary {
+    color: #2563eb;
+}
+
+.quick-success {
+    color: #059669;
+}
+
+.quick-warning {
+    color: #d97706;
+}
+
+.quick-danger {
+    color: #dc2626;
+}
+
+.section-title {
+    font-weight: 700;
+    color: #111827;
+}
+
+.appointment-row {
+    padding: 14px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.appointment-row:last-child {
+    border-bottom: none;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="topbar d-flex justify-content-between align-items-center">
+
+    <div>
+
+        <h2>
+            Doctor Dashboard
+        </h2>
+
+        <p>
+
+            Welcome back,
+
+            <strong>
+                {{ current_user.username }}
+            </strong>
+
+        </p>
+
+    </div>
+
+    <div>
+
+        <span class="role-badge">
+
+            <i class="bi bi-person-badge me-1"></i>
+
+            Doctor
+
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DOCTOR STATISTICS
+====================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            My Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            My Consultations
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_consultations }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-file-medical"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            My Prescriptions
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_prescriptions }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-purple">
+                        <i class="bi bi-capsule"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QUICK ACTIONS
+====================================================== -->
+
+<div class="card section-card mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="mb-4">
+
+            <h5 class="section-title mb-1">
+
+                <i class="bi bi-lightning-charge me-2"></i>
+
+                Doctor Actions
+
+            </h5>
+
+            <small class="text-muted">
+                Access your clinical work
+            </small>
+
+        </div>
+
+
+        <div class="row g-3">
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('appointments.list_appointments') }}"
+                    class="quick-action quick-primary"
+                >
+
+                    <i class="bi bi-calendar-check"></i>
+
+                    <span>
+                        My Appointments
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('patients.list_patients') }}"
+                    class="quick-action quick-success"
+                >
+
+                    <i class="bi bi-people"></i>
+
+                    <span>
+                        My Patients
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('consultations.list_consultations') }}"
+                    class="quick-action quick-warning"
+                >
+
+                    <i class="bi bi-file-medical"></i>
+
+                    <span>
+                        Consultations
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('prescriptions.all_prescriptions') }}"
+                    class="quick-action quick-danger"
+                >
+
+                    <i class="bi bi-capsule"></i>
+
+                    <span>
+                        Prescriptions
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     UPCOMING APPOINTMENTS
+====================================================== -->
+
+<div class="card section-card">
+
+    <div class="card-body p-4">
+
+        <h5 class="section-title mb-3">
+
+            <i class="bi bi-calendar-event me-2"></i>
+
+            My Upcoming Appointments
+
+        </h5>
+
+
+        {% if upcoming_appointments %}
+
+            {% for appointment in upcoming_appointments %}
+
+                <div class="appointment-row">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <strong>
+                                {{ appointment.appointment_date }}
+                            </strong>
+
+                            {% if appointment.appointment_time %}
+
+                                <span class="text-muted ms-2">
+                                    {{ appointment.appointment_time }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <span class="badge bg-primary">
+
+                            {{ appointment.status }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="text-center py-4">
+
+                <i class="bi bi-calendar-x text-muted"
+                   style="font-size:40px;"></i>
+
+                <p class="text-muted mt-2 mb-0">
+                    No upcoming appointments.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="text-center mt-5 mb-3">
+
+    <small class="text-muted">
+
+        Doctor Clinic Management System
+        &nbsp;•&nbsp;
+        Doctor Dashboard
+
+    </small>
+
+</div>
+
+{% endblock %}

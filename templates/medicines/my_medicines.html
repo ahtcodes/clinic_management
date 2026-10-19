@@ -1,0 +1,2453 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Medicines - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   MY MEDICINES PAGE
+========================================================= */
+
+.medicine-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 8px 0 35px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.medicine-hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 30px 32px;
+    margin-bottom: 24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(59, 130, 246, 0.28),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 48%,
+            #1d4ed8 100%
+        );
+
+    color: #ffffff;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.16);
+}
+
+.medicine-hero::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    right: -90px;
+    top: -120px;
+    background: rgba(255,255,255,0.05);
+}
+
+.medicine-hero::after {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    right: 160px;
+    bottom: -120px;
+    background: rgba(255,255,255,0.035);
+}
+
+.medicine-hero-content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+    min-width: 0;
+}
+
+.medicine-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+}
+
+.medicine-hero-icon {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.16);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        0 8px 20px rgba(0,0,0,0.10);
+}
+
+.medicine-hero-icon i {
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.medicine-hero-text {
+    min-width: 0;
+}
+
+.medicine-hero-title {
+    margin: 0 !important;
+
+    color: #ffffff !important;
+    font-size: 28px;
+    font-weight: 800;
+
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.medicine-hero-subtitle {
+    margin: 7px 0 0;
+
+    color: rgba(255,255,255,0.78) !important;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.medicine-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 14px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,0.11);
+    border: 1px solid rgba(255,255,255,0.14);
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+========================================================= */
+
+.medicine-summary-grid {
+    width: 100%;
+    max-width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 24px;
+}
+
+.medicine-summary-card {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 22px 20px;
+
+    border-radius: 19px;
+
+    background: #111827;
+
+    border: 1px solid #1e293b;
+
+    box-shadow: 0 8px 22px rgba(15,23,42,0.08);
+
+    overflow: hidden;
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+}
+
+.summary-icon i {
+    font-size: 25px;
+}
+
+.summary-icon.blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.summary-icon.green {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.summary-icon.orange {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.summary-icon.red {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.summary-content {
+    min-width: 0;
+}
+
+.summary-label {
+    margin-bottom: 5px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    white-space: nowrap;
+}
+
+.summary-value {
+    color: #ffffff;
+
+    font-size: 27px;
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   ACTION BAR
+========================================================= */
+
+.medicine-action-bar {
+    width: 100%;
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.add-medicine-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 44px;
+
+    padding: 10px 17px;
+
+    border-radius: 11px;
+
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    box-shadow: 0 7px 17px rgba(37,99,235,0.22);
+
+    transition: all 0.2s ease;
+}
+
+.add-medicine-btn:hover {
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 22px rgba(37,99,235,0.28);
+}
+
+
+/* =========================================================
+   INVENTORY CARD
+========================================================= */
+
+.medicine-card {
+    width: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #111827;
+
+    border: 1px solid #1e293b;
+
+    box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   INVENTORY HEADER
+========================================================= */
+
+.medicine-card-header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding: 22px 25px;
+
+    border-bottom: 1px solid #263244;
+
+    min-width: 0;
+}
+
+.medicine-card-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.medicine-card-icon {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.medicine-card-icon i {
+    font-size: 20px;
+}
+
+.medicine-card-title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.medicine-card-subtitle {
+    margin: 3px 0 0;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.medicine-search {
+    position: relative;
+
+    width: 320px;
+    max-width: 100%;
+
+    flex: 0 1 320px;
+}
+
+.medicine-search i {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    font-size: 17px;
+
+    pointer-events: none;
+}
+
+.medicine-search input {
+    width: 100%;
+
+    height: 44px;
+
+    padding:
+        10px
+        14px
+        10px
+        43px;
+
+    border-radius: 11px;
+
+    border: 1px solid #334155;
+
+    background: #0f172a;
+
+    color: #ffffff;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition: all 0.2s ease;
+}
+
+.medicine-search input::placeholder {
+    color: #64748b;
+}
+
+.medicine-search input:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,0.12);
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+   IMPORTANT: horizontal scrolling ONLY HERE
+========================================================= */
+
+.inventory-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+}
+
+.inventory-table-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.inventory-table-wrapper::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.inventory-table-wrapper::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 20px;
+}
+
+.inventory-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.medicine-table {
+    width: 100%;
+
+    min-width: 1350px;
+
+    margin: 0;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    color: #cbd5e1;
+}
+
+.medicine-table th {
+    padding: 15px 13px;
+
+    background: #111827;
+
+    border-bottom: 1px solid #263244;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+
+    white-space: nowrap;
+
+    text-align: left;
+}
+
+.medicine-table td {
+    padding: 15px 13px;
+
+    border-bottom: 1px solid #202c3e;
+
+    color: #cbd5e1;
+
+    font-size: 13px;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+}
+
+.medicine-table tbody tr {
+    transition: background 0.18s ease;
+}
+
+.medicine-table tbody tr:hover {
+    background: #172033;
+}
+
+.medicine-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   MEDICINE CELL
+========================================================= */
+
+.medicine-name-cell {
+    min-width: 220px;
+}
+
+.medicine-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.medicine-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.medicine-avatar i {
+    font-size: 18px;
+}
+
+.medicine-name {
+    color: #f8fafc;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.medicine-generic {
+    margin-top: 3px;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background: #172033;
+    border: 1px solid #2c394d;
+
+    color: #cbd5e1;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STRENGTH
+========================================================= */
+
+.strength-value {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   BATCH
+========================================================= */
+
+.batch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 9px;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.batch-badge i {
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SUPPLIER
+========================================================= */
+
+.supplier-cell {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #94a3b8;
+}
+
+.supplier-cell i {
+    color: #3b82f6;
+}
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+.quantity-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 50px;
+
+    padding: 7px 10px;
+
+    border-radius: 9px;
+
+    background: #fff7ed;
+    color: #c2410c;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.quantity-badge.good {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.quantity-badge.empty {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price-value {
+    color: #cbd5e1;
+
+    font-weight: 650;
+}
+
+.price-selling {
+    color: #ffffff;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   EXPIRY
+========================================================= */
+
+.expiry-value {
+    color: #cbd5e1;
+
+    font-weight: 650;
+}
+
+.expiry-none {
+    color: #64748b;
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   PROVISION STATUS
+========================================================= */
+
+.provision-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 9px;
+
+    background: #172033;
+    border: 1px solid #334155;
+
+    color: #cbd5e1;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.provision-status.provided {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    color: #047857;
+}
+
+.provision-status.pending {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.medicine-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.medicine-action {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    border: 1px solid #334155;
+
+    background: #172033;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    transition: all 0.18s ease;
+}
+
+.medicine-action:hover {
+    transform: translateY(-1px);
+}
+
+.medicine-action.add {
+    color: #60a5fa;
+}
+
+.medicine-action.add:hover {
+    background: #172554;
+    border-color: #2563eb;
+    color: #93c5fd;
+}
+
+.medicine-action.provide {
+    color: #34d399;
+}
+
+.medicine-action.provide:hover {
+    background: #064e3b;
+    border-color: #059669;
+    color: #6ee7b7;
+}
+
+.medicine-action.edit {
+    color: #fbbf24;
+}
+
+.medicine-action.edit:hover {
+    background: #451a03;
+    border-color: #d97706;
+    color: #fcd34d;
+}
+
+.medicine-action.delete {
+    color: #f87171;
+}
+
+.medicine-action.delete:hover {
+    background: #450a0a;
+    border-color: #dc2626;
+    color: #fca5a5;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.medicine-empty {
+    padding: 65px 25px;
+
+    text-align: center;
+}
+
+.medicine-empty-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #172033;
+    color: #64748b;
+}
+
+.medicine-empty-icon i {
+    font-size: 30px;
+}
+
+.medicine-empty-title {
+    margin: 0 0 6px;
+
+    color: #e2e8f0;
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.medicine-empty-text {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SEARCH EMPTY
+========================================================= */
+
+.no-search-result {
+    display: none;
+
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.no-search-result i {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 28px;
+}
+
+.no-search-result strong {
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   HISTORY CARD
+========================================================= */
+
+.history-card {
+    width: 100%;
+    max-width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #111827;
+
+    border: 1px solid #1e293b;
+
+    box-shadow: 0 10px 30px rgba(15,23,42,0.07);
+}
+
+.history-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 21px 25px;
+
+    border-bottom: 1px solid #263244;
+}
+
+.history-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.history-title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.history-subtitle {
+    margin: 3px 0 0;
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+.history-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: collapse;
+}
+
+.history-table th {
+    padding: 14px 16px;
+
+    background: #111827;
+
+    border-bottom: 1px solid #263244;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+.history-table td {
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #202c3e;
+
+    color: #cbd5e1;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+.history-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.history-table tbody tr:hover {
+    background: #172033;
+}
+
+.patient-name {
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.patient-code {
+    margin-left: 5px;
+
+    color: #64748b;
+
+    font-size: 10px;
+}
+
+.history-medicine {
+    color: #93c5fd;
+    font-weight: 700;
+}
+
+.history-status {
+    display: inline-flex;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background: #172033;
+
+    color: #cbd5e1;
+
+    font-size: 10px;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .medicine-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .medicine-hero-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .medicine-hero-badge {
+        display: none;
+    }
+
+    .medicine-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .medicine-search {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .medicine-page {
+        padding-top: 3px;
+    }
+
+    .medicine-hero {
+        padding: 23px 19px;
+        border-radius: 17px;
+    }
+
+    .medicine-hero-left {
+        gap: 13px;
+    }
+
+    .medicine-hero-icon {
+        width: 53px;
+        height: 53px;
+        min-width: 53px;
+        border-radius: 14px;
+    }
+
+    .medicine-hero-icon i {
+        font-size: 24px;
+    }
+
+    .medicine-hero-title {
+        font-size: 21px;
+    }
+
+    .medicine-hero-subtitle {
+        font-size: 12px;
+    }
+
+    .medicine-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .medicine-summary-card {
+        padding: 17px;
+    }
+
+    .medicine-card-header,
+    .history-header {
+        padding: 18px;
+    }
+
+    .medicine-card-title {
+        font-size: 16px;
+    }
+
+    .medicine-action-bar {
+        justify-content: stretch;
+    }
+
+    .add-medicine-btn {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .medicine-hero-title {
+        font-size: 19px;
+    }
+
+    .medicine-hero-subtitle {
+        max-width: 270px;
+    }
+
+    .summary-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+    }
+
+    .summary-value {
+        font-size: 23px;
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE OVERRIDES
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    .medicine-card,
+    .history-card,
+    .medicine-summary-card {
+        background: #111827;
+        border-color: #263244;
+    }
+
+}
+
+
+/* =========================================================
+   PREVENT BOOTSTRAP / PAGE OVERFLOW
+========================================================= */
+
+.medicine-page *,
+.medicine-page *::before,
+.medicine-page *::after {
+    box-sizing: border-box;
+}
+
+.medicine-page .row {
+    max-width: 100%;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid medicine-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="medicine-hero">
+
+        <div class="medicine-hero-content">
+
+            <div class="medicine-hero-left">
+
+                <div class="medicine-hero-icon">
+                    <i class="bi bi-capsule-pill"></i>
+                </div>
+
+                <div class="medicine-hero-text">
+
+                    <h1 class="medicine-hero-title">
+                        My Medicines
+                    </h1>
+
+                    <p class="medicine-hero-subtitle">
+                        Manage your medicine inventory, batches and patient provisions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="medicine-hero-badge">
+
+                <i class="bi bi-shield-check"></i>
+
+                Doctor Inventory
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    {% set ns = namespace(
+        active_batches=0,
+        low_stock=0,
+        out_stock=0
+    ) %}
+
+
+    {% for medicine in medicines %}
+
+        {% if medicine.batches %}
+
+            {% for batch in medicine.batches %}
+
+                {% if batch.is_active %}
+
+                    {% set ns.active_batches = ns.active_batches + 1 %}
+
+                    {% if batch.quantity <= 0 %}
+
+                        {% set ns.out_stock = ns.out_stock + 1 %}
+
+                    {% elif batch.quantity <= 10 %}
+
+                        {% set ns.low_stock = ns.low_stock + 1 %}
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endfor %}
+
+
+    <div class="medicine-summary-grid">
+
+
+        <!-- MEDICINES -->
+
+        <div class="medicine-summary-card">
+
+            <div class="summary-icon blue">
+                <i class="bi bi-capsule-pill"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <div class="summary-label">
+                    Medicines
+                </div>
+
+                <div class="summary-value">
+                    {{ medicines|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE BATCHES -->
+
+        <div class="medicine-summary-card">
+
+            <div class="summary-icon green">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <div class="summary-label">
+                    Active Batches
+                </div>
+
+                <div class="summary-value">
+                    {{ ns.active_batches }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOW STOCK -->
+
+        <div class="medicine-summary-card">
+
+            <div class="summary-icon orange">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <div class="summary-label">
+                    Low Stock
+                </div>
+
+                <div class="summary-value">
+                    {{ ns.low_stock }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OUT OF STOCK -->
+
+        <div class="medicine-summary-card">
+
+            <div class="summary-icon red">
+                <i class="bi bi-x-circle"></i>
+            </div>
+
+            <div class="summary-content">
+
+                <div class="summary-label">
+                    Out of Stock
+                </div>
+
+                <div class="summary-value">
+                    {{ ns.out_stock }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTION
+    ====================================================== -->
+
+    <div class="medicine-action-bar">
+
+        <a
+            href="{{ url_for('medicines.add_medicine') }}"
+            class="add-medicine-btn"
+        >
+
+            <i class="bi bi-plus-circle"></i>
+
+            Add Medicine
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         MEDICINE INVENTORY
+    ====================================================== -->
+
+    <div class="medicine-card">
+
+
+        <!-- HEADER -->
+
+        <div class="medicine-card-header">
+
+            <div class="medicine-card-title-wrap">
+
+                <div class="medicine-card-icon">
+
+                    <i class="bi bi-capsule-pill"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="medicine-card-title">
+                        Medicine Inventory
+                    </h2>
+
+                    <p class="medicine-card-subtitle">
+                        Manage medicine batches and stock
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="medicine-search">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    id="medicineSearch"
+                    placeholder="Search medicine, batch or supplier..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="inventory-table-wrapper">
+
+            <table class="medicine-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Medicine
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Strength
+                        </th>
+
+                        <th>
+                            Batch Number
+                        </th>
+
+                        <th>
+                            Supplier / Purchased From
+                        </th>
+
+                        <th>
+                            Quantity
+                        </th>
+
+                        <th>
+                            Purchase Price
+                        </th>
+
+                        <th>
+                            Selling Price
+                        </th>
+
+                        <th>
+                            Expiry
+                        </th>
+
+                        <th>
+                            Provision Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="medicineTableBody">
+
+
+                {% for medicine in medicines %}
+
+
+                    {% if medicine.batches %}
+
+
+                        {% for batch in medicine.batches %}
+
+                            {% if batch.is_active %}
+
+                                <tr class="medicine-row">
+
+
+                                    <!-- MEDICINE -->
+
+                                    <td class="medicine-name-cell">
+
+                                        <div class="medicine-name-wrap">
+
+                                            <div class="medicine-avatar">
+
+                                                <i class="bi bi-capsule-pill"></i>
+
+                                            </div>
+
+                                            <div>
+
+                                                <div class="medicine-name">
+
+                                                    {{ medicine.medicine_name }}
+
+                                                </div>
+
+                                                <div class="medicine-generic">
+
+                                                    {{ medicine.generic_name or "Generic name not added" }}
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- CATEGORY -->
+
+                                    <td>
+
+                                        <span class="category-badge">
+
+                                            {{ medicine.category or "General" }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STRENGTH -->
+
+                                    <td>
+
+                                        <span class="strength-value">
+
+                                            {{ medicine.strength or "—" }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- BATCH -->
+
+                                    <td>
+
+                                        <span class="batch-badge">
+
+                                            <i class="bi bi-box"></i>
+
+                                            {{ batch.batch_number }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- SUPPLIER -->
+
+                                    <td>
+
+                                        <div class="supplier-cell">
+
+                                            <i class="bi bi-building"></i>
+
+                                            {{ batch.supplier_name or "—" }}
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- QUANTITY -->
+
+                                    <td>
+
+                                        {% if batch.quantity <= 0 %}
+
+                                            <span class="quantity-badge empty">
+
+                                                <i class="bi bi-x-circle me-1"></i>
+
+                                                0
+
+                                            </span>
+
+                                        {% elif batch.quantity <= 10 %}
+
+                                            <span class="quantity-badge">
+
+                                                <i class="bi bi-exclamation-circle me-1"></i>
+
+                                                {{ batch.quantity }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="quantity-badge good">
+
+                                                <i class="bi bi-check-circle me-1"></i>
+
+                                                {{ batch.quantity }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- PURCHASE PRICE -->
+
+                                    <td>
+
+                                        <span class="price-value">
+
+                                            PKR {{ "%.2f"|format(batch.purchase_price|float) }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- SELLING PRICE -->
+
+                                    <td>
+
+                                        <span class="price-selling">
+
+                                            PKR {{ "%.2f"|format(batch.selling_price|float) }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- EXPIRY -->
+
+                                    <td>
+
+                                        {% if batch.expiry_date %}
+
+                                            <span class="expiry-value">
+
+                                                {{ batch.expiry_date.strftime('%d-%m-%Y') }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="expiry-none">
+                                                No expiry
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- PROVISION STATUS -->
+
+                                    <td>
+
+                                        {% if medicine.provisions %}
+
+                                            {% set latest_provision =
+                                                medicine.provisions
+                                                | sort(attribute='id')
+                                                | reverse
+                                                | first
+                                            %}
+
+                                            {% if latest_provision %}
+
+                                                <span class="provision-status">
+
+                                                    <i class="bi bi-person-check"></i>
+
+                                                    {{ latest_provision.provision_status }}
+
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="provision-status">
+                                                    Not Provided
+                                                </span>
+
+                                            {% endif %}
+
+                                        {% else %}
+
+                                            <span class="provision-status">
+                                                Not Provided
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="medicine-actions">
+
+
+                                            <!-- ADD BATCH -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'medicines.add_batch',
+                                                    medicine_id=medicine.id
+                                                ) }}"
+                                                class="medicine-action add"
+                                                title="Add Batch"
+                                            >
+
+                                                <i class="bi bi-plus-lg"></i>
+
+                                            </a>
+
+
+                                            <!-- PROVIDE MEDICINE -->
+
+                                            {% if medicine.quantity is not none
+                                                and medicine.quantity > 0 %}
+
+                                                <a
+                                                    href="{{ url_for(
+                                                        'medicines.provide_medicine',
+                                                        medicine_id=medicine.id
+                                                    ) }}"
+                                                    class="medicine-action provide"
+                                                    title="Provide Medicine"
+                                                >
+
+                                                    <i class="bi bi-person-plus"></i>
+
+                                                </a>
+
+                                            {% endif %}
+
+
+                                            <!-- EDIT -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'medicines.edit_medicine',
+                                                    medicine_id=medicine.id
+                                                ) }}"
+                                                class="medicine-action edit"
+                                                title="Edit Medicine"
+                                            >
+
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+
+                                            <!-- DELETE -->
+
+                                            <form
+                                                method="POST"
+                                                action="{{ url_for(
+                                                    'medicines.delete_medicine',
+                                                    medicine_id=medicine.id
+                                                ) }}"
+                                                class="d-inline"
+                                                onsubmit="return confirm(
+                                                    'Are you sure you want to delete this medicine?'
+                                                );"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    class="medicine-action delete"
+                                                    title="Delete Medicine"
+                                                >
+
+                                                    <i class="bi bi-trash3"></i>
+
+                                                </button>
+
+                                            </form>
+
+
+                                        </div>
+
+                                    </td>
+
+
+                                </tr>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+
+                        <!-- MEDICINE WITHOUT BATCH -->
+
+                        <tr class="medicine-row">
+
+
+                            <td class="medicine-name-cell">
+
+                                <div class="medicine-name-wrap">
+
+                                    <div class="medicine-avatar">
+
+                                        <i class="bi bi-capsule-pill"></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <div class="medicine-name">
+
+                                            {{ medicine.medicine_name }}
+
+                                        </div>
+
+                                        <div class="medicine-generic">
+
+                                            {{ medicine.generic_name or "Generic name not added" }}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="category-badge">
+
+                                    {{ medicine.category or "General" }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="strength-value">
+
+                                    {{ medicine.strength or "—" }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="batch-badge">
+
+                                    <i class="bi bi-box"></i>
+
+                                    No Batch
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="supplier-cell">
+
+                                    <i class="bi bi-building"></i>
+
+                                    —
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="quantity-badge empty">
+
+                                    <i class="bi bi-box-seam me-1"></i>
+
+                                    0
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="price-value">
+                                    —
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="price-selling">
+                                    —
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="expiry-none">
+                                    —
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="provision-status">
+                                    Not Provided
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="medicine-actions">
+
+                                    <a
+                                        href="{{ url_for(
+                                            'medicines.add_batch',
+                                            medicine_id=medicine.id
+                                        ) }}"
+                                        class="medicine-action add"
+                                        title="Add Batch"
+                                    >
+
+                                        <i class="bi bi-plus-lg"></i>
+
+                                    </a>
+
+
+                                    <a
+                                        href="{{ url_for(
+                                            'medicines.edit_medicine',
+                                            medicine_id=medicine.id
+                                        ) }}"
+                                        class="medicine-action edit"
+                                        title="Edit Medicine"
+                                    >
+
+                                        <i class="bi bi-pencil"></i>
+
+                                    </a>
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'medicines.delete_medicine',
+                                            medicine_id=medicine.id
+                                        ) }}"
+                                        class="d-inline"
+                                        onsubmit="return confirm(
+                                            'Are you sure you want to delete this medicine?'
+                                        );"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="medicine-action delete"
+                                            title="Delete Medicine"
+                                        >
+
+                                            <i class="bi bi-trash3"></i>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endif %}
+
+
+                {% else %}
+
+
+                    <tr>
+
+                        <td colspan="11">
+
+                            <div class="medicine-empty">
+
+                                <div class="medicine-empty-icon">
+
+                                    <i class="bi bi-capsule"></i>
+
+                                </div>
+
+                                <h3 class="medicine-empty-title">
+                                    No Medicines Found
+                                </h3>
+
+                                <p class="medicine-empty-text">
+                                    Add your first medicine to start managing inventory.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+            <!-- SEARCH RESULT -->
+
+            <div
+                id="noSearchResult"
+                class="no-search-result"
+            >
+
+                <i class="bi bi-search"></i>
+
+                <strong>
+                    No matching medicines found
+                </strong>
+
+                <div>
+                    Try a different search term.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MEDICINE HISTORY
+    ====================================================== -->
+
+    <div class="history-card">
+
+
+        <div class="history-header">
+
+            <div class="history-icon">
+
+                <i class="bi bi-clock-history"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="history-title">
+                    Medicine Provision History
+                </h2>
+
+                <p class="history-subtitle">
+                    Recent medicine provisions to patients
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="history-table-wrapper">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Patient
+                        </th>
+
+                        <th>
+                            Medicine
+                        </th>
+
+                        <th>
+                            Quantity
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Time
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for provision in medicine_history %}
+
+                    <tr>
+
+
+                        <!-- PATIENT -->
+
+                        <td>
+
+                            <span class="patient-name">
+
+                                {{ provision.patient.full_name }}
+
+                            </span>
+
+                            {% if provision.patient.patient_code %}
+
+                                <span class="patient-code">
+
+                                    {{ provision.patient.patient_code }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- MEDICINE -->
+
+                        <td>
+
+                            <span class="history-medicine">
+
+                                {{ provision.medicine.medicine_name }}
+
+                                {% if provision.medicine.strength %}
+
+                                    - {{ provision.medicine.strength }}
+
+                                {% endif %}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- QUANTITY -->
+
+                        <td>
+
+                            {{ provision.quantity }}
+
+                        </td>
+
+
+                        <!-- DATE -->
+
+                        <td>
+
+                            {{ provision.provided_at.strftime('%d-%m-%Y') }}
+
+                        </td>
+
+
+                        <!-- TIME -->
+
+                        <td>
+
+                            {{ provision.provided_at.strftime('%I:%M %p') }}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            <span class="history-status">
+
+                                {{ provision.provision_status }}
+
+                            </span>
+
+                        </td>
+
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            <div class="medicine-empty">
+
+                                <div class="medicine-empty-icon">
+
+                                    <i class="bi bi-clock-history"></i>
+
+                                </div>
+
+                                <h3 class="medicine-empty-title">
+                                    No Provision History
+                                </h3>
+
+                                <p class="medicine-empty-text">
+                                    Medicine provision history will appear here.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     SEARCH SCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput =
+        document.getElementById("medicineSearch");
+
+    const rows =
+        document.querySelectorAll(".medicine-row");
+
+    const noSearchResult =
+        document.getElementById("noSearchResult");
+
+
+    if (!searchInput) {
+        return;
+    }
+
+
+    searchInput.addEventListener("input", function () {
+
+        const searchText =
+            this.value.trim().toLowerCase();
+
+        let visibleRows = 0;
+
+
+        rows.forEach(function (row) {
+
+            const rowText =
+                row.textContent.toLowerCase();
+
+
+            if (
+                searchText === "" ||
+                rowText.includes(searchText)
+            ) {
+
+                row.style.display = "";
+
+                visibleRows++;
+
+            }
+
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        if (
+            searchText !== "" &&
+            visibleRows === 0
+        ) {
+
+            noSearchResult.style.display = "block";
+
+        }
+
+        else {
+
+            noSearchResult.style.display = "none";
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,1792 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Doctor Availability - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.availability-page {
+    padding: 8px 4px 30px;
+}
+
+
+/* =========================================================
+   HERO HEADER
+========================================================= */
+
+.availability-header {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 48%,
+            #1d4ed8 100%
+        );
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    color: #fff;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+}
+
+.availability-header::before {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    top: -120px;
+    right: -50px;
+}
+
+.availability-header::after {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: rgba(96,165,250,0.08);
+    bottom: -100px;
+    left: 38%;
+}
+
+.availability-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.availability-title-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.availability-header-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.availability-title {
+    font-size: 27px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    letter-spacing: -0.4px;
+}
+
+.availability-subtitle {
+    margin: 0;
+    color: rgba(255,255,255,0.76);
+    font-size: 14px;
+}
+
+.availability-subtitle strong {
+    color: #fff;
+}
+
+.back-schedule-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.10);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all .2s ease;
+    white-space: nowrap;
+}
+
+.back-schedule-btn:hover {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DOCTOR PROFILE CARD
+========================================================= */
+
+.doctor-profile-card {
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 18px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 7px 24px rgba(15,23,42,0.06);
+}
+
+.doctor-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.doctor-profile-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        #dbeafe,
+        #eff6ff
+    );
+    color: #2563eb;
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.doctor-profile-name {
+    font-size: 17px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 3px;
+}
+
+.doctor-profile-specialization {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.doctor-profile-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    padding: 7px 11px;
+    border-radius: 9px;
+    background: #f0fdf4;
+    color: #15803d;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.doctor-profile-label i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MAIN FORM CARD
+========================================================= */
+
+.schedule-card {
+    background: #fff;
+    border: 1px solid #e8edf5;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(15,23,42,0.07);
+}
+
+.schedule-card-header {
+    padding: 22px 25px;
+    border-bottom: 1px solid #edf1f6;
+    background: linear-gradient(
+        180deg,
+        #ffffff,
+        #fbfdff
+    );
+}
+
+.schedule-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.schedule-heading-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.schedule-heading h5 {
+    margin: 0 0 3px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #111827;
+}
+
+.schedule-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.schedule-example {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 11px;
+    background: #f8fafc;
+    border: 1px solid #edf2f7;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.schedule-example i {
+    color: #2563eb;
+}
+
+.schedule-example strong {
+    color: #334155;
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.schedule-card-body {
+    padding: 27px;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+
+/* =========================================================
+   FIELD
+========================================================= */
+
+.schedule-field {
+    position: relative;
+}
+
+.schedule-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 750;
+    margin-bottom: 8px;
+}
+
+.schedule-label i {
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.required-star {
+    color: #dc2626;
+}
+
+.schedule-input-wrap {
+    position: relative;
+}
+
+.schedule-input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+    z-index: 2;
+    font-size: 15px;
+}
+
+.schedule-input,
+.schedule-select {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid #dbe2ea;
+    border-radius: 12px;
+    background: #fff;
+    color: #111827;
+    font-size: 14px;
+    padding: 11px 14px 11px 43px;
+    outline: none;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.schedule-select {
+    appearance: auto;
+}
+
+.schedule-input:focus,
+.schedule-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.10);
+    background: #fff;
+}
+
+.schedule-input:hover,
+.schedule-select:hover {
+    border-color: #b8c5d6;
+}
+
+.schedule-help {
+    margin-top: 6px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TIME FIELD SPECIAL
+========================================================= */
+
+.time-field-card {
+    background: #fbfdff;
+    border: 1px solid #edf1f6;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.time-field-card .schedule-input {
+    background: #fff;
+}
+
+
+/* =========================================================
+   LIVE PREVIEW
+========================================================= */
+
+.schedule-preview {
+    display: none;
+    margin-top: 24px;
+    padding: 17px 18px;
+    border-radius: 15px;
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #f8fbff
+        );
+    border: 1px solid #bfdbfe;
+}
+
+.schedule-preview-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.preview-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+    color: #2563eb;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.preview-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1e3a8a;
+    margin-bottom: 3px;
+}
+
+.preview-text {
+    color: #475569;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.time-warning {
+    display: none;
+    margin-top: 15px;
+    padding: 14px 16px;
+    border-radius: 13px;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+    font-size: 13px;
+}
+
+.time-warning-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time-warning-icon {
+    font-size: 18px;
+}
+
+.time-warning strong {
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.schedule-divider {
+    height: 1px;
+    background: #edf1f6;
+    margin: 26px 0 22px;
+}
+
+
+/* =========================================================
+   FORM FOOTER
+========================================================= */
+
+.schedule-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.form-required-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.form-required-note span {
+    color: #dc2626;
+    font-size: 14px;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cancel-schedule-btn,
+.save-schedule-btn {
+    min-height: 44px;
+    padding: 10px 17px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all .2s ease;
+}
+
+.cancel-schedule-btn {
+    border: 1px solid #dbe2ea;
+    background: #fff;
+    color: #475569;
+}
+
+.cancel-schedule-btn:hover {
+    background: #f8fafc;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+.save-schedule-btn {
+    border: 0;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+    color: #fff;
+    box-shadow: 0 7px 18px rgba(37,99,235,0.22);
+}
+
+.save-schedule-btn:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 23px rgba(37,99,235,0.28);
+}
+
+.save-schedule-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   HELP BOX
+========================================================= */
+
+.schedule-help-box {
+    margin-top: 20px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+}
+
+.schedule-help-content {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+}
+
+.schedule-help-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0f2fe;
+    color: #0284c7;
+    flex-shrink: 0;
+    font-size: 17px;
+}
+
+.schedule-help-title {
+    color: #075985;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.schedule-help-text {
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.schedule-help-text strong {
+    color: #334155;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .doctor-profile-card,
+[data-bs-theme="dark"] .schedule-card {
+    background: #111827;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .schedule-card-header {
+    background: #111827;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .doctor-profile-name,
+[data-bs-theme="dark"] .schedule-heading h5,
+[data-bs-theme="dark"] .schedule-label {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .doctor-profile-specialization,
+[data-bs-theme="dark"] .schedule-heading p,
+[data-bs-theme="dark"] .schedule-help,
+[data-bs-theme="dark"] .form-required-note {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .doctor-profile-avatar {
+    background: #172554;
+    color: #60a5fa;
+}
+
+[data-bs-theme="dark"] .doctor-profile-label {
+    background: #052e16;
+    color: #86efac;
+}
+
+[data-bs-theme="dark"] .schedule-heading-icon {
+    background: #172554;
+    color: #60a5fa;
+}
+
+[data-bs-theme="dark"] .schedule-example,
+[data-bs-theme="dark"] .time-field-card {
+    background: #0f172a;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .schedule-example strong {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .schedule-input,
+[data-bs-theme="dark"] .schedule-select {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .schedule-input:focus,
+[data-bs-theme="dark"] .schedule-select:focus {
+    background: #0f172a;
+    border-color: #3b82f6;
+}
+
+[data-bs-theme="dark"] .schedule-divider {
+    background: #263244;
+}
+
+[data-bs-theme="dark"] .cancel-schedule-btn {
+    background: #111827;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .schedule-preview {
+    background: #172554;
+    border-color: #1e40af;
+}
+
+[data-bs-theme="dark"] .preview-icon {
+    background: #1e3a8a;
+    color: #93c5fd;
+}
+
+[data-bs-theme="dark"] .preview-title {
+    color: #bfdbfe;
+}
+
+[data-bs-theme="dark"] .preview-text {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .schedule-help-box {
+    background: #082f49;
+    border-color: #075985;
+}
+
+[data-bs-theme="dark"] .schedule-help-icon {
+    background: #0c4a6e;
+    color: #7dd3fc;
+}
+
+[data-bs-theme="dark"] .schedule-help-title {
+    color: #bae6fd;
+}
+
+[data-bs-theme="dark"] .schedule-help-text {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .schedule-help-text strong {
+    color: #e2e8f0;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .availability-page {
+        padding: 4px 0 25px;
+    }
+
+    .availability-header {
+        padding: 20px;
+        border-radius: 17px;
+    }
+
+    .availability-header-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .availability-title-area {
+        width: 100%;
+    }
+
+    .availability-title {
+        font-size: 22px;
+    }
+
+    .availability-subtitle {
+        font-size: 12px;
+    }
+
+    .back-schedule-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .doctor-profile-card {
+        padding: 16px;
+    }
+
+    .doctor-profile-label {
+        display: none;
+    }
+
+    .schedule-card {
+        border-radius: 17px;
+    }
+
+    .schedule-card-header {
+        padding: 18px;
+    }
+
+    .schedule-card-body {
+        padding: 18px;
+    }
+
+    .schedule-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .schedule-form-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .form-actions {
+        width: 100%;
+    }
+
+    .cancel-schedule-btn,
+    .save-schedule-btn {
+        flex: 1;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .availability-header-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 21px;
+    }
+
+    .availability-title {
+        font-size: 19px;
+    }
+
+    .schedule-heading {
+        align-items: flex-start;
+    }
+
+    .schedule-heading-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+
+    .schedule-example {
+        line-height: 1.6;
+    }
+
+    .doctor-profile {
+        gap: 11px;
+    }
+
+    .doctor-profile-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 21px;
+    }
+
+    .doctor-profile-name {
+        font-size: 15px;
+    }
+
+    .schedule-input,
+    .schedule-select {
+        min-height: 48px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .cancel-schedule-btn,
+    .save-schedule-btn {
+        width: 100%;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container-fluid availability-page">
+
+
+    <!-- =====================================================
+         PREMIUM HEADER
+    ====================================================== -->
+
+    <div class="availability-header">
+
+        <div class="availability-header-content">
+
+            <div class="availability-title-area">
+
+                <div class="availability-header-icon">
+                    <i class="bi bi-calendar-plus"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="availability-title">
+                        Add Time Slot
+                    </h1>
+
+                    <p class="availability-subtitle">
+                        Create a working period for
+                        <strong>
+                            Dr. {{ doctor.full_name }}
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for(
+                    'doctors.doctor_availability',
+                    doctor_id=doctor.id
+                ) }}"
+                class="back-schedule-btn"
+            >
+                <i class="bi bi-arrow-left"></i>
+                Back to Schedule
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DOCTOR PROFILE
+    ====================================================== -->
+
+    <div class="doctor-profile-card">
+
+        <div class="doctor-profile">
+
+            <div class="doctor-profile-avatar">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+
+
+            <div>
+
+                <div class="doctor-profile-name">
+                    Dr. {{ doctor.full_name }}
+                </div>
+
+                {% if doctor.specialization %}
+
+                    <div class="doctor-profile-specialization">
+                        {{ doctor.specialization }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="doctor-profile-label">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Availability Setup
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN SCHEDULE CARD
+    ====================================================== -->
+
+    <div class="schedule-card">
+
+
+        <!-- HEADER -->
+
+        <div class="schedule-card-header">
+
+            <div class="schedule-heading">
+
+                <div class="schedule-heading-icon">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <div>
+
+                    <h5>
+                        Schedule Time Slot
+                    </h5>
+
+                    <p>
+                        Configure the working day and appointment timing.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="schedule-example">
+
+                <i class="bi bi-lightbulb me-1"></i>
+
+                <strong>Tip:</strong>
+
+                You can add multiple slots on the same day, for example
+                <strong>09:00 AM - 01:00 PM</strong>
+                and
+                <strong>05:00 PM - 09:00 PM</strong>.
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BODY -->
+
+        <div class="schedule-card-body">
+
+            <form
+                method="POST"
+                id="availabilityForm"
+            >
+
+
+                <div class="schedule-grid">
+
+
+                    <!-- =================================================
+                         WORKING DAY
+                    ================================================== -->
+
+                    <div class="schedule-field">
+
+                        <label
+                            for="weekday"
+                            class="schedule-label"
+                        >
+
+                            <i class="bi bi-calendar-day"></i>
+
+                            Working Day
+
+                            <span class="required-star">*</span>
+
+                        </label>
+
+
+                        <div class="schedule-input-wrap">
+
+                            <i
+                                class="bi bi-calendar3 schedule-input-icon"
+                            ></i>
+
+                            <select
+                                name="weekday"
+                                id="weekday"
+                                class="schedule-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Working Day
+                                </option>
+
+
+                                {% for value, name in weekdays %}
+
+                                    <option
+                                        value="{{ value }}"
+                                    >
+                                        {{ name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="schedule-help">
+                            Select the day for this working slot.
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         DURATION
+                    ================================================== -->
+
+                    <div class="schedule-field">
+
+                        <label
+                            for="appointment_duration"
+                            class="schedule-label"
+                        >
+
+                            <i class="bi bi-stopwatch"></i>
+
+                            Appointment Duration
+
+                            <span class="required-star">*</span>
+
+                        </label>
+
+
+                        <div class="schedule-input-wrap">
+
+                            <i
+                                class="bi bi-stopwatch schedule-input-icon"
+                            ></i>
+
+                            <select
+                                name="appointment_duration"
+                                id="appointment_duration"
+                                class="schedule-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Duration
+                                </option>
+
+                                <option value="15">
+                                    15 Minutes
+                                </option>
+
+                                <option value="20">
+                                    20 Minutes
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="schedule-help">
+                            Each appointment will use this duration.
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         START TIME
+                    ================================================== -->
+
+                    <div class="schedule-field time-field-card">
+
+                        <label
+                            for="start_time"
+                            class="schedule-label"
+                        >
+
+                            <i class="bi bi-play-circle"></i>
+
+                            Start Time
+
+                            <span class="required-star">*</span>
+
+                        </label>
+
+
+                        <div class="schedule-input-wrap">
+
+                            <i
+                                class="bi bi-clock schedule-input-icon"
+                            ></i>
+
+                            <input
+                                type="time"
+                                name="start_time"
+                                id="start_time"
+                                class="schedule-input"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="schedule-help">
+                            Example: 09:00 AM
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         END TIME
+                    ================================================== -->
+
+                    <div class="schedule-field time-field-card">
+
+                        <label
+                            for="end_time"
+                            class="schedule-label"
+                        >
+
+                            <i class="bi bi-stop-circle"></i>
+
+                            End Time
+
+                            <span class="required-star">*</span>
+
+                        </label>
+
+
+                        <div class="schedule-input-wrap">
+
+                            <i
+                                class="bi bi-clock-history schedule-input-icon"
+                            ></i>
+
+                            <input
+                                type="time"
+                                name="end_time"
+                                id="end_time"
+                                class="schedule-input"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="schedule-help">
+                            Example: 01:00 PM
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================================================
+                     LIVE PREVIEW
+                ====================================================== -->
+
+                <div
+                    id="schedulePreview"
+                    class="schedule-preview"
+                >
+
+                    <div class="schedule-preview-content">
+
+                        <div class="preview-icon">
+
+                            <i
+                                id="previewIcon"
+                                class="bi bi-calendar-check"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <div
+                                id="previewTitle"
+                                class="preview-title"
+                            >
+                                Schedule Preview
+                            </div>
+
+                            <div
+                                id="previewText"
+                                class="preview-text"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =====================================================
+                     TIME WARNING
+                ====================================================== -->
+
+                <div
+                    id="timeWarning"
+                    class="time-warning"
+                >
+
+                    <div class="time-warning-content">
+
+                        <i
+                            class="bi bi-exclamation-triangle-fill time-warning-icon"
+                        ></i>
+
+                        <div>
+
+                            <strong>
+                                Invalid time range.
+                            </strong>
+
+                            End time must be after start time.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DIVIDER -->
+
+                <div class="schedule-divider"></div>
+
+
+
+                <!-- =====================================================
+                     FORM FOOTER
+                ====================================================== -->
+
+                <div class="schedule-form-footer">
+
+
+                    <div class="form-required-note">
+
+                        <span>*</span>
+
+                        Required fields
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <a
+                            href="{{ url_for(
+                                'doctors.doctor_availability',
+                                doctor_id=doctor.id
+                            ) }}"
+                            class="cancel-schedule-btn"
+                        >
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Back to Schedule
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            id="saveButton"
+                            class="save-schedule-btn"
+                        >
+
+                            <i class="bi bi-check-lg"></i>
+
+                            Save Time Slot
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HELP BOX
+    ====================================================== -->
+
+    <div class="schedule-help-box">
+
+        <div class="schedule-help-content">
+
+            <div class="schedule-help-icon">
+
+                <i class="bi bi-info-circle-fill"></i>
+
+            </div>
+
+
+            <div>
+
+                <div class="schedule-help-title">
+                    Multiple slots are supported
+                </div>
+
+                <div class="schedule-help-text">
+
+                    You can add more than one working period
+                    for the same day.
+
+                    For example:
+
+                    <strong>
+                        Monday 09:00 AM - 01:00 PM
+                    </strong>
+
+                    and
+
+                    <strong>
+                        Monday 05:00 PM - 09:00 PM
+                    </strong>.
+
+                    The system will automatically generate
+                    appointment slots from both periods.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const form =
+            document.getElementById(
+                "availabilityForm"
+            );
+
+
+        const day =
+            document.getElementById(
+                "weekday"
+            );
+
+
+        const start =
+            document.getElementById(
+                "start_time"
+            );
+
+
+        const end =
+            document.getElementById(
+                "end_time"
+            );
+
+
+        const duration =
+            document.getElementById(
+                "appointment_duration"
+            );
+
+
+        const preview =
+            document.getElementById(
+                "schedulePreview"
+            );
+
+
+        const previewTitle =
+            document.getElementById(
+                "previewTitle"
+            );
+
+
+        const previewText =
+            document.getElementById(
+                "previewText"
+            );
+
+
+        const previewIcon =
+            document.getElementById(
+                "previewIcon"
+            );
+
+
+        const warning =
+            document.getElementById(
+                "timeWarning"
+            );
+
+
+        const saveButton =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+
+        /* =====================================================
+           FORMAT TIME
+        ====================================================== */
+
+        function formatTime(timeValue) {
+
+            if (!timeValue) {
+                return "";
+            }
+
+
+            const parts =
+                timeValue.split(":");
+
+
+            let hours =
+                parseInt(parts[0]);
+
+
+            const minutes =
+                parts[1];
+
+
+            const suffix =
+                hours >= 12
+                    ? "PM"
+                    : "AM";
+
+
+            hours =
+                hours % 12 || 12;
+
+
+            return (
+                hours +
+                ":" +
+                minutes +
+                " " +
+                suffix
+            );
+
+        }
+
+
+
+        /* =====================================================
+           UPDATE PREVIEW
+        ====================================================== */
+
+        function updatePreview() {
+
+
+            if (
+                !day.value ||
+                !start.value ||
+                !end.value ||
+                !duration.value
+            ) {
+
+                preview.style.display =
+                    "none";
+
+                warning.style.display =
+                    "none";
+
+                saveButton.disabled =
+                    false;
+
+                return;
+
+            }
+
+
+
+            /* ================================================
+               INVALID TIME
+            ================================================= */
+
+            if (
+                start.value >= end.value
+            ) {
+
+                preview.style.display =
+                    "none";
+
+                warning.style.display =
+                    "block";
+
+                saveButton.disabled =
+                    true;
+
+                return;
+
+            }
+
+
+
+            /* ================================================
+               VALID TIME
+            ================================================= */
+
+            warning.style.display =
+                "none";
+
+            preview.style.display =
+                "block";
+
+            saveButton.disabled =
+                false;
+
+
+
+            const dayName =
+                day.options[
+                    day.selectedIndex
+                ].text;
+
+
+
+            const startFormatted =
+                formatTime(
+                    start.value
+                );
+
+
+            const endFormatted =
+                formatTime(
+                    end.value
+                );
+
+
+
+            previewTitle.textContent =
+                dayName +
+                " Schedule";
+
+
+
+            previewText.textContent =
+                startFormatted +
+                " → " +
+                endFormatted +
+                " • " +
+                duration.value +
+                " minute appointments";
+
+
+
+            previewIcon.className =
+                "bi bi-calendar-check";
+
+        }
+
+
+
+        /* =====================================================
+           EVENTS
+        ====================================================== */
+
+        day.addEventListener(
+            "change",
+            updatePreview
+        );
+
+
+        start.addEventListener(
+            "change",
+            updatePreview
+        );
+
+
+        end.addEventListener(
+            "change",
+            updatePreview
+        );
+
+
+        duration.addEventListener(
+            "change",
+            updatePreview
+        );
+
+
+
+        /* =====================================================
+           FORM VALIDATION
+        ====================================================== */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+
+                if (
+                    start.value &&
+                    end.value &&
+                    start.value >= end.value
+                ) {
+
+                    event.preventDefault();
+
+
+                    warning.style.display =
+                        "block";
+
+
+                    saveButton.disabled =
+                        true;
+
+
+                    return;
+
+                }
+
+
+
+                if (
+                    !day.value ||
+                    !start.value ||
+                    !end.value ||
+                    !duration.value
+                ) {
+
+                    event.preventDefault();
+
+
+                    alert(
+                        "Please complete all required fields."
+                    );
+
+
+                    return;
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           AUTO SELECT DAY FROM URL
+           
+           Example:
+           /availability/add?weekday=0
+        ====================================================== */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const weekdayFromUrl =
+            params.get(
+                "weekday"
+            );
+
+
+        if (
+            weekdayFromUrl !== null
+        ) {
+
+            const option =
+                day.querySelector(
+                    'option[value="' +
+                    weekdayFromUrl +
+                    '"]'
+                );
+
+
+            if (option) {
+
+                day.value =
+                    weekdayFromUrl;
+
+
+                updatePreview();
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

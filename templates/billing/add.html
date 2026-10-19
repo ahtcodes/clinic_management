@@ -1,0 +1,2731 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Bill - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.create-bill-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 8px 0 35px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.bill-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 48%,
+            #2563eb 100%
+        );
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.16);
+}
+
+.bill-hero::before {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    right: -70px;
+    top: -120px;
+    background: rgba(255,255,255,0.08);
+}
+
+.bill-hero::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    right: 130px;
+    bottom: -100px;
+    background: rgba(255,255,255,0.06);
+}
+
+.bill-hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.bill-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.bill-hero-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 30px;
+    flex-shrink: 0;
+}
+
+.bill-hero-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color:white;
+}
+
+.bill-hero-subtitle {
+    margin: 5px 0 0;
+    color: rgba(255,255,255,0.76);
+    font-size: 14px;
+}
+
+.back-billing-btn {
+    position: relative;
+    z-index: 3;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.10);
+    border-radius: 11px;
+    padding: 10px 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.back-billing-btn:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.bill-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   FORM CARDS
+========================================================= */
+
+.bill-section {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.055);
+}
+
+.bill-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px solid #eef2f7;
+    background: #ffffff;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+    background: #eff6ff;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.section-heading {
+    margin: 0;
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.section-description {
+    margin: 3px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.bill-section-body {
+    padding: 22px;
+}
+
+
+/* =========================================================
+   FORM CONTROLS
+========================================================= */
+
+.form-label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-label .text-danger {
+    margin-left: 2px;
+}
+
+.form-select,
+.form-control {
+    min-height: 46px;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    color: #1e293b;
+    background: #ffffff;
+    font-size: 14px;
+    box-shadow: none !important;
+    transition: 0.2s ease;
+}
+
+.form-select {
+    cursor: pointer;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10) !important;
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.input-group-text {
+    min-width: 48px;
+    justify-content: center;
+    border: 1px solid #dbe3ee;
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+}
+
+.input-group > .form-control {
+    border-left: 0;
+}
+
+.input-group:focus-within .input-group-text {
+    border-color: #3b82f6;
+}
+
+.form-text,
+small.text-muted {
+    color: #64748b !important;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   APPOINTMENT INFO
+========================================================= */
+
+.appointment-info {
+    background: linear-gradient(
+        135deg,
+        #eff6ff,
+        #f8fbff
+    );
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    padding: 17px;
+}
+
+.appointment-info-item {
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.appointment-info-item small {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.appointment-info-item div {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   AUTO FEE
+========================================================= */
+
+.auto-fee {
+    background: #f8fafc !important;
+    font-weight: 700;
+}
+
+.fee-input {
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   SERVICE BOX
+========================================================= */
+
+.service-selection-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    border-radius: 11px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.service-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+    padding: 8px 15px;
+}
+
+.service-item {
+    padding: 13px 2px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.service-item:last-child {
+    border-bottom: none;
+}
+
+.service-label {
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+}
+
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.service-checkbox {
+    width: 19px !important;
+    height: 19px !important;
+    cursor: pointer;
+    border-color: #94a3b8;
+    margin: 0 !important;
+}
+
+.service-checkbox:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.service-name {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.service-name-sub {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.service-price {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.service-total-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.empty-services,
+.loading-services {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.empty-services i {
+    color: #94a3b8;
+}
+
+.loading-services .spinner-border {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+.summary-wrapper {
+    position: sticky;
+    top: 90px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(15,23,42,0.08);
+}
+
+.summary-header {
+    position: relative;
+    overflow: hidden;
+    padding: 19px 21px;
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a
+    );
+}
+
+.summary-header::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    right: -35px;
+    top: -55px;
+    background: rgba(255,255,255,0.08);
+}
+
+.summary-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.summary-header-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.13);
+}
+
+.summary-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 750;
+    color:white;
+}
+
+.summary-body {
+    padding: 21px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 8px 0;
+    color: #475569;
+    font-size: 13px;
+}
+
+.summary-row strong {
+    color: #1e293b;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.summary-divider {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin: 12px 0;
+}
+
+.summary-subtotal {
+    color: #334155;
+    font-weight: 700;
+}
+
+.summary-discount strong {
+    color: #dc2626;
+}
+
+.total-box {
+    margin: 17px 0;
+    padding: 17px;
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        #eff6ff,
+        #f8fbff
+    );
+    border: 1px solid #bfdbfe;
+}
+
+.total-label {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.total-value {
+    color: #1d4ed8;
+    font-size: 25px;
+    font-weight: 850;
+}
+
+.paid-row strong {
+    color: #16a34a;
+}
+
+.remaining-row {
+    margin-top: 4px;
+    padding-top: 13px;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.remaining-row strong {
+    color: #dc2626;
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.create-bill-submit {
+    min-height: 50px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+    font-size: 14px;
+    font-weight: 750;
+    box-shadow: 0 8px 18px rgba(37,99,235,0.20);
+    transition: 0.2s ease;
+}
+
+.create-bill-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(37,99,235,0.27);
+}
+
+.cancel-bill-btn {
+    min-height: 46px;
+    border-radius: 11px;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   BILLING FOOTER NOTE
+========================================================= */
+
+.billing-note {
+    margin-top: 16px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .bill-section,
+[data-bs-theme="dark"] .summary-card {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .bill-section-header {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .section-heading {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .section-description,
+[data-bs-theme="dark"] small.text-muted {
+    color: #94a3b8 !important;
+}
+
+[data-bs-theme="dark"] .form-label {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    color: #f8fafc;
+    background: #0f172a;
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .form-control::placeholder {
+    color: #64748b;
+}
+
+[data-bs-theme="dark"] .input-group-text {
+    color: #cbd5e1;
+    background: #1e293b;
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .auto-fee {
+    background: #1e293b !important;
+}
+
+[data-bs-theme="dark"] .appointment-info {
+    background: #172554;
+    border-color: #1e40af;
+}
+
+[data-bs-theme="dark"] .appointment-info-item {
+    background: #111827;
+    border-color: #1e3a8a;
+}
+
+[data-bs-theme="dark"] .appointment-info-item div {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .service-box,
+[data-bs-theme="dark"] .service-total-box {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .service-item {
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .service-name {
+    color: #f1f5f9;
+}
+
+[data-bs-theme="dark"] .service-price {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .total-box {
+    background: #172554;
+    border-color: #1e40af;
+}
+
+[data-bs-theme="dark"] .total-label {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .summary-row {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .summary-row strong {
+    color: #f1f5f9;
+}
+
+[data-bs-theme="dark"] .summary-divider,
+[data-bs-theme="dark"] .remaining-row {
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .billing-note {
+    background: #0f172a;
+    border-color: #334155;
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .bill-layout {
+        grid-template-columns: minmax(0, 1fr) 320px;
+    }
+
+}
+
+@media (max-width: 991.98px) {
+
+    .bill-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-wrapper {
+        position: static;
+    }
+
+}
+
+@media (max-width: 767.98px) {
+
+    .create-bill-page {
+        padding: 5px 0 25px;
+    }
+
+    .bill-hero {
+        padding: 21px;
+        border-radius: 17px;
+    }
+
+    .bill-hero-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .bill-hero-left {
+        align-items: flex-start;
+    }
+
+    .bill-hero-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        font-size: 24px;
+    }
+
+    .bill-hero-title {
+        font-size: 23px;
+    }
+
+    .back-billing-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .bill-section {
+        border-radius: 15px;
+    }
+
+    .bill-section-header {
+        padding: 15px;
+    }
+
+    .bill-section-body {
+        padding: 16px;
+    }
+
+    .section-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .summary-card {
+        border-radius: 15px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .bill-hero-left {
+        gap: 12px;
+    }
+
+    .bill-hero-title {
+        font-size: 20px;
+    }
+
+    .bill-hero-subtitle {
+        font-size: 12px;
+    }
+
+    .bill-section-body {
+        padding: 14px;
+    }
+
+    .summary-body {
+        padding: 16px;
+    }
+
+    .service-label {
+        align-items: flex-start !important;
+    }
+
+    .service-price {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    .bill-hero,
+    .back-billing-btn,
+    .summary-wrapper,
+    .create-bill-submit,
+    .cancel-bill-btn {
+        display: none !important;
+    }
+
+    .create-bill-page {
+        max-width: 100%;
+    }
+
+    .bill-layout {
+        display: block;
+    }
+
+    .bill-section {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="create-bill-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="bill-hero">
+
+        <div class="bill-hero-content">
+
+            <div class="bill-hero-left">
+
+                <div class="bill-hero-icon">
+                    <i class="bi bi-receipt"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="bill-hero-title">
+                        Create Bill
+                    </h1>
+
+                    <p class="bill-hero-subtitle">
+                        Create and manage a new patient billing record
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('billing.list_bills') }}"
+                class="btn back-billing-btn"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back to Billing
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('billing.add_bill') }}"
+        id="billForm"
+    >
+
+        <div class="bill-layout">
+
+
+            <!-- =================================================
+                 LEFT SIDE
+            ================================================== -->
+
+            <div>
+
+
+                <!-- =================================================
+                     PATIENT INFORMATION
+                ================================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-person-vcard"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="section-heading">
+                                Patient Information
+                            </h5>
+
+                            <p class="section-description">
+                                Select the patient and related appointment
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-3">
+
+
+                            <!-- PATIENT -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="patient_id"
+                                >
+
+                                    Patient
+
+                                    <span class="text-danger">*</span>
+
+                                </label>
+
+                                <select
+                                    name="patient_id"
+                                    id="patient_id"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select Patient
+                                    </option>
+
+                                    {% for patient in patients %}
+
+                                    <option
+                                        value="{{ patient.id }}"
+                                    >
+
+                                        {{ patient.patient_code }}
+                                        -
+                                        {{ patient.full_name }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- APPOINTMENT -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="appointment_id"
+                                >
+
+                                    Appointment
+
+                                </label>
+
+                                <select
+                                    name="appointment_id"
+                                    id="appointment_id"
+                                    class="form-select"
+                                >
+
+                                    <option value="">
+                                        No Appointment
+                                    </option>
+
+                                    {% for appointment in appointments %}
+
+                                    <option
+                                        value="{{ appointment.id }}"
+                                        data-patient-id="{{ appointment.patient_id or '' }}"
+                                    >
+
+                                        {{ appointment.appointment_code }}
+
+                                        -
+
+                                        {% if appointment.patient %}
+
+                                            {{ appointment.patient.full_name }}
+
+                                        {% else %}
+
+                                            {{ appointment.patient_name or "Online Patient" }}
+
+                                        {% endif %}
+
+                                        -
+
+                                        {{ appointment.appointment_date.strftime("%d %b %Y") }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- APPOINTMENT INFO -->
+
+                        <div
+                            id="appointmentInfo"
+                            class="appointment-info mt-4 d-none"
+                        >
+
+                            <div class="row g-3">
+
+                                <div class="col-md-4">
+
+                                    <div class="appointment-info-item">
+
+                                        <small>
+                                            Appointment
+                                        </small>
+
+                                        <div id="infoAppointment">
+                                            -
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <div class="appointment-info-item">
+
+                                        <small>
+                                            Doctor
+                                        </small>
+
+                                        <div id="infoDoctor">
+                                            -
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <div class="appointment-info-item">
+
+                                        <small>
+                                            Date
+                                        </small>
+
+                                        <div id="infoDate">
+                                            -
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CONSULTATION CHARGES
+                ================================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="section-heading">
+                                Consultation Charges
+                            </h5>
+
+                            <p class="section-description">
+                                Doctor consultation fee for this visit
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="consultation_fee"
+                                >
+
+                                    Consultation Fee
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="consultation_fee"
+                                        id="consultation_fee"
+                                        class="form-control auto-fee"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Automatically loaded from the doctor's consultation fee.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ADDITIONAL SERVICES
+                ================================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-list-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="section-heading">
+                                Additional Services
+                            </h5>
+
+                            <p class="section-description">
+                                Select services actually provided to the patient
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+
+                        <div
+                            class="service-selection-note mb-3"
+                            id="serviceSelectionNote"
+                        >
+
+                            <i class="bi bi-info-circle mt-1"></i>
+
+                            <span>
+                                Select only the additional services that were
+                                actually provided to this patient.
+                                Services are not charged automatically.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="servicesContainer"
+                            class="service-box"
+                        >
+
+                            <div class="empty-services text-center py-4">
+
+                                <i
+                                    class="bi bi-info-circle fs-4 d-block mb-2"
+                                ></i>
+
+                                Select an appointment to load the doctor's
+                                additional services.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SERVICE TOTAL -->
+
+                        <div class="row mt-3">
+
+                            <div class="col-md-6 ms-auto">
+
+                                <div class="service-total-box">
+
+                                    <label
+                                        class="form-label"
+                                        for="service_fee"
+                                    >
+
+                                        Additional Services Total
+
+                                    </label>
+
+                                    <div class="input-group">
+
+                                        <span class="input-group-text">
+                                            Rs.
+                                        </span>
+
+                                        <input
+                                            type="number"
+                                            name="service_fee"
+                                            id="service_fee"
+                                            class="form-control auto-fee"
+                                            value="0"
+                                            min="0"
+                                            step="0.01"
+                                            readonly
+                                        >
+
+                                    </div>
+
+                                    <small class="text-muted">
+                                        Only selected services are included.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     OTHER CHARGES
+                ================================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="section-heading">
+                                Other Charges
+                            </h5>
+
+                            <p class="section-description">
+                                Medicine, laboratory, discount and other fees
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-3">
+
+
+                            <!-- MEDICINE -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="medicine_fee"
+                                >
+                                    Medicine Fee
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="medicine_fee"
+                                        id="medicine_fee"
+                                        class="form-control fee-input"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Pending medicine provisions are automatically included.
+                                </small>
+
+                            </div>
+
+
+                            <!-- LAB -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="laboratory_fee"
+                                >
+                                    Laboratory Fee
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="laboratory_fee"
+                                        id="laboratory_fee"
+                                        class="form-control fee-input"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- OTHER -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="other_charges"
+                                >
+                                    Other Charges
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="other_charges"
+                                        id="other_charges"
+                                        class="form-control fee-input"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DISCOUNT -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="discount"
+                                >
+                                    Discount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="discount"
+                                        id="discount"
+                                        class="form-control fee-input"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PAYMENT
+                ================================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+
+                        <div>
+
+                            <h5 class="section-heading">
+                                Payment
+                            </h5>
+
+                            <p class="section-description">
+                                Record payment and billing notes
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-3">
+
+
+                            <!-- PAID -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="paid_amount"
+                                >
+                                    Paid Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="paid_amount"
+                                        id="paid_amount"
+                                        class="form-control fee-input"
+                                        value="0"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PAYMENT METHOD -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    class="form-label"
+                                    for="payment_method"
+                                >
+                                    Payment Method
+                                </label>
+
+                                <select
+                                    name="payment_method"
+                                    id="payment_method"
+                                    class="form-select"
+                                >
+
+                                    <option value="Cash">
+                                        Cash
+                                    </option>
+
+                                    <option value="Card">
+                                        Card
+                                    </option>
+
+                                    <option value="Online">
+                                        Online
+                                    </option>
+
+                                    <option value="Bank Transfer">
+                                        Bank Transfer
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- NOTES -->
+
+                            <div class="col-12">
+
+                                <label
+                                    class="form-label"
+                                    for="notes"
+                                >
+                                    Notes
+                                </label>
+
+                                <textarea
+                                    name="notes"
+                                    id="notes"
+                                    class="form-control"
+                                    rows="4"
+                                    placeholder="Additional billing notes..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT SIDE
+            ================================================== -->
+
+            <div class="summary-wrapper">
+
+                <div class="summary-card">
+
+
+                    <!-- SUMMARY HEADER -->
+
+                    <div class="summary-header">
+
+                        <div class="summary-header-content">
+
+                            <div class="summary-header-icon">
+
+                                <i class="bi bi-calculator"></i>
+
+                            </div>
+
+                            <h5 class="summary-title">
+                                Bill Summary
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-body">
+
+
+                        <!-- CONSULTATION -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Consultation
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="summaryConsultation">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- SERVICES -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Additional Services
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="summaryServices">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- MEDICINE -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Medicine
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="summaryMedicine">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- LAB -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Laboratory
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="summaryLaboratory">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- OTHER -->
+
+                        <div class="summary-row">
+
+                            <span>
+                                Other Charges
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="summaryOther">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <hr class="summary-divider">
+
+
+                        <!-- SUBTOTAL -->
+
+                        <div class="summary-row summary-subtotal">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="subtotal">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- DISCOUNT -->
+
+                        <div class="summary-row summary-discount">
+
+                            <span>
+                                Discount
+                            </span>
+
+                            <strong>
+                                - Rs.
+                                <span id="discountDisplay">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- TOTAL -->
+
+                        <div class="total-box">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <span class="total-label">
+                                    Total
+                                </span>
+
+                                <strong class="total-value">
+
+                                    Rs.
+                                    <span id="total">
+                                        0.00
+                                    </span>
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PAID -->
+
+                        <div class="summary-row paid-row">
+
+                            <span>
+                                Paid
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="paidDisplay">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- REMAINING -->
+
+                        <div class="summary-row remaining-row">
+
+                            <span>
+                                Remaining
+                            </span>
+
+                            <strong>
+
+                                Rs.
+                                <span id="remaining">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- CREATE -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary create-bill-submit w-100 mt-3"
+                        >
+
+                            <i class="bi bi-check-circle me-1"></i>
+
+                            Create Bill
+
+                        </button>
+
+
+                        <!-- CANCEL -->
+
+                        <a
+                            href="{{ url_for('billing.list_bills') }}"
+                            class="btn btn-outline-secondary cancel-bill-btn w-100 mt-2"
+                        >
+
+                            <i class="bi bi-x-circle me-1"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <div class="billing-note">
+
+                            <i class="bi bi-shield-check me-1"></i>
+
+                            Review all charges and payment details
+                            before creating the bill.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        // =====================================================
+        // ELEMENTS
+        // =====================================================
+
+        const appointmentSelect =
+            document.getElementById(
+                "appointment_id"
+            );
+
+
+        const patientSelect =
+            document.getElementById(
+                "patient_id"
+            );
+
+
+        const appointmentInfo =
+            document.getElementById(
+                "appointmentInfo"
+            );
+
+
+        const consultationFee =
+            document.getElementById(
+                "consultation_fee"
+            );
+
+
+        const serviceFee =
+            document.getElementById(
+                "service_fee"
+            );
+
+
+        const servicesContainer =
+            document.getElementById(
+                "servicesContainer"
+            );
+
+
+        // =====================================================
+        // APPOINTMENT CHANGE
+        // =====================================================
+
+        appointmentSelect.addEventListener(
+            "change",
+            function () {
+
+
+                const selectedOption =
+                    appointmentSelect.options[
+                        appointmentSelect.selectedIndex
+                    ];
+
+
+                // =================================================
+                // NO APPOINTMENT
+                // =================================================
+
+                if (!appointmentSelect.value) {
+
+                    appointmentInfo.classList.add(
+                        "d-none"
+                    );
+
+
+                    consultationFee.value =
+                        "0";
+
+
+                    serviceFee.value =
+                        "0";
+
+
+                    servicesContainer.innerHTML = `
+
+                        <div class="empty-services text-center py-4">
+
+                            <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+
+                            Select an appointment to load the doctor's
+                            additional services.
+
+                        </div>
+
+                    `;
+
+
+                    calculateBill();
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // AUTO SELECT PATIENT
+                // =================================================
+
+                const patientId =
+                    selectedOption.dataset.patientId;
+
+
+                if (patientId) {
+
+                    patientSelect.value =
+                        patientId;
+
+                }
+
+
+                // =================================================
+                // SHOW LOADING
+                // =================================================
+
+                appointmentInfo.classList.remove(
+                    "d-none"
+                );
+
+
+                servicesContainer.innerHTML = `
+
+                    <div class="loading-services text-center py-4">
+
+                        <div
+                            class="spinner-border spinner-border-sm me-2"
+                            role="status"
+                        ></div>
+
+                        Loading doctor's additional services...
+
+                    </div>
+
+                `;
+
+
+                // =================================================
+                // LOAD BILLING DATA
+                // =================================================
+
+                fetch(
+                    "{{ url_for('billing.get_appointment_billing_data') }}"
+                    + "?appointment_id="
+                    + appointmentSelect.value
+                )
+
+                .then(
+                    function (response) {
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                "Unable to load billing data."
+                            );
+
+                        }
+
+                        return response.json();
+
+                    }
+                )
+
+                .then(
+                    function (data) {
+
+
+                        // =========================================
+                        // CHECK SUCCESS
+                        // =========================================
+
+                        if (!data.success) {
+
+                            throw new Error(
+                                data.message
+                                ||
+                                "Unable to load billing data."
+                            );
+
+                        }
+
+
+                        // =========================================
+                        // APPOINTMENT INFO
+                        // =========================================
+
+                        appointmentInfo.classList.remove(
+                            "d-none"
+                        );
+
+
+                        document.getElementById(
+                            "infoAppointment"
+                        ).textContent =
+                            data.appointment_code
+                            || "-";
+
+
+                        document.getElementById(
+                            "infoDoctor"
+                        ).textContent =
+                            data.doctor_name
+                            || "-";
+
+
+                        document.getElementById(
+                            "infoDate"
+                        ).textContent =
+                            data.appointment_date
+                            || "-";
+
+
+                        // =========================================
+                        // CONSULTATION FEE
+                        // =========================================
+
+                        consultationFee.value =
+                            Number(
+                                data.consultation_fee
+                                || 0
+                            ).toFixed(2);
+
+
+                        // =========================================
+                        // CLEAR SERVICES
+                        // =========================================
+
+                        servicesContainer.innerHTML =
+                            "";
+
+
+                        // =========================================
+                        // ADDITIONAL SERVICES
+                        // =========================================
+
+                        if (
+                            data.services
+                            &&
+                            data.services.length > 0
+                        ) {
+
+
+                            data.services.forEach(
+                                function (service) {
+
+
+                                    const item =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+
+                                    item.className =
+                                        "service-item";
+
+
+                                    const label =
+                                        document.createElement(
+                                            "label"
+                                        );
+
+
+                                    label.className =
+                                        "service-label d-flex justify-content-between align-items-center";
+
+
+                                    // =================================
+                                    // LEFT SIDE
+                                    // =================================
+
+                                    const left =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+
+                                    left.className =
+                                        "service-left";
+
+
+                                    // =================================
+                                    // CHECKBOX
+                                    // =================================
+
+                                    const checkbox =
+                                        document.createElement(
+                                            "input"
+                                        );
+
+
+                                    checkbox.type =
+                                        "checkbox";
+
+
+                                    checkbox.name =
+                                        "service_ids";
+
+
+                                    checkbox.value =
+                                        service.id;
+
+
+                                    checkbox.className =
+                                        "form-check-input service-checkbox";
+
+
+                                    checkbox.dataset.fee =
+                                        Number(
+                                            service.service_fee
+                                            || 0
+                                        );
+
+
+                                    // =================================
+                                    // SERVICE NAME
+                                    // =================================
+
+                                    const nameDiv =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+
+                                    nameDiv.innerHTML = `
+
+                                        <div class="service-name">
+
+                                            ${escapeHtml(
+                                                service.service_name
+                                            )}
+
+                                        </div>
+
+                                        <div class="service-name-sub">
+
+                                            Additional Service
+
+                                        </div>
+
+                                    `;
+
+
+                                    left.appendChild(
+                                        checkbox
+                                    );
+
+
+                                    left.appendChild(
+                                        nameDiv
+                                    );
+
+
+                                    // =================================
+                                    // PRICE
+                                    // =================================
+
+                                    const priceDiv =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+
+                                    priceDiv.className =
+                                        "service-price";
+
+
+                                    priceDiv.textContent =
+                                        "Rs. "
+                                        +
+                                        Number(
+                                            service.service_fee
+                                            || 0
+                                        ).toFixed(2);
+
+
+                                    label.appendChild(
+                                        left
+                                    );
+
+
+                                    label.appendChild(
+                                        priceDiv
+                                    );
+
+
+                                    item.appendChild(
+                                        label
+                                    );
+
+
+                                    servicesContainer.appendChild(
+                                        item
+                                    );
+
+
+                                    // =================================
+                                    // CHECKBOX EVENT
+                                    // =================================
+
+                                    checkbox.addEventListener(
+                                        "change",
+                                        function () {
+
+                                            calculateSelectedServices();
+
+                                        }
+                                    );
+
+                                }
+                            );
+
+
+                        } else {
+
+
+                            servicesContainer.innerHTML = `
+
+                                <div class="empty-services text-center py-4">
+
+                                    <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+
+                                    No additional services are configured
+                                    for this doctor.
+
+                                </div>
+
+                            `;
+
+                        }
+
+
+                        // =========================================
+                        // START AT ZERO
+                        // =========================================
+
+                        serviceFee.value =
+                            "0.00";
+
+
+                        calculateBill();
+
+                    }
+                )
+
+                .catch(
+                    function (error) {
+
+
+                        console.error(
+                            "Billing data error:",
+                            error
+                        );
+
+
+                        appointmentInfo.classList.add(
+                            "d-none"
+                        );
+
+
+                        servicesContainer.innerHTML = `
+
+                            <div class="alert alert-warning mb-0">
+
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+
+                                Unable to load doctor's additional services.
+
+                            </div>
+
+                        `;
+
+
+                        consultationFee.value =
+                            "0";
+
+
+                        serviceFee.value =
+                            "0";
+
+
+                        calculateBill();
+
+                    }
+                );
+
+            }
+        );
+
+
+        // =====================================================
+        // CALCULATE SELECTED SERVICES
+        // =====================================================
+
+        function calculateSelectedServices() {
+
+
+            let total = 0;
+
+
+            const selectedServices =
+                servicesContainer.querySelectorAll(
+                    "input[name='service_ids']:checked"
+                );
+
+
+            selectedServices.forEach(
+                function (checkbox) {
+
+                    total +=
+                        parseFloat(
+                            checkbox.dataset.fee
+                        )
+                        || 0;
+
+                }
+            );
+
+
+            serviceFee.value =
+                total.toFixed(2);
+
+
+            calculateBill();
+
+        }
+
+
+        // =====================================================
+        // ESCAPE HTML
+        // =====================================================
+
+        function escapeHtml(value) {
+
+
+            if (!value) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        // =====================================================
+        // GET NUMBER
+        // =====================================================
+
+        function getNumber(id) {
+
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (!element) {
+
+                return 0;
+
+            }
+
+
+            return parseFloat(
+                element.value
+            ) || 0;
+
+        }
+
+
+        // =====================================================
+        // SET DISPLAY
+        // =====================================================
+
+        function setDisplay(
+            id,
+            value
+        ) {
+
+
+            const element =
+                document.getElementById(
+                    id
+                );
+
+
+            if (!element) {
+
+                return;
+
+            }
+
+
+            element.textContent =
+                Number(
+                    value
+                ).toFixed(2);
+
+        }
+
+
+        // =====================================================
+        // CALCULATE BILL
+        // =====================================================
+
+        function calculateBill() {
+
+
+            const consultation =
+                getNumber(
+                    "consultation_fee"
+                );
+
+
+            const services =
+                getNumber(
+                    "service_fee"
+                );
+
+
+            const medicine =
+                getNumber(
+                    "medicine_fee"
+                );
+
+
+            const laboratory =
+                getNumber(
+                    "laboratory_fee"
+                );
+
+
+            const other =
+                getNumber(
+                    "other_charges"
+                );
+
+
+            const discount =
+                getNumber(
+                    "discount"
+                );
+
+
+            const paid =
+                getNumber(
+                    "paid_amount"
+                );
+
+
+            // =================================================
+            // SUBTOTAL
+            // =================================================
+
+            const subtotal =
+                consultation
+                +
+                services
+                +
+                medicine
+                +
+                laboratory
+                +
+                other;
+
+
+            // =================================================
+            // TOTAL
+            // =================================================
+
+            const total =
+                Math.max(
+                    subtotal - discount,
+                    0
+                );
+
+
+            // =================================================
+            // REMAINING
+            // =================================================
+
+            const remaining =
+                Math.max(
+                    total - paid,
+                    0
+                );
+
+
+            // =================================================
+            // UPDATE SUMMARY
+            // =================================================
+
+            setDisplay(
+                "summaryConsultation",
+                consultation
+            );
+
+
+            setDisplay(
+                "summaryServices",
+                services
+            );
+
+
+            setDisplay(
+                "summaryMedicine",
+                medicine
+            );
+
+
+            setDisplay(
+                "summaryLaboratory",
+                laboratory
+            );
+
+
+            setDisplay(
+                "summaryOther",
+                other
+            );
+
+
+            setDisplay(
+                "subtotal",
+                subtotal
+            );
+
+
+            setDisplay(
+                "discountDisplay",
+                discount
+            );
+
+
+            setDisplay(
+                "total",
+                total
+            );
+
+
+            setDisplay(
+                "paidDisplay",
+                paid
+            );
+
+
+            setDisplay(
+                "remaining",
+                remaining
+            );
+
+        }
+
+
+        // =====================================================
+        // NUMBER INPUT EVENTS
+        // =====================================================
+
+        document
+            .querySelectorAll(
+                "input[type='number']"
+            )
+            .forEach(
+                function (input) {
+
+                    input.addEventListener(
+                        "input",
+                        calculateBill
+                    );
+
+                }
+            );
+
+
+        // =====================================================
+        // INITIAL CALCULATION
+        // =====================================================
+
+        calculateBill();
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

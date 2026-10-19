@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Patient - Doctor Clinic
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="bi bi-pencil-square me-2"></i>
+
+                Edit Patient
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                {{ patient.patient_code }}
+
+                —
+
+                {{ patient.full_name }}
+
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <a
+                href="{{ url_for('patients.view_patient', patient_id=patient.id) }}"
+                class="btn btn-outline-primary me-2"
+            >
+
+                <i class="bi bi-eye me-1"></i>
+
+                View
+
+            </a>
+
+
+            <a
+                href="{{ url_for('patients.list_patients') }}"
+                class="btn btn-secondary"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+
+            <form
+                method="POST"
+                action="{{ url_for('patients.edit_patient', patient_id=patient.id) }}"
+            >
+
+                <div class="row g-4">
+
+
+                    <!-- Full Name -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Full Name <span class="text-danger">*</span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="full_name"
+                            class="form-control"
+                            value="{{ patient.full_name or '' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Father Name -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Father / Husband Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="father_name"
+                            class="form-control"
+                            value="{{ patient.father_name or '' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Gender
+
+                        </label>
+
+                        <select
+                            name="gender"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Select Gender
+                            </option>
+
+
+                            <option
+                                value="Male"
+                                {% if patient.gender == "Male" %}selected{% endif %}
+                            >
+                                Male
+                            </option>
+
+
+                            <option
+                                value="Female"
+                                {% if patient.gender == "Female" %}selected{% endif %}
+                            >
+                                Female
+                            </option>
+
+
+                            <option
+                                value="Other"
+                                {% if patient.gender == "Other" %}selected{% endif %}
+                            >
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Date of Birth -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Date of Birth
+
+                        </label>
+
+                        <input
+                            type="date"
+                            name="date_of_birth"
+                            class="form-control"
+                            value="{% if patient.date_of_birth %}{{ patient.date_of_birth.strftime('%Y-%m-%d') }}{% endif %}"
+                        >
+
+                    </div>
+
+
+                    <!-- Blood Group -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+
+                            Blood Group
+
+                        </label>
+
+                        <select
+                            name="blood_group"
+                            class="form-select"
+                        >
+
+                            <option value="">
+                                Select Blood Group
+                            </option>
+
+
+                            <option
+                                value="A+"
+                                {% if patient.blood_group == "A+" %}selected{% endif %}
+                            >
+                                A+
+                            </option>
+
+
+                            <option
+                                value="A-"
+                                {% if patient.blood_group == "A-" %}selected{% endif %}
+                            >
+                                A-
+                            </option>
+
+
+                            <option
+                                value="B+"
+                                {% if patient.blood_group == "B+" %}selected{% endif %}
+                            >
+                                B+
+                            </option>
+
+
+                            <option
+                                value="B-"
+                                {% if patient.blood_group == "B-" %}selected{% endif %}
+                            >
+                                B-
+                            </option>
+
+
+                            <option
+                                value="AB+"
+                                {% if patient.blood_group == "AB+" %}selected{% endif %}
+                            >
+                                AB+
+                            </option>
+
+
+                            <option
+                                value="AB-"
+                                {% if patient.blood_group == "AB-" %}selected{% endif %}
+                            >
+                                AB-
+                            </option>
+
+
+                            <option
+                                value="O+"
+                                {% if patient.blood_group == "O+" %}selected{% endif %}
+                            >
+                                O+
+                            </option>
+
+
+                            <option
+                                value="O-"
+                                {% if patient.blood_group == "O-" %}selected{% endif %}
+                            >
+                                O-
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Phone
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="phone"
+                            class="form-control"
+                            value="{{ patient.phone or '' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Email
+
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ patient.email or '' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Emergency Contact -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Emergency Contact
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="emergency_contact"
+                            class="form-control"
+                            value="{{ patient.emergency_contact or '' }}"
+                        >
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Address
+
+                        </label>
+
+                        <textarea
+                            name="address"
+                            class="form-control"
+                            rows="3"
+                        >{{ patient.address or '' }}</textarea>
+
+                    </div>
+
+
+                    <!-- Medical History -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Medical History
+
+                        </label>
+
+                        <textarea
+                            name="medical_history"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Previous diseases, surgeries, medications, etc."
+                        >{{ patient.medical_history or '' }}</textarea>
+
+                    </div>
+
+
+                    <!-- Allergies -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+
+                            Allergies
+
+                        </label>
+
+                        <textarea
+                            name="allergies"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Medicine, food or other allergies..."
+                        >{{ patient.allergies or '' }}</textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ================= BUTTONS ================= -->
+
+                <hr class="my-4">
+
+
+                <div class="d-flex justify-content-end gap-2">
+
+
+                    <a
+                        href="{{ url_for('patients.view_patient', patient_id=patient.id) }}"
+                        class="btn btn-outline-secondary"
+                    >
+
+                        <i class="bi bi-x-circle me-1"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4"
+                    >
+
+                        <i class="bi bi-check-lg me-1"></i>
+
+                        Update Patient
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

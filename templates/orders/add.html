@@ -1,0 +1,1778 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Create Medicine Order - Doctor Clinic
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       CREATE ORDER PAGE
+    ========================================================= */
+
+    .create-order-page {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 8px 10px 40px;
+    }
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .order-create-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 28px 30px;
+        margin-bottom: 24px;
+        background:
+            linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #172554 48%,
+                #2563eb 100%
+            );
+        color: #fff;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .order-create-hero::before {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.07);
+        right: -70px;
+        top: -100px;
+    }
+
+    .order-create-hero::after {
+        content: "";
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        right: 160px;
+        bottom: -110px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .hero-left {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .hero-icon {
+        width: 64px;
+        height: 64px;
+        flex: 0 0 64px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 29px;
+    }
+
+    .hero-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+    }
+
+    .back-order-btn {
+        position: relative;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 17px;
+        border-radius: 12px;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.10);
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .back-order-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.18);
+        transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       MAIN LAYOUT
+    ========================================================= */
+
+    .order-create-grid {
+        display: grid;
+        grid-template-columns: 350px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    /* =========================================================
+       CARDS
+    ========================================================= */
+
+    .create-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .create-card + .create-card {
+        margin-top: 20px;
+    }
+
+    .create-card-header {
+        padding: 19px 22px;
+        border-bottom: 1px solid #eef2f7;
+        background: #fff;
+    }
+
+    .card-header-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin: 0;
+        color: #0f172a;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .card-header-title i {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 17px;
+    }
+
+    .card-header-subtitle {
+        margin: 5px 0 0 45px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .create-card-body {
+        padding: 22px;
+    }
+
+    /* =========================================================
+       FORM
+    ========================================================= */
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .required-star {
+        color: #dc2626;
+    }
+
+    .create-order-page .form-select,
+    .create-order-page .form-control {
+        min-height: 46px;
+        border: 1px solid #dbe2ea;
+        border-radius: 11px;
+        background-color: #fff;
+        color: #172033;
+        font-size: 14px;
+        box-shadow: none;
+        transition: 0.2s ease;
+    }
+
+    .create-order-page .form-select {
+        padding-left: 13px;
+    }
+
+    .create-order-page textarea.form-control {
+        min-height: 105px;
+        resize: vertical;
+        padding-top: 12px;
+    }
+
+    .create-order-page .form-select:focus,
+    .create-order-page .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .form-help {
+        display: flex;
+        align-items: flex-start;
+        gap: 7px;
+        margin-top: 9px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .form-help i {
+        color: #3b82f6;
+        margin-top: 2px;
+    }
+
+    /* =========================================================
+       PATIENT / PRESCRIPTION SIDE
+    ========================================================= */
+
+    .side-info-box {
+        padding: 14px;
+        border-radius: 13px;
+        background: #f8fafc;
+        border: 1px solid #e8edf3;
+    }
+
+    .side-info-box label {
+        margin-bottom: 9px;
+    }
+
+    .prescription-help {
+        padding: 12px 13px;
+        margin-top: 12px;
+        border-radius: 11px;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .prescription-help i {
+        color: #2563eb;
+        margin-right: 5px;
+    }
+
+    /* =========================================================
+       MEDICINE CARD HEADER
+    ========================================================= */
+
+    .medicine-main-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .medicine-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .medicine-header-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 20px;
+    }
+
+    .medicine-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: 17px;
+        font-weight: 800;
+    }
+
+    .medicine-subtitle {
+        display: block;
+        margin-top: 3px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .medicine-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 13px;
+        border-radius: 30px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    /* =========================================================
+       MEDICINE ROW
+    ========================================================= */
+
+    .medicine-row {
+        position: relative;
+        padding: 18px;
+        margin-bottom: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: #f8fafc;
+        transition: 0.2s ease;
+    }
+
+    .medicine-row:hover {
+        border-color: #bfdbfe;
+        background: #f9fbff;
+        box-shadow: 0 7px 20px rgba(37, 99, 235, 0.06);
+    }
+
+    .medicine-row-number {
+        position: absolute;
+        top: -9px;
+        left: 16px;
+        min-width: 27px;
+        height: 27px;
+        padding: 0 8px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2563eb;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.22);
+    }
+
+    .medicine-field-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .stock-text {
+        display: block;
+        margin-top: 7px;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .item-total {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        font-weight: 800;
+    }
+
+    .remove-medicine {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        background: #fff;
+        transition: 0.2s ease;
+    }
+
+    .remove-medicine:hover {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-color: #fca5a5;
+        transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       ADD MEDICINE
+    ========================================================= */
+
+    .add-medicine-area {
+        padding: 3px 0 20px;
+    }
+
+    .add-medicine-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 15px;
+        border-radius: 11px;
+        border: 1px solid #bfdbfe;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .add-medicine-btn:hover {
+        background: #dbeafe;
+        color: #1e40af;
+        border-color: #93c5fd;
+    }
+
+    /* =========================================================
+       TOTAL AREA
+    ========================================================= */
+
+    .order-total-area {
+        margin-top: 3px;
+        padding: 19px 0 5px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .total-box {
+        min-width: 280px;
+        padding: 17px 19px;
+        border-radius: 15px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    .total-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .total-value {
+        color: #0f172a;
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    /* =========================================================
+       NOTES
+    ========================================================= */
+
+    .notes-area {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .notes-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .notes-title i {
+        color: #2563eb;
+    }
+
+    /* =========================================================
+       ACTIONS
+    ========================================================= */
+
+    .order-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .cancel-btn,
+    .create-order-submit {
+        min-height: 44px;
+        padding: 10px 18px;
+        border-radius: 11px;
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .cancel-btn {
+        color: #475569;
+        border: 1px solid #dbe2ea;
+        background: #fff;
+    }
+
+    .cancel-btn:hover {
+        color: #1e293b;
+        background: #f8fafc;
+        border-color: #cbd5e1;
+    }
+
+    .create-order-submit {
+        border: 1px solid #2563eb;
+        background: #2563eb;
+        color: #fff;
+        box-shadow: 0 7px 16px rgba(37, 99, 235, 0.20);
+    }
+
+    .create-order-submit:hover {
+        color: #fff;
+        background: #1d4ed8;
+        border-color: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 9px 20px rgba(37, 99, 235, 0.25);
+    }
+
+    /* =========================================================
+       DARK MODE
+    ========================================================= */
+
+    body.dark-mode .create-card,
+    body.dark-mode .create-card-header {
+        background: #111827;
+        border-color: #263244;
+    }
+
+    body.dark-mode .card-header-title,
+    body.dark-mode .medicine-title,
+    body.dark-mode .medicine-row-number,
+    body.dark-mode .total-value,
+    body.dark-mode .form-label,
+    body.dark-mode .medicine-field-label,
+    body.dark-mode .notes-title {
+        color: #f8fafc;
+    }
+
+    body.dark-mode .card-header-subtitle,
+    body.dark-mode .medicine-subtitle,
+    body.dark-mode .stock-text,
+    body.dark-mode .total-label,
+    body.dark-mode .form-help {
+        color: #94a3b8;
+    }
+
+    body.dark-mode .create-order-page .form-select,
+    body.dark-mode .create-order-page .form-control,
+    body.dark-mode .cancel-btn {
+        background: #0f172a;
+        color: #f8fafc;
+        border-color: #334155;
+    }
+
+    body.dark-mode .medicine-row,
+    body.dark-mode .side-info-box,
+    body.dark-mode .total-box {
+        background: #0f172a;
+        border-color: #334155;
+    }
+
+    body.dark-mode .medicine-row:hover {
+        background: #111c30;
+        border-color: #3b82f6;
+    }
+
+    body.dark-mode .item-total {
+        background: #111827 !important;
+        color: #f8fafc !important;
+    }
+
+    body.dark-mode .prescription-help {
+        background: #172554;
+        border-color: #1e3a8a;
+        color: #cbd5e1;
+    }
+
+    body.dark-mode .remove-medicine {
+        background: #111827;
+        border-color: #7f1d1d;
+    }
+
+    body.dark-mode .add-medicine-btn {
+        background: #172554;
+        border-color: #1e40af;
+        color: #bfdbfe;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1100px) {
+        .order-create-grid {
+            grid-template-columns: 300px minmax(0, 1fr);
+            gap: 18px;
+        }
+
+        .order-create-hero {
+            padding: 24px;
+        }
+
+        .hero-title {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .order-create-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .create-card + .create-card {
+            margin-top: 18px;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .create-order-page {
+            padding: 5px 5px 30px;
+        }
+
+        .order-create-hero {
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .hero-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .hero-left {
+            align-items: flex-start;
+        }
+
+        .hero-icon {
+            width: 52px;
+            height: 52px;
+            flex-basis: 52px;
+            font-size: 23px;
+        }
+
+        .hero-title {
+            font-size: 21px;
+        }
+
+        .back-order-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .create-card {
+            border-radius: 16px;
+        }
+
+        .create-card-header,
+        .create-card-body {
+            padding: 17px;
+        }
+
+        .medicine-main-header {
+            align-items: flex-start;
+        }
+
+        .medicine-count {
+            padding: 7px 10px;
+        }
+
+        .medicine-row {
+            padding: 17px 14px 14px;
+        }
+
+        .remove-medicine {
+            width: 100%;
+        }
+
+        .total-box {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .order-actions {
+            flex-direction: column-reverse;
+        }
+
+        .cancel-btn,
+        .create-order-submit {
+            width: 100%;
+        }
+    }
+
+    @media print {
+        .order-create-hero,
+        .order-actions,
+        .add-medicine-area,
+        .remove-medicine,
+        .back-order-btn {
+            display: none !important;
+        }
+
+        .create-order-page {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        .create-card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+    }
+</style>
+
+
+<div class="create-order-page">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="order-create-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-left">
+
+                <div class="hero-icon">
+                    <i class="bi bi-cart-plus"></i>
+                </div>
+
+                <div>
+                    <h1 class="hero-title">
+                        Create Medicine Order
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Create a medicine order for a patient
+                    </p>
+                </div>
+
+            </div>
+
+            <a
+                href="{{ url_for('orders.all_orders') }}"
+                class="back-order-btn"
+            >
+                <i class="bi bi-arrow-left"></i>
+                Back to Orders
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDER FORM
+    ====================================================== -->
+
+    <form
+        method="POST"
+        id="orderForm"
+    >
+
+        <div class="order-create-grid">
+
+            <!-- =================================================
+                 LEFT COLUMN
+            ================================================== -->
+
+            <div>
+
+                <!-- PATIENT -->
+
+                <div class="create-card">
+
+                    <div class="create-card-header">
+
+                        <h2 class="card-header-title">
+                            <i class="bi bi-person"></i>
+                            Patient Information
+                        </h2>
+
+                        <p class="card-header-subtitle">
+                            Select the patient for this order
+                        </p>
+
+                    </div>
+
+                    <div class="create-card-body">
+
+                        <div class="side-info-box">
+
+                            <label
+                                for="patient_id"
+                                class="form-label"
+                            >
+                                Patient
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <select
+                                name="patient_id"
+                                id="patient_id"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Patient
+                                </option>
+
+                                {% for patient in patients %}
+
+                                    <option
+                                        value="{{ patient.id }}"
+                                    >
+                                        {{ patient.full_name }}
+
+                                        {% if patient.patient_code %}
+                                            - {{ patient.patient_code }}
+                                        {% endif %}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRESCRIPTION -->
+
+                <div class="create-card">
+
+                    <div class="create-card-header">
+
+                        <h2 class="card-header-title">
+                            <i class="bi bi-prescription2"></i>
+                            Prescription
+                        </h2>
+
+                        <p class="card-header-subtitle">
+                            Link this order with a prescription
+                        </p>
+
+                    </div>
+
+                    <div class="create-card-body">
+
+                        <div class="side-info-box">
+
+                            <label
+                                for="prescription_id"
+                                class="form-label"
+                            >
+                                Select Prescription
+                            </label>
+
+                            <select
+                                name="prescription_id"
+                                id="prescription_id"
+                                class="form-select"
+                            >
+
+                                <option value="">
+                                    Select Prescription
+                                </option>
+
+                                {% for prescription in prescriptions %}
+
+                                    <option
+                                        value="{{ prescription.id }}"
+                                        data-patient="{{ prescription.patient_id }}"
+                                        data-medicine="{{ prescription.medicine_name }}"
+                                    >
+
+                                        {{ prescription.prescription_code }}
+
+                                        -
+
+                                        {{ prescription.medicine_name }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                            <div class="prescription-help">
+
+                                <i class="bi bi-info-circle"></i>
+
+                                Selecting a prescription can automatically
+                                identify the patient and prescribed medicine.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT COLUMN
+            ================================================== -->
+
+            <div>
+
+                <div class="create-card">
+
+                    <!-- MEDICINE HEADER -->
+
+                    <div class="create-card-header">
+
+                        <div class="medicine-main-header">
+
+                            <div class="medicine-header-left">
+
+                                <div class="medicine-header-icon">
+                                    <i class="bi bi-capsule"></i>
+                                </div>
+
+                                <div>
+
+                                    <h2 class="medicine-title">
+                                        Order Medicines
+                                    </h2>
+
+                                    <span class="medicine-subtitle">
+                                        Select medicines and quantities
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <span
+                                class="medicine-count"
+                                id="medicineCount"
+                            >
+                                <i class="bi bi-capsule-pill"></i>
+                                0 Medicines
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="create-card-body">
+
+                        <!-- =================================================
+                             MEDICINE ROWS
+                        ================================================== -->
+
+                        <div id="medicineContainer">
+
+                            <div
+                                class="medicine-row"
+                                data-row="1"
+                            >
+
+                                <span class="medicine-row-number">
+                                    1
+                                </span>
+
+                                <div class="row g-3 align-items-end">
+
+                                    <!-- MEDICINE -->
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            class="medicine-field-label"
+                                        >
+                                            Medicine
+                                            <span class="required-star">*</span>
+                                        </label>
+
+                                        <select
+                                            name="medicine_id"
+                                            class="form-select medicine-select"
+                                            required
+                                        >
+
+                                            <option value="">
+                                                Select Medicine
+                                            </option>
+
+                                            {% for medicine in medicines %}
+
+                                                <option
+                                                    value="{{ medicine.id }}"
+                                                    data-price="{{ medicine.price or 0 }}"
+                                                    data-stock="{{ medicine.quantity }}"
+                                                    data-unit="{{ medicine.unit or 'Tablet' }}"
+                                                    data-name="{{ medicine.medicine_name }}"
+                                                >
+
+                                                    {{ medicine.medicine_name }}
+
+                                                    {% if medicine.strength %}
+                                                        - {{ medicine.strength }}
+                                                    {% endif %}
+
+                                                    | Stock:
+                                                    {{ medicine.quantity }}
+
+                                                </option>
+
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- QUANTITY -->
+
+                                    <div class="col-md-3">
+
+                                        <label
+                                            class="medicine-field-label"
+                                        >
+                                            Quantity
+                                            <span class="required-star">*</span>
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            class="form-control quantity-input"
+                                            value="1"
+                                            min="1"
+                                            required
+                                        >
+
+                                        <small class="stock-text">
+                                            Select medicine
+                                        </small>
+
+                                    </div>
+
+
+                                    <!-- TOTAL -->
+
+                                    <div class="col-md-2">
+
+                                        <label
+                                            class="medicine-field-label"
+                                        >
+                                            Total
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control item-total"
+                                            value="Rs. 0.00"
+                                            readonly
+                                        >
+
+                                    </div>
+
+
+                                    <!-- REMOVE -->
+
+                                    <div class="col-md-1">
+
+                                        <button
+                                            type="button"
+                                            class="remove-medicine"
+                                            title="Remove Medicine"
+                                        >
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ADD MEDICINE
+                        ================================================== -->
+
+                        <div class="add-medicine-area">
+
+                            <button
+                                type="button"
+                                class="add-medicine-btn"
+                                id="addMedicine"
+                            >
+
+                                <i class="bi bi-plus-circle"></i>
+
+                                Add Medicine
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ORDER TOTAL
+                        ================================================== -->
+
+                        <div class="order-total-area">
+
+                            <div class="d-flex justify-content-end">
+
+                                <div class="total-box">
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <span class="total-label">
+                                            Order Total
+                                        </span>
+
+                                        <strong
+                                            class="total-value"
+                                            id="orderTotal"
+                                        >
+                                            Rs. 0.00
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             NOTES
+                        ================================================== -->
+
+                        <div class="notes-area">
+
+                            <label
+                                for="notes"
+                                class="notes-title"
+                            >
+
+                                <i class="bi bi-journal-text"></i>
+
+                                Notes
+
+                            </label>
+
+                            <textarea
+                                name="notes"
+                                id="notes"
+                                class="form-control"
+                                rows="3"
+                                placeholder="Add any optional notes about this order..."
+                            ></textarea>
+
+                            <div class="form-help">
+
+                                <i class="bi bi-info-circle"></i>
+
+                                Add any additional information that may
+                                be useful when processing this order.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ACTIONS
+                        ================================================== -->
+
+                        <div class="order-actions">
+
+                            <a
+                                href="{{ url_for('orders.all_orders') }}"
+                                class="cancel-btn"
+                            >
+
+                                <i class="bi bi-x-circle"></i>
+
+                                Cancel
+
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="create-order-submit"
+                            >
+
+                                <i class="bi bi-cart-check"></i>
+
+                                Create Order
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const container =
+        document.getElementById("medicineContainer");
+
+    const addButton =
+        document.getElementById("addMedicine");
+
+    const orderTotal =
+        document.getElementById("orderTotal");
+
+    const medicineCount =
+        document.getElementById("medicineCount");
+
+    const patientSelect =
+        document.getElementById("patient_id");
+
+    const prescriptionSelect =
+        document.getElementById("prescription_id");
+
+
+    /* =====================================================
+       UPDATE ROW NUMBERS
+    ====================================================== */
+
+    function updateRowNumbers() {
+
+        document
+            .querySelectorAll(".medicine-row")
+            .forEach(function (row, index) {
+
+                const number =
+                    row.querySelector(".medicine-row-number");
+
+                if (number) {
+                    number.textContent = index + 1;
+                }
+
+            });
+
+    }
+
+
+    /* =====================================================
+       UPDATE TOTAL
+    ====================================================== */
+
+    function updateTotals() {
+
+        let total = 0;
+        let count = 0;
+
+        document
+            .querySelectorAll(".medicine-row")
+            .forEach(function (row) {
+
+                const medicine =
+                    row.querySelector(".medicine-select");
+
+                const quantity =
+                    row.querySelector(".quantity-input");
+
+                const itemTotal =
+                    row.querySelector(".item-total");
+
+                if (!medicine || !quantity) {
+                    return;
+                }
+
+                if (medicine.value) {
+
+                    const selected =
+                        medicine.options[
+                            medicine.selectedIndex
+                        ];
+
+                    const price =
+                        parseFloat(
+                            selected.dataset.price || 0
+                        );
+
+                    const qty =
+                        parseInt(
+                            quantity.value || 0
+                        );
+
+                    const rowTotal =
+                        price * qty;
+
+                    itemTotal.value =
+                        "Rs. " +
+                        rowTotal.toFixed(2);
+
+                    total += rowTotal;
+
+                    count++;
+
+                } else {
+
+                    itemTotal.value =
+                        "Rs. 0.00";
+
+                }
+
+            });
+
+
+        orderTotal.textContent =
+            "Rs. " +
+            total.toFixed(2);
+
+
+        medicineCount.innerHTML =
+            '<i class="bi bi-capsule-pill"></i> ' +
+            count +
+            (
+                count === 1
+                    ? " Medicine"
+                    : " Medicines"
+            );
+
+    }
+
+
+    /* =====================================================
+       UPDATE STOCK
+    ====================================================== */
+
+    function updateStock(row) {
+
+        const medicine =
+            row.querySelector(".medicine-select");
+
+        const quantity =
+            row.querySelector(".quantity-input");
+
+        const stockText =
+            row.querySelector(".stock-text");
+
+
+        if (!medicine.value) {
+
+            stockText.textContent =
+                "Select medicine";
+
+            quantity.max = "";
+
+            updateTotals();
+
+            return;
+        }
+
+
+        const selected =
+            medicine.options[
+                medicine.selectedIndex
+            ];
+
+
+        const stock =
+            parseInt(
+                selected.dataset.stock || 0
+            );
+
+
+        const unit =
+            selected.dataset.unit ||
+            "unit";
+
+
+        quantity.max = stock;
+
+
+        stockText.textContent =
+            "Available: " +
+            stock +
+            " " +
+            unit;
+
+
+        if (
+            parseInt(quantity.value || 0)
+            > stock
+        ) {
+
+            quantity.value =
+                stock > 0
+                    ? stock
+                    : 1;
+
+        }
+
+
+        updateTotals();
+
+    }
+
+
+    /* =====================================================
+       CHECK DUPLICATE MEDICINE
+    ====================================================== */
+
+    function medicineAlreadySelected(selectElement) {
+
+        const value =
+            selectElement.value;
+
+        if (!value) {
+            return false;
+        }
+
+        let count = 0;
+
+        document
+            .querySelectorAll(".medicine-select")
+            .forEach(function (select) {
+
+                if (select.value === value) {
+                    count++;
+                }
+
+            });
+
+        return count > 1;
+
+    }
+
+
+    /* =====================================================
+       BIND ROW
+    ====================================================== */
+
+    function bindRow(row) {
+
+        const medicine =
+            row.querySelector(".medicine-select");
+
+        const quantity =
+            row.querySelector(".quantity-input");
+
+        const removeButton =
+            row.querySelector(".remove-medicine");
+
+
+        medicine.addEventListener(
+            "change",
+            function () {
+
+                if (medicineAlreadySelected(medicine)) {
+
+                    alert(
+                        "This medicine is already selected. Please choose another medicine."
+                    );
+
+                    medicine.value = "";
+
+                }
+
+                updateStock(row);
+
+            }
+        );
+
+
+        quantity.addEventListener(
+            "input",
+            function () {
+
+                const stock =
+                    parseInt(
+                        medicine.options[
+                            medicine.selectedIndex
+                        ]?.dataset.stock || 0
+                    );
+
+                const value =
+                    parseInt(
+                        quantity.value || 0
+                    );
+
+                if (
+                    medicine.value &&
+                    stock > 0 &&
+                    value > stock
+                ) {
+
+                    quantity.value = stock;
+
+                }
+
+                if (quantity.value < 1) {
+                    quantity.value = 1;
+                }
+
+                updateTotals();
+
+            }
+        );
+
+
+        removeButton.addEventListener(
+            "click",
+            function () {
+
+                const rows =
+                    document.querySelectorAll(
+                        ".medicine-row"
+                    );
+
+
+                if (rows.length <= 1) {
+
+                    medicine.value = "";
+
+                    quantity.value = 1;
+
+                    updateStock(row);
+
+                    return;
+
+                }
+
+
+                row.remove();
+
+                updateRowNumbers();
+
+                updateTotals();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INITIAL ROW
+    ====================================================== */
+
+    document
+        .querySelectorAll(".medicine-row")
+        .forEach(function (row) {
+
+            bindRow(row);
+
+        });
+
+
+    /* =====================================================
+       ADD MEDICINE
+    ====================================================== */
+
+    addButton.addEventListener(
+        "click",
+        function () {
+
+            const firstRow =
+                document.querySelector(
+                    ".medicine-row"
+                );
+
+
+            const newRow =
+                firstRow.cloneNode(true);
+
+
+            newRow.querySelector(
+                ".medicine-select"
+            ).value = "";
+
+
+            newRow.querySelector(
+                ".quantity-input"
+            ).value = 1;
+
+
+            newRow.querySelector(
+                ".item-total"
+            ).value =
+                "Rs. 0.00";
+
+
+            newRow.querySelector(
+                ".stock-text"
+            ).textContent =
+                "Select medicine";
+
+
+            newRow.querySelector(
+                ".quantity-input"
+            ).removeAttribute("max");
+
+
+            container.appendChild(
+                newRow
+            );
+
+
+            bindRow(newRow);
+
+            updateRowNumbers();
+
+            updateTotals();
+
+        }
+    );
+
+
+    /* =====================================================
+       PATIENT + PRESCRIPTION
+    ====================================================== */
+
+    prescriptionSelect.addEventListener(
+        "change",
+        function () {
+
+            const selected =
+                prescriptionSelect.options[
+                    prescriptionSelect.selectedIndex
+                ];
+
+
+            if (!selected.value) {
+                return;
+            }
+
+
+            const patientId =
+                selected.dataset.patient;
+
+
+            if (patientId) {
+
+                patientSelect.value =
+                    patientId;
+
+            }
+
+
+            const medicineName =
+                selected.dataset.medicine ||
+                "";
+
+
+            const rows =
+                document.querySelectorAll(
+                    ".medicine-row"
+                );
+
+
+            if (rows.length === 1) {
+
+                const row = rows[0];
+
+                const medicineSelect =
+                    row.querySelector(
+                        ".medicine-select"
+                    );
+
+
+                for (
+                    let i = 0;
+                    i < medicineSelect.options.length;
+                    i++
+                ) {
+
+                    const option =
+                        medicineSelect.options[i];
+
+
+                    if (
+                        option.dataset.name ===
+                        medicineName
+                    ) {
+
+                        medicineSelect.value =
+                            option.value;
+
+                        updateStock(row);
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL
+    ====================================================== */
+
+    updateRowNumbers();
+
+    updateTotals();
+
+});
+
+</script>
+
+{% endblock %}
+

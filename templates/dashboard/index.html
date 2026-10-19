@@ -1,0 +1,1090 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Dashboard - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* =====================================================
+       DASHBOARD
+    ===================================================== */
+
+    .stat-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    }
+
+    .stat-title {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 7px;
+    }
+
+    .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .icon-blue {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .icon-green {
+        background: #ecfdf5;
+        color: #059669;
+    }
+
+    .icon-orange {
+        background: #fff7ed;
+        color: #ea580c;
+    }
+
+    .icon-red {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .section-card,
+    .info-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .quick-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 125px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #ffffff;
+        color: #374151;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .quick-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 18px rgba(0,0,0,0.08);
+    }
+
+    .quick-action i {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .quick-action span {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .quick-primary {
+        color: #2563eb;
+    }
+
+    .quick-success {
+        color: #059669;
+    }
+
+    .quick-warning {
+        color: #d97706;
+    }
+
+    .quick-danger {
+        color: #dc2626;
+    }
+
+    .quick-purple {
+        color: #7c3aed;
+    }
+
+    .quick-dark {
+        color: #374151;
+    }
+
+    .info-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     TOP BAR
+====================================================== -->
+
+<div class="topbar d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+
+            {% if role == "super_admin" %}
+                Super Admin Dashboard
+
+            {% elif role == "receptionist" %}
+                Receptionist Dashboard
+
+            {% elif role == "doctor" %}
+                Doctor Dashboard
+
+            {% elif role == "staff" %}
+                Staff Dashboard
+
+            {% else %}
+                Dashboard
+            {% endif %}
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Welcome back,
+
+            <strong>
+                {{ current_user.username }}
+            </strong>
+
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <span class="role-badge">
+
+            <i class="bi bi-person-circle me-1"></i>
+
+            {{ role|replace("_", " ")|title }}
+
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SUPER ADMIN / RECEPTIONIST STATS
+====================================================== -->
+
+{% if role in ["super_admin", "receptionist"] %}
+
+<div class="row g-4 mb-4">
+
+
+    <!-- PATIENTS -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Total Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- APPOINTMENTS -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PATIENTS TODAY -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REVENUE -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Revenue
+                        </div>
+
+                        <div class="stat-number">
+                            Rs. {{ "{:,.0f}".format(today_revenue) }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-red">
+                        <i class="bi bi-cash-stack"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     DOCTOR STATS
+====================================================== -->
+
+{% if role == "doctor" %}
+
+<div class="row g-4 mb-4">
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            My Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Total Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-red">
+                        <i class="bi bi-calendar2-week"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     STAFF STATS
+====================================================== -->
+
+{% if role == "staff" %}
+
+<div class="row g-4 mb-4">
+
+
+    <div class="col-xl-4 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Total Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-4 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-4 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     QUICK ACTIONS
+====================================================== -->
+
+<div class="card section-card mb-4">
+
+    <div class="card-body p-4">
+
+        <div class="mb-4">
+
+            <h5 class="section-title mb-1">
+
+                <i class="bi bi-lightning-charge me-2"></i>
+
+                Quick Actions
+
+            </h5>
+
+            <small class="text-muted">
+                Available operations for your role.
+            </small>
+
+        </div>
+
+
+        <div class="row g-3">
+
+
+            <!-- =================================================
+                 SUPER ADMIN
+            ================================================== -->
+
+            {% if role == "super_admin" %}
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('patients.add_patient') }}"
+                   class="quick-action quick-primary">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Add Patient</span>
+                </a>
+            </div>
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('appointments.add_appointment') }}"
+                   class="quick-action quick-success">
+                    <i class="bi bi-calendar-plus"></i>
+                    <span>New Appointment</span>
+                </a>
+            </div>
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('doctors.add_doctor') }}"
+                   class="quick-action quick-purple">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Add Doctor</span>
+                </a>
+            </div>
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('consultations.list_consultations') }}"
+                   class="quick-action quick-warning">
+                    <i class="bi bi-file-medical"></i>
+                    <span>Consultations</span>
+                </a>
+            </div>
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('prescriptions.all_prescriptions') }}"
+                   class="quick-action quick-danger">
+                    <i class="bi bi-capsule"></i>
+                    <span>Prescriptions</span>
+                </a>
+            </div>
+
+            <div class="col-xl-2 col-md-4 col-6">
+                <a href="{{ url_for('billing.list_bills') }}"
+                   class="quick-action quick-dark">
+                    <i class="bi bi-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 RECEPTIONIST
+            ================================================== -->
+
+            {% if role == "receptionist" %}
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('patients.add_patient') }}"
+                   class="quick-action quick-primary">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Add Patient</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('appointments.add_appointment') }}"
+                   class="quick-action quick-success">
+                    <i class="bi bi-calendar-plus"></i>
+                    <span>New Appointment</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('doctors.list_doctors') }}"
+                   class="quick-action quick-purple">
+                    <i class="bi bi-person-badge"></i>
+                    <span>View Doctors</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('billing.list_bills') }}"
+                   class="quick-action quick-dark">
+                    <i class="bi bi-receipt"></i>
+                    <span>Billing</span>
+                </a>
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 DOCTOR
+            ================================================== -->
+
+            {% if role == "doctor" %}
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('patients.list_patients') }}"
+                   class="quick-action quick-primary">
+                    <i class="bi bi-people"></i>
+                    <span>My Patients</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('appointments.list_appointments') }}"
+                   class="quick-action quick-success">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Appointments</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('doctor_availability.list_availability') }}"
+                   class="quick-action quick-purple">
+                    <i class="bi bi-clock"></i>
+                    <span>My Schedule</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('consultations.list_consultations') }}"
+                   class="quick-action quick-warning">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                    <span>Consultations</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('prescriptions.all_prescriptions') }}"
+                   class="quick-action quick-danger">
+                    <i class="bi bi-capsule"></i>
+                    <span>Prescriptions</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('billing.list_bills') }}"
+                   class="quick-action quick-dark">
+                    <i class="bi bi-receipt"></i>
+                    <span>View Bills</span>
+                </a>
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 STAFF
+            ================================================== -->
+
+            {% if role == "staff" %}
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('patients.list_patients') }}"
+                   class="quick-action quick-primary">
+                    <i class="bi bi-people"></i>
+                    <span>View Patients</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('doctors.list_doctors') }}"
+                   class="quick-action quick-purple">
+                    <i class="bi bi-person-badge"></i>
+                    <span>View Doctors</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('appointments.list_appointments') }}"
+                   class="quick-action quick-success">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>View Appointments</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('consultations.list_consultations') }}"
+                   class="quick-action quick-warning">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                    <span>View Consultations</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('prescriptions.all_prescriptions') }}"
+                   class="quick-action quick-danger">
+                    <i class="bi bi-capsule"></i>
+                    <span>View Prescriptions</span>
+                </a>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <a href="{{ url_for('billing.list_bills') }}"
+                   class="quick-action quick-dark">
+                    <i class="bi bi-receipt"></i>
+                    <span>View Bills</span>
+                </a>
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MODULE INFORMATION
+====================================================== -->
+
+<div class="row g-4">
+
+
+    {% if role in ["super_admin", "receptionist", "doctor", "staff"] %}
+
+    <div class="col-lg-4">
+
+        <div class="card info-card h-100">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <div class="info-icon me-3">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Patients
+                        </h5>
+
+                        <small class="text-muted">
+                            {% if role in ["super_admin", "receptionist"] %}
+                                Manage clinic patients
+                            {% else %}
+                                View patient records
+                            {% endif %}
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <p class="text-muted small">
+
+                    {% if role in ["super_admin", "receptionist"] %}
+
+                        Add new patients, update patient information
+                        and view patient records.
+
+                    {% else %}
+
+                        View patient information and medical records.
+
+                    {% endif %}
+
+                </p>
+
+                <a
+                    href="{{ url_for('patients.list_patients') }}"
+                    class="btn btn-outline-primary btn-sm"
+                >
+                    View Patients
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+    {% if role in ["super_admin", "receptionist", "doctor", "staff"] %}
+
+    <div class="col-lg-4">
+
+        <div class="card info-card h-100">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <div class="info-icon me-3">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Appointments
+                        </h5>
+
+                        <small class="text-muted">
+                            View clinic appointments
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <p class="text-muted small">
+                    View and manage appointment records
+                    according to your role.
+                </p>
+
+                <a
+                    href="{{ url_for('appointments.list_appointments') }}"
+                    class="btn btn-outline-primary btn-sm"
+                >
+                    View Appointments
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+    {% if role in ["super_admin", "receptionist", "doctor", "staff"] %}
+
+    <div class="col-lg-4">
+
+        <div class="card info-card h-100">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+
+                    <div class="info-icon me-3">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+
+                    <div>
+
+                        <h5 class="fw-bold mb-1">
+                            Billing
+                        </h5>
+
+                        <small class="text-muted">
+                            {% if role in ["super_admin", "receptionist"] %}
+                                Manage clinic billing
+                            {% else %}
+                                View bills
+                            {% endif %}
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <p class="text-muted small">
+
+                    {% if role in ["super_admin", "receptionist"] %}
+                        Create and manage patient bills.
+                    {% else %}
+                        View patient billing information.
+                    {% endif %}
+
+                </p>
+
+                <a
+                    href="{{ url_for('billing.list_bills') }}"
+                    class="btn btn-outline-primary btn-sm"
+                >
+                    View Billing
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+
+
+<div class="text-center mt-5 mb-3">
+
+    <small class="text-muted">
+
+        Doctor Clinic Management System
+        &nbsp;•&nbsp;
+        {{ role|replace("_", " ")|title }} Dashboard
+
+    </small>
+
+</div>
+
+
+{% endblock %}

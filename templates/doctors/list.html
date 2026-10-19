@@ -1,0 +1,1467 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctors - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   DOCTORS PAGE
+========================================================= */
+
+.doctors-page {
+    padding: 8px 0 30px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.doctors-header {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 55%,
+            #2563eb 100%
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.18);
+}
+
+.doctors-header::before {
+    content: "";
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    right: -70px;
+    top: -110px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.07);
+}
+
+.doctors-header::after {
+    content: "";
+    position: absolute;
+
+    width: 160px;
+    height: 160px;
+
+    right: 120px;
+    bottom: -100px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.05);
+}
+
+.doctors-header-content {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.doctors-header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.doctors-header-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.14);
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    font-size: 29px;
+
+    backdrop-filter: blur(8px);
+}
+
+.doctors-header h2 {
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: 800;
+    color:white;
+    letter-spacing: -0.5px;
+}
+
+.doctors-header p {
+    margin: 5px 0 0;
+
+    color: rgba(255,255,255,0.72);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   ADD DOCTOR BUTTON
+========================================================= */
+
+.add-doctor-btn {
+    position: relative;
+    z-index: 3;
+
+    border: 0;
+
+    padding: 12px 20px;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #1d4ed8;
+
+    font-weight: 700;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+
+    transition: all 0.25s ease;
+}
+
+.add-doctor-btn:hover {
+    transform: translateY(-2px);
+
+    background: #f8fafc;
+
+    color: #1d4ed8;
+
+    box-shadow: 0 12px 25px rgba(0,0,0,0.20);
+}
+
+
+/* =========================================================
+   TOP STATS
+========================================================= */
+
+.doctor-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 24px;
+}
+
+.doctor-stat-card {
+    position: relative;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(15,23,42,0.06);
+
+    transition: all 0.25s ease;
+
+    overflow: hidden;
+}
+
+.doctor-stat-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(15,23,42,0.10);
+}
+
+.doctor-stat-icon {
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 22px;
+}
+
+.stat-total .doctor-stat-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.stat-active .doctor-stat-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.stat-inactive .doctor-stat-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.doctor-stat-label {
+    color: #64748b;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 3px;
+}
+
+.doctor-stat-value {
+    color: #0f172a;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.doctors-list-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 28px rgba(15,23,42,0.07);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.doctors-list-header {
+    padding: 20px 24px;
+
+    border-bottom: 1px solid #eef2f7;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.doctors-list-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.doctors-list-title-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 19px;
+}
+
+.doctors-list-title h5 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+.doctors-list-title p {
+    margin: 3px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+.doctors-count {
+    min-width: 38px;
+    height: 38px;
+
+    padding: 0 11px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    box-shadow: 0 5px 12px rgba(37,99,235,0.25);
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.doctors-table-wrapper {
+    overflow-x: auto;
+}
+
+.doctors-table {
+    width: 100%;
+
+    min-width: 950px;
+
+    margin: 0;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+}
+
+.doctors-table thead th {
+    padding: 15px 18px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+
+    white-space: nowrap;
+}
+
+.doctors-table thead th:first-child {
+    padding-left: 25px;
+}
+
+.doctors-table tbody td {
+    padding: 17px 18px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    font-size: 13px;
+
+    vertical-align: middle;
+}
+
+.doctors-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.doctors-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.doctors-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   DOCTOR PROFILE
+========================================================= */
+
+.doctor-profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.doctor-avatar {
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dbeafe,
+            #eff6ff
+        );
+
+    color: #2563eb;
+
+    font-size: 20px;
+
+    border: 1px solid #bfdbfe;
+}
+
+.doctor-name {
+    color: #0f172a;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    margin-bottom: 3px;
+}
+
+.doctor-code {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SPECIALIZATION
+========================================================= */
+
+.specialization-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 7px 11px;
+
+    border-radius: 9px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.specialization-badge i {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.doctor-contact {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #475569;
+
+    white-space: nowrap;
+}
+
+.doctor-contact i {
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.doctor-email {
+    color: #475569;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.doctor-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.doctor-status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+}
+
+.doctor-status.active {
+    background: #ecfdf5;
+
+    color: #15803d;
+}
+
+.doctor-status.active .doctor-status-dot {
+    background: #22c55e;
+
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+}
+
+.doctor-status.inactive {
+    background: #fef2f2;
+
+    color: #dc2626;
+}
+
+.doctor-status.inactive .doctor-status-dot {
+    background: #ef4444;
+
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.10);
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.doctor-actions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+}
+
+.doctor-action {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    border: 1px solid #e2e8f0;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.doctor-action:hover {
+    transform: translateY(-2px);
+}
+
+.doctor-action.view:hover {
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    border-color: #bfdbfe;
+}
+
+.doctor-action.edit:hover {
+    background: #f8fafc;
+
+    color: #475569;
+
+    border-color: #cbd5e1;
+}
+
+.doctor-action.schedule:hover {
+    background: #ecfdf5;
+
+    color: #16a34a;
+
+    border-color: #bbf7d0;
+}
+
+.doctor-action.delete:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.doctors-empty {
+    padding: 70px 25px;
+
+    text-align: center;
+}
+
+.doctors-empty-icon {
+    width: 82px;
+    height: 82px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 36px;
+}
+
+.doctors-empty h5 {
+    color: #0f172a;
+
+    font-weight: 800;
+
+    margin-bottom: 7px;
+}
+
+.doctors-empty p {
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.empty-add-btn {
+    border-radius: 11px;
+
+    padding: 10px 18px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .doctor-stats {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .doctors-header {
+        padding: 24px;
+    }
+
+    .doctors-header h2 {
+        font-size: 24px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .doctors-header-content {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .doctors-header-left {
+        align-items: flex-start;
+    }
+
+    .add-doctor-btn {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .doctor-stats {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+    .doctors-list-header {
+        padding: 17px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .doctors-page {
+        padding-top: 0;
+    }
+
+    .doctors-header {
+        border-radius: 17px;
+
+        padding: 20px;
+    }
+
+    .doctors-header-icon {
+        width: 52px;
+        height: 52px;
+
+        border-radius: 14px;
+
+        font-size: 23px;
+    }
+
+    .doctors-header h2 {
+        font-size: 21px;
+    }
+
+    .doctors-header p {
+        font-size: 12px;
+    }
+
+    .doctors-list-card {
+        border-radius: 15px;
+    }
+
+    .doctors-list-title h5 {
+        font-size: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE SUPPORT
+========================================================= */
+
+[data-bs-theme="dark"] .doctor-stat-card,
+[data-bs-theme="dark"] .doctors-list-card {
+    background: #111827;
+
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .doctor-stat-value,
+[data-bs-theme="dark"] .doctors-list-title h5,
+[data-bs-theme="dark"] .doctor-name,
+[data-bs-theme="dark"] .doctors-empty h5 {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .doctors-table thead th {
+    background: #0f172a;
+
+    color: #94a3b8;
+
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .doctors-table tbody td {
+    color: #cbd5e1;
+
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .doctors-table tbody tr:hover {
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .doctor-action {
+    background: #111827;
+
+    border-color: #374151;
+
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .specialization-badge {
+    background: #1e293b;
+
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .doctor-email,
+[data-bs-theme="dark"] .doctor-contact {
+    color: #cbd5e1;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid doctors-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="doctors-header">
+
+        <div class="doctors-header-content">
+
+            <div class="doctors-header-left">
+
+                <div class="doctors-header-icon">
+
+                    <i class="bi bi-person-badge-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Doctors
+                    </h2>
+
+                    <p>
+                        Manage clinic doctors, profiles and availability
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUPER ADMIN ONLY -->
+
+            {% if current_user.has_role("super_admin") %}
+
+                <a
+                    href="{{ url_for('doctors.add_doctor') }}"
+                    class="btn add-doctor-btn"
+                >
+
+                    <i class="bi bi-person-plus-fill me-2"></i>
+
+                    Add Doctor
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    {% set active_count = doctors | selectattr('is_active', 'equalto', true) | list | length %}
+    {% set inactive_count = doctors | selectattr('is_active', 'equalto', false) | list | length %}
+
+
+    <div class="doctor-stats">
+
+
+        <!-- TOTAL -->
+
+        <div class="doctor-stat-card">
+
+            <div class="doctor-stat-icon">
+
+                <i class="bi bi-people-fill"></i>
+
+            </div>
+
+            <div>
+
+                <div class="doctor-stat-label">
+                    Total Doctors
+                </div>
+
+                <div class="doctor-stat-value">
+                    {{ doctors|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTIVE -->
+
+        <div class="doctor-stat-card stat-active">
+
+            <div class="doctor-stat-icon">
+
+                <i class="bi bi-person-check-fill"></i>
+
+            </div>
+
+            <div>
+
+                <div class="doctor-stat-label">
+                    Active Doctors
+                </div>
+
+                <div class="doctor-stat-value">
+                    {{ active_count }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INACTIVE -->
+
+        <div class="doctor-stat-card stat-inactive">
+
+            <div class="doctor-stat-icon">
+
+                <i class="bi bi-person-x-fill"></i>
+
+            </div>
+
+            <div>
+
+                <div class="doctor-stat-label">
+                    Inactive Doctors
+                </div>
+
+                <div class="doctor-stat-value">
+                    {{ inactive_count }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DOCTOR LIST CARD
+    ====================================================== -->
+
+    <div class="doctors-list-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="doctors-list-header">
+
+            <div class="doctors-list-title">
+
+                <div class="doctors-list-title-icon">
+
+                    <i class="bi bi-list-ul"></i>
+
+                </div>
+
+                <div>
+
+                    <h5>
+                        Doctor Directory
+                    </h5>
+
+                    <p>
+                        All registered clinic doctors
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="doctors-count">
+
+                {{ doctors|length }}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TABLE
+        ================================================== -->
+
+        <div class="doctors-table-wrapper">
+
+            <table class="table doctors-table align-middle mb-0">
+
+
+                <!-- TABLE HEADER -->
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Doctor
+                        </th>
+
+                        <th>
+                            Specialization
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-center">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <!-- TABLE BODY -->
+
+                <tbody>
+
+
+                    {% for doctor in doctors %}
+
+                    <tr>
+
+
+                        <!-- =================================
+                             DOCTOR
+                        ================================== -->
+
+                        <td>
+
+                            <div class="doctor-profile">
+
+
+                                <div class="doctor-avatar">
+
+                                    <i class="bi bi-person-badge-fill"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <div class="doctor-name">
+
+                                        {{ doctor.full_name }}
+
+                                    </div>
+
+
+                                    {% if doctor.doctor_code %}
+
+                                        <div class="doctor-code">
+
+                                            <i class="bi bi-hash"></i>
+
+                                            {{ doctor.doctor_code }}
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+
+                        <!-- =================================
+                             SPECIALIZATION
+                        ================================== -->
+
+                        <td>
+
+                            {% if doctor.specialization %}
+
+                                <span class="specialization-badge">
+
+                                    <i class="bi bi-heart-pulse-fill me-1"></i>
+
+                                    {{ doctor.specialization }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- =================================
+                             PHONE
+                        ================================== -->
+
+                        <td>
+
+                            {% if doctor.phone %}
+
+                                <div class="doctor-contact">
+
+                                    <i class="bi bi-telephone-fill"></i>
+
+                                    <span>
+                                        {{ doctor.phone }}
+                                    </span>
+
+                                </div>
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- =================================
+                             EMAIL
+                        ================================== -->
+
+                        <td>
+
+                            {% if doctor.email %}
+
+                                <div class="doctor-email">
+
+                                    <i class="bi bi-envelope me-1"></i>
+
+                                    {{ doctor.email }}
+
+                                </div>
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- =================================
+                             STATUS
+                        ================================== -->
+
+                        <td>
+
+                            {% if doctor.is_active %}
+
+                                <span class="doctor-status active">
+
+                                    <span class="doctor-status-dot"></span>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="doctor-status inactive">
+
+                                    <span class="doctor-status-dot"></span>
+
+                                    Inactive
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- =================================
+                             ACTIONS
+                        ================================== -->
+
+                        <td>
+
+                            <div class="doctor-actions">
+
+
+                                <!-- VIEW -->
+
+                                <a
+                                    href="{{ url_for(
+                                        'doctors.view_doctor',
+                                        doctor_id=doctor.id
+                                    ) }}"
+                                    class="doctor-action view"
+                                    title="View Doctor"
+                                >
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                </a>
+
+
+
+                                <!-- EDIT - SUPER ADMIN ONLY -->
+
+                                {% if current_user.has_role("super_admin") %}
+
+                                    <a
+                                        href="{{ url_for(
+                                            'doctors.edit_doctor',
+                                            doctor_id=doctor.id
+                                        ) }}"
+                                        class="doctor-action edit"
+                                        title="Edit Doctor"
+                                    >
+
+                                        <i class="bi bi-pencil-fill"></i>
+
+                                    </a>
+
+                                {% endif %}
+
+
+
+                                <!-- AVAILABILITY -->
+
+                                {% if current_user.has_role("super_admin")
+                                    or current_user.has_role("doctor") %}
+
+                                    <a
+                                        href="{{ url_for(
+                                            'doctors.doctor_availability',
+                                            doctor_id=doctor.id
+                                        ) }}"
+                                        class="doctor-action schedule"
+                                        title="Doctor Availability"
+                                    >
+
+                                        <i class="bi bi-clock-fill"></i>
+
+                                    </a>
+
+                                {% endif %}
+
+                                <!-- DELETE - SUPER ADMIN ONLY -->
+                                    {% if current_user.has_role("super_admin") %}
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'doctors.delete_doctor',
+                                                doctor_id=doctor.id
+                                            ) }}"
+                                            class="d-inline"
+                                            onsubmit="return confirm(
+                                                'Are you sure you want to delete Dr. {{ doctor.full_name }}? This action cannot be undone.'
+                                            );"
+                                        >
+                                            <button
+                                                type="submit"
+                                                class="doctor-action delete"
+                                                title="Delete Doctor"
+                                            >
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+
+                            </div>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% else %}
+
+
+                    <!-- =================================
+                         EMPTY STATE
+                    ================================== -->
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="p-0"
+                        >
+
+                            <div class="doctors-empty">
+
+
+                                <div class="doctors-empty-icon">
+
+                                    <i class="bi bi-person-badge-fill"></i>
+
+                                </div>
+
+
+                                <h5>
+                                    No Doctors Found
+                                </h5>
+
+
+                                <p>
+                                    There are currently no doctors registered in the clinic.
+                                </p>
+
+
+                                <!-- SUPER ADMIN ONLY -->
+
+                                {% if current_user.has_role("super_admin") %}
+
+                                    <a
+                                        href="{{ url_for('doctors.add_doctor') }}"
+                                        class="btn btn-primary empty-add-btn"
+                                    >
+
+                                        <i class="bi bi-person-plus-fill me-2"></i>
+
+                                        Add First Doctor
+
+                                    </a>
+
+                                {% endif %}
+
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

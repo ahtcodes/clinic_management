@@ -1,0 +1,2644 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Bill - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+/* =========================================================
+   EDIT BILL PAGE
+========================================================= */
+
+.edit-bill-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px 18px 50px;
+    color: #1e293b;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.edit-bill-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 48%,
+            #2563eb 100%
+        );
+    color: #fff;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.18);
+}
+
+.edit-bill-hero::before,
+.edit-bill-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.edit-bill-hero::before {
+    width: 230px;
+    height: 230px;
+    right: -80px;
+    top: -100px;
+    background: rgba(255,255,255,0.08);
+}
+
+.edit-bill-hero::after {
+    width: 150px;
+    height: 150px;
+    right: 120px;
+    bottom: -95px;
+    background: rgba(255,255,255,0.05);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.hero-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hero-icon {
+    width: 62px;
+    height: 62px;
+    flex: 0 0 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 17px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 29px;
+}
+
+.hero-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.hero-subtitle {
+    margin: 5px 0 0;
+    color: rgba(255,255,255,0.74);
+    font-size: 14px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
+
+.hero-btn:hover {
+    transform: translateY(-1px);
+}
+
+.hero-btn-light {
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+}
+
+.hero-btn-light:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.18);
+}
+
+.hero-btn-primary {
+    color: #0f172a;
+    background: #fff;
+    border: 1px solid #fff;
+}
+
+.hero-btn-primary:hover {
+    color: #0f172a;
+    background: #f8fafc;
+}
+
+/* =========================================================
+   BILL IDENTIFICATION
+========================================================= */
+
+.bill-identification {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 22px;
+    margin-bottom: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+}
+
+.bill-id-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.bill-code-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 9px;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+
+.bill-created {
+    text-align: right;
+}
+
+.bill-created-label {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.bill-created-value {
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.edit-bill-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* =========================================================
+   SECTION CARD
+========================================================= */
+
+.bill-section {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.bill-section-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 18px 21px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    color: #2563eb;
+    background: #eff6ff;
+    font-size: 18px;
+}
+
+.section-heading {
+    margin: 0;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.section-description {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.bill-section-body {
+    padding: 22px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.required {
+    color: #dc2626;
+}
+
+.form-control,
+.form-select {
+    min-height: 46px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    color: #1e293b;
+    background: #fff;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.10);
+}
+
+textarea.form-control {
+    min-height: 115px;
+    resize: vertical;
+}
+
+.input-group-text {
+    min-width: 48px;
+    justify-content: center;
+    border: 1px solid #cbd5e1;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    color: #475569;
+    background: #f8fafc;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.input-group .form-control {
+    border-radius: 0 10px 10px 0;
+}
+
+/* =========================================================
+   PATIENT PREVIEW
+========================================================= */
+
+.patient-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 17px;
+    border: 1px solid #dbeafe;
+    border-radius: 13px;
+    background: #f8fbff;
+}
+
+.patient-preview-left {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.patient-avatar {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    color: #2563eb;
+    background: #dbeafe;
+    font-size: 20px;
+}
+
+.patient-name {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.patient-meta {
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.current-label {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   CHARGE GRID
+========================================================= */
+
+.charge-field {
+    position: relative;
+}
+
+.charge-field .form-control {
+    font-weight: 600;
+}
+
+.discount-help {
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.invalid-feedback-custom {
+    display: none;
+    margin-top: 6px;
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.show-error {
+    display: block;
+}
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services-container {
+    padding: 5px;
+    border-radius: 13px;
+    background: #f8fafc;
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 14px 15px;
+    margin-bottom: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 11px;
+    background: #fff;
+}
+
+.service-item:last-child {
+    margin-bottom: 0;
+}
+
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.service-check-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    color: #16a34a;
+    background: #f0fdf4;
+}
+
+.service-name {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.service-subtitle {
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.service-price {
+    color: #15803d;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.service-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 13px;
+    padding: 14px 4px 2px;
+    border-top: 1px dashed #cbd5e1;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.service-total-value {
+    color: #15803d;
+    font-size: 15px;
+}
+
+.no-services {
+    padding: 25px 15px;
+    text-align: center;
+    color: #64748b;
+    border: 1px dashed #cbd5e1;
+    border-radius: 11px;
+    background: #fff;
+}
+
+.no-services-icon {
+    display: block;
+    margin-bottom: 8px;
+    color: #94a3b8;
+    font-size: 25px;
+}
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-method-wrap {
+    position: relative;
+}
+
+.payment-method-wrap .form-select {
+    padding-left: 42px;
+}
+
+.payment-method-icon {
+    position: absolute;
+    z-index: 2;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary-card {
+    position: sticky;
+    top: 85px;
+    overflow: hidden;
+    border: 1px solid #dbeafe;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.10);
+}
+
+.summary-header {
+    position: relative;
+    overflow: hidden;
+    padding: 21px;
+    color: #fff;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a,
+            #2563eb
+        );
+}
+
+.summary-header::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    right: -40px;
+    top: -55px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+
+.summary-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.summary-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.summary-code {
+    margin-top: 4px;
+    color: rgba(255,255,255,0.65);
+    font-size: 11px;
+}
+
+.summary-header-icon {
+    font-size: 29px;
+}
+
+.summary-body {
+    padding: 21px;
+}
+
+.summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: #334155;
+    font-size: 13px;
+}
+
+.summary-row:last-child {
+    margin-bottom: 0;
+}
+
+.summary-label {
+    color: #64748b;
+}
+
+.summary-value {
+    color: #334155;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.summary-divider {
+    margin: 18px 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.subtotal-row {
+    font-weight: 800;
+}
+
+.total-box {
+    margin: 5px 0 16px;
+    padding: 17px;
+    border: 1px solid #bfdbfe;
+    border-radius: 13px;
+    background: #eff6ff;
+}
+
+.total-box-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.total-label {
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.total-value {
+    color: #1d4ed8;
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.paid-box,
+.remaining-box {
+    padding: 14px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.paid-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.remaining-box {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+}
+
+.box-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.paid-label {
+    color: #166534;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.paid-value {
+    color: #15803d;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.remaining-label {
+    color: #9a3412;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.remaining-value {
+    color: #c2410c;
+    font-size: 19px;
+    font-weight: 900;
+}
+
+/* =========================================================
+   PAYMENT STATUS
+========================================================= */
+
+.status-area {
+    text-align: center;
+    padding-top: 4px;
+}
+
+.status-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.payment-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   SUMMARY BUTTONS
+========================================================= */
+
+.summary-update-btn {
+    min-height: 49px;
+    border: none;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 7px 18px rgba(37,99,235,0.22);
+}
+
+.summary-update-btn:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+}
+
+.summary-cancel-btn {
+    min-height: 45px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   BOTTOM ACTIONS
+========================================================= */
+
+.bottom-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 4px 0 20px;
+}
+
+.bottom-action {
+    min-height: 46px;
+    padding: 0 19px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .edit-bill-page {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .bill-identification,
+[data-bs-theme="dark"] .bill-section,
+[data-bs-theme="dark"] .summary-card {
+    border-color: #334155;
+    background: #111827;
+    box-shadow: none;
+}
+
+[data-bs-theme="dark"] .bill-section-header {
+    border-color: #334155;
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .section-heading,
+[data-bs-theme="dark"] .form-label,
+[data-bs-theme="dark"] .patient-name,
+[data-bs-theme="dark"] .summary-value,
+[data-bs-theme="dark"] .summary-row {
+    color: #f1f5f9;
+}
+
+[data-bs-theme="dark"] .section-description,
+[data-bs-theme="dark"] .bill-created-label,
+[data-bs-theme="dark"] .bill-id-label,
+[data-bs-theme="dark"] .patient-meta,
+[data-bs-theme="dark"] .current-label,
+[data-bs-theme="dark"] .summary-label {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .bill-created-value {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select {
+    border-color: #475569;
+    color: #f1f5f9;
+    background: #0f172a;
+}
+
+[data-bs-theme="dark"] .input-group-text {
+    border-color: #475569;
+    color: #cbd5e1;
+    background: #1e293b;
+}
+
+[data-bs-theme="dark"] .patient-preview {
+    border-color: #1e40af;
+    background: #172554;
+}
+
+[data-bs-theme="dark"] .services-container {
+    background: #0f172a;
+}
+
+[data-bs-theme="dark"] .service-item,
+[data-bs-theme="dark"] .no-services {
+    border-color: #334155;
+    background: #111827;
+}
+
+[data-bs-theme="dark"] .service-name {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .service-subtitle {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .summary-divider {
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .bill-code-badge {
+    border-color: #1d4ed8;
+    color: #93c5fd;
+    background: #172554;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1199px) {
+    .edit-bill-grid {
+        grid-template-columns: minmax(0, 1fr) 350px;
+    }
+}
+
+@media (max-width: 991px) {
+    .edit-bill-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        position: static;
+    }
+
+    .summary-column {
+        order: -1;
+    }
+}
+
+@media (max-width: 767px) {
+    .edit-bill-page {
+        padding: 18px 12px 35px;
+    }
+
+    .edit-bill-hero {
+        padding: 22px 20px;
+        border-radius: 16px;
+    }
+
+    .hero-content {
+        align-items: flex-start;
+    }
+
+    .hero-left {
+        width: 100%;
+    }
+
+    .hero-title {
+        font-size: 23px;
+    }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+    .hero-btn {
+        flex: 1;
+    }
+
+    .bill-identification {
+        grid-template-columns: 1fr;
+        padding: 17px;
+    }
+
+    .bill-created {
+        text-align: left;
+    }
+
+    .bill-section-body {
+        padding: 17px;
+    }
+
+    .patient-preview {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .bottom-actions {
+        justify-content: stretch;
+        flex-direction: column;
+    }
+
+    .bottom-action {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-icon {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+        font-size: 23px;
+    }
+
+    .hero-title {
+        font-size: 21px;
+    }
+
+    .hero-subtitle {
+        font-size: 12px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-btn {
+        width: 100%;
+    }
+
+    .bill-section-header {
+        padding: 15px;
+    }
+
+    .section-icon {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
+        font-size: 16px;
+    }
+
+    .service-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .service-price {
+        margin-left: 46px;
+    }
+
+    .summary-body {
+        padding: 17px;
+    }
+
+    .total-value {
+        font-size: 21px;
+    }
+}
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    body {
+        background: #fff !important;
+    }
+
+    .edit-bill-page {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .no-print,
+    .hero-actions,
+    .bottom-actions,
+    .summary-update-btn,
+    .summary-cancel-btn {
+        display: none !important;
+    }
+
+    .edit-bill-hero {
+        color: #000 !important;
+        background: #fff !important;
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
+
+    .edit-bill-grid {
+        display: block;
+    }
+
+    .bill-section,
+    .summary-card,
+    .bill-identification {
+        border: 1px solid #ddd;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .summary-card {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .bill-section-header {
+        background: #f5f5f5 !important;
+    }
+}
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="edit-bill-page">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="edit-bill-hero no-print">
+
+        <div class="hero-content">
+
+            <div class="hero-left">
+
+                <div class="hero-icon">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <div>
+                    <h1 class="hero-title">
+                        Edit Bill
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Update billing information, charges and payment details
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="hero-actions">
+
+                <a
+                    href="{{ url_for('billing.list_bills') }}"
+                    class="hero-btn hero-btn-light"
+                >
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Billing
+                </a>
+
+                <a
+                    href="{{ url_for('billing.view_bill', id=bill.id) }}"
+                    class="hero-btn hero-btn-primary"
+                >
+                    <i class="bi bi-eye"></i>
+                    View Bill
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BILL IDENTIFICATION
+    ====================================================== -->
+
+    <div class="bill-identification">
+
+        <div>
+
+            <span class="bill-id-label">
+                BILL NUMBER
+            </span>
+
+            <span class="bill-code-badge">
+                <i class="bi bi-receipt"></i>
+                {{ bill.bill_code }}
+            </span>
+
+        </div>
+
+        <div class="bill-created">
+
+            <span class="bill-created-label">
+                Created
+            </span>
+
+            <span class="bill-created-value">
+
+                {% if bill.created_at %}
+
+                    {{ bill.created_at.strftime(
+                        "%d %b %Y, %I:%M %p"
+                    ) }}
+
+                {% else %}
+
+                    -
+
+                {% endif %}
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('billing.edit_bill', id=bill.id) }}"
+        id="editBillForm"
+    >
+
+        <div class="edit-bill-grid">
+
+
+            <!-- =================================================
+                 LEFT COLUMN
+            ================================================== -->
+
+            <div>
+
+
+                <!-- =============================================
+                     PATIENT INFORMATION
+                ============================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-person-vcard"></i>
+                        </div>
+
+                        <div>
+
+                            <h2 class="section-heading">
+                                Patient Information
+                            </h2>
+
+                            <p class="section-description">
+                                Update the patient and appointment linked with this bill.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Patient -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="patient_id"
+                                    class="form-label"
+                                >
+                                    Patient
+                                    <span class="required">*</span>
+                                </label>
+
+                                <select
+                                    id="patient_id"
+                                    name="patient_id"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select Patient
+                                    </option>
+
+                                    {% for patient in patients %}
+
+                                    <option
+                                        value="{{ patient.id }}"
+                                        {% if patient.id == bill.patient_id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ patient.patient_code }}
+                                        -
+                                        {{ patient.full_name }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Appointment -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="appointment_id"
+                                    class="form-label"
+                                >
+                                    Appointment
+                                </label>
+
+                                <select
+                                    id="appointment_id"
+                                    name="appointment_id"
+                                    class="form-select"
+                                >
+
+                                    <option value="">
+                                        No Appointment
+                                    </option>
+
+                                    {% for appointment in appointments %}
+
+                                    <option
+                                        value="{{ appointment.id }}"
+                                        {% if appointment.id == bill.appointment_id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ appointment.appointment_code }}
+                                        -
+
+                                        {% if appointment.patient %}
+
+                                            {{ appointment.patient.full_name }}
+
+                                        {% else %}
+
+                                            {{ appointment.patient_name or "Patient" }}
+
+                                        {% endif %}
+
+                                        -
+
+                                        {% if appointment.appointment_date %}
+
+                                            {{ appointment.appointment_date.strftime(
+                                                "%d %b %Y"
+                                            ) }}
+
+                                        {% endif %}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Current Patient -->
+
+                        <div class="patient-preview">
+
+                            <div class="patient-preview-left">
+
+                                <div class="patient-avatar">
+                                    <i class="bi bi-person"></i>
+                                </div>
+
+                                <div>
+
+                                    <div class="current-label">
+                                        CURRENT PATIENT
+                                    </div>
+
+                                    <div class="patient-name">
+
+                                        {% if bill.patient %}
+
+                                            {{ bill.patient.full_name }}
+
+                                        {% else %}
+
+                                            Patient
+
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div class="patient-meta">
+
+                                        {% if bill.patient %}
+
+                                            {{ bill.patient.patient_code }}
+
+                                            {% if bill.patient.phone %}
+
+                                                &nbsp; • &nbsp;
+                                                {{ bill.patient.phone }}
+
+                                            {% endif %}
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                {% if bill.payment_status == "Paid" %}
+
+                                    <span class="badge bg-success px-3 py-2">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Paid
+                                    </span>
+
+                                {% elif bill.payment_status == "Partial" %}
+
+                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Partial
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger px-3 py-2">
+                                        <i class="bi bi-exclamation-circle me-1"></i>
+                                        Unpaid
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     CLINIC CHARGES
+                ============================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+
+                        <div>
+
+                            <h2 class="section-heading">
+                                Clinic Charges
+                            </h2>
+
+                            <p class="section-description">
+                                Manage consultation and other billing charges.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Consultation -->
+
+                            <div class="col-md-6 charge-field">
+
+                                <label
+                                    for="consultation_fee"
+                                    class="form-label"
+                                >
+                                    Consultation Fee
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="consultation_fee"
+                                        name="consultation_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.consultation_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Medicine -->
+
+                            <div class="col-md-6 charge-field">
+
+                                <label
+                                    for="medicine_fee"
+                                    class="form-label"
+                                >
+                                    Medicine Fee
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="medicine_fee"
+                                        name="medicine_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.medicine_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Laboratory -->
+
+                            <div class="col-md-6 charge-field">
+
+                                <label
+                                    for="laboratory_fee"
+                                    class="form-label"
+                                >
+                                    Laboratory Fee
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="laboratory_fee"
+                                        name="laboratory_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.laboratory_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Other -->
+
+                            <div class="col-md-6 charge-field">
+
+                                <label
+                                    for="other_charges"
+                                    class="form-label"
+                                >
+                                    Other Charges
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="other_charges"
+                                        name="other_charges"
+                                        class="form-control charge-input"
+                                        value="{{ bill.other_charges or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Discount -->
+
+                            <div class="col-md-6 charge-field">
+
+                                <label
+                                    for="discount"
+                                    class="form-label"
+                                >
+                                    Discount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="discount"
+                                        name="discount"
+                                        class="form-control"
+                                        value="{{ bill.discount or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                                <div
+                                    id="discountError"
+                                    class="invalid-feedback-custom"
+                                >
+                                    Discount cannot be greater than subtotal.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     ADDITIONAL SERVICES
+                ============================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-clipboard2-pulse"></i>
+                        </div>
+
+                        <div>
+
+                            <h2 class="section-heading">
+                                Additional Services
+                            </h2>
+
+                            <p class="section-description">
+                                Services provided during the consultation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="services-container">
+
+                            {% set consultation = None %}
+
+                            {% if bill.appointment %}
+
+                                {% set consultation =
+                                    bill.appointment.consultation
+                                %}
+
+                            {% endif %}
+
+
+                            {% if consultation and consultation.services %}
+
+                                {% for service in consultation.services %}
+
+                                    <div class="service-item">
+
+                                        <div class="service-left">
+
+                                            <div class="service-check-icon">
+                                                <i class="bi bi-check-lg"></i>
+                                            </div>
+
+                                            <div>
+
+                                                <div class="service-name">
+                                                    {{ service.service_name }}
+                                                </div>
+
+                                                <div class="service-subtitle">
+                                                    Provided during consultation
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="service-price">
+
+                                            Rs.
+                                            {{ "%.2f"|format(
+                                                service.service_fee|float
+                                            ) }}
+
+                                        </div>
+
+                                    </div>
+
+                                {% endfor %}
+
+
+                                <div class="service-total">
+
+                                    <span>
+                                        Additional Services Total
+                                    </span>
+
+                                    <span class="service-total-value">
+
+                                        Rs.
+                                        <span id="service_fee_display">
+
+                                            {{ "%.2f"|format(
+                                                bill.service_fee|float
+                                            ) }}
+
+                                        </span>
+
+                                    </span>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="no-services">
+
+                                    <i class="bi bi-info-circle no-services-icon"></i>
+
+                                    <div>
+                                        No additional services were provided
+                                        during this consultation.
+                                    </div>
+
+                                    <strong>
+                                        Additional Services: Rs. 0.00
+                                    </strong>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <input
+                            type="hidden"
+                            id="service_fee"
+                            name="service_fee"
+                            value="{{ bill.service_fee or 0 }}"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     PAYMENT INFORMATION
+                ============================================== -->
+
+                <div class="bill-section">
+
+                    <div class="bill-section-header">
+
+                        <div class="section-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+
+                        <div>
+
+                            <h2 class="section-heading">
+                                Payment Information
+                            </h2>
+
+                            <p class="section-description">
+                                Update paid amount and payment method.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="bill-section-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Paid Amount -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="paid_amount"
+                                    class="form-label"
+                                >
+                                    Paid Amount
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="paid_amount"
+                                        name="paid_amount"
+                                        class="form-control"
+                                        value="{{ bill.paid_amount or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                                <div
+                                    id="paidError"
+                                    class="invalid-feedback-custom"
+                                >
+                                    Paid amount cannot be greater than total.
+                                </div>
+
+                            </div>
+
+
+                            <!-- Payment Method -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="payment_method"
+                                    class="form-label"
+                                >
+                                    Payment Method
+                                </label>
+
+                                <div class="payment-method-wrap">
+
+                                    <i class="bi bi-wallet2 payment-method-icon"></i>
+
+                                    <select
+                                        id="payment_method"
+                                        name="payment_method"
+                                        class="form-select"
+                                    >
+
+                                        {% for method in [
+                                            "Cash",
+                                            "Card",
+                                            "Online",
+                                            "Bank Transfer"
+                                        ] %}
+
+                                        <option
+                                            value="{{ method }}"
+                                            {% if bill.payment_method == method %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            {{ method }}
+
+                                        </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Notes -->
+
+                            <div class="col-12">
+
+                                <label
+                                    for="notes"
+                                    class="form-label"
+                                >
+                                    Billing Notes
+                                </label>
+
+                                <textarea
+                                    id="notes"
+                                    name="notes"
+                                    class="form-control"
+                                    rows="4"
+                                    placeholder="Add any additional billing or payment notes..."
+                                >{{ bill.notes or "" }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     BOTTOM ACTIONS
+                ============================================== -->
+
+                <div class="bottom-actions no-print">
+
+                    <a
+                        href="{{ url_for(
+                            'billing.view_bill',
+                            id=bill.id
+                        ) }}"
+                        class="btn btn-outline-secondary bottom-action"
+                    >
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        id="updateButton"
+                        class="btn btn-primary bottom-action"
+                    >
+                        <i class="bi bi-check-circle me-1"></i>
+                        Update Bill
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT COLUMN
+            ================================================== -->
+
+            <div class="summary-column">
+
+                <div class="summary-card">
+
+                    <!-- Summary Header -->
+
+                    <div class="summary-header">
+
+                        <div class="summary-header-content">
+
+                            <div>
+
+                                <h2 class="summary-title">
+                                    <i class="bi bi-calculator me-2"></i>
+                                    Bill Summary
+                                </h2>
+
+                                <div class="summary-code">
+                                    {{ bill.bill_code }}
+                                </div>
+
+                            </div>
+
+                            <i class="bi bi-receipt summary-header-icon"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Summary Body -->
+
+                    <div class="summary-body">
+
+
+                        <!-- Consultation -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Consultation
+                            </span>
+
+                            <strong class="summary-value">
+                                Rs.
+                                <span id="consultation_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Services -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Additional Services
+                            </span>
+
+                            <strong class="summary-value">
+                                Rs.
+                                <span id="services_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Medicine -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Medicine
+                            </span>
+
+                            <strong class="summary-value">
+                                Rs.
+                                <span id="medicine_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Laboratory -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Laboratory
+                            </span>
+
+                            <strong class="summary-value">
+                                Rs.
+                                <span id="laboratory_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Other -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Other Charges
+                            </span>
+
+                            <strong class="summary-value">
+                                Rs.
+                                <span id="other_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <hr class="summary-divider">
+
+
+                        <!-- Subtotal -->
+
+                        <div class="summary-row subtotal-row">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong>
+                                Rs.
+                                <span id="subtotal">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Discount -->
+
+                        <div class="summary-row">
+
+                            <span class="summary-label">
+                                Discount
+                            </span>
+
+                            <strong class="text-danger">
+                                - Rs.
+                                <span id="discount_display">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <hr class="summary-divider">
+
+
+                        <!-- Total -->
+
+                        <div class="total-box">
+
+                            <div class="total-box-top">
+
+                                <span class="total-label">
+                                    Total Amount
+                                </span>
+
+                                <span class="total-value">
+                                    Rs.
+                                    <span id="total">
+                                        0.00
+                                    </span>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Paid -->
+
+                        <div class="paid-box">
+
+                            <div class="box-row">
+
+                                <span class="paid-label">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Paid Amount
+                                </span>
+
+                                <strong class="paid-value">
+                                    Rs.
+                                    <span id="paid_display">
+                                        0.00
+                                    </span>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Remaining -->
+
+                        <div class="remaining-box">
+
+                            <div class="box-row">
+
+                                <span class="remaining-label">
+                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                    Remaining
+                                </span>
+
+                                <strong class="remaining-value">
+                                    Rs.
+                                    <span id="remaining">
+                                        0.00
+                                    </span>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+
+                        <div class="status-area mt-4">
+
+                            <span class="status-label">
+                                Payment Status
+                            </span>
+
+                            <span
+                                id="payment_status"
+                                class="payment-status bg-danger text-white"
+                            >
+                                <i class="bi bi-exclamation-circle"></i>
+                                Unpaid
+                            </span>
+
+                        </div>
+
+
+                        <hr class="summary-divider my-4">
+
+
+                        <!-- Update -->
+
+                        <button
+                            type="submit"
+                            id="summaryUpdateButton"
+                            class="btn btn-primary summary-update-btn w-100"
+                        >
+                            <i class="bi bi-check-circle me-2"></i>
+                            Update Bill
+                        </button>
+
+
+                        <!-- Cancel -->
+
+                        <a
+                            href="{{ url_for(
+                                'billing.view_bill',
+                                id=bill.id
+                            ) }}"
+                            class="btn btn-outline-secondary summary-cancel-btn w-100 mt-2"
+                        >
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+/* =========================================================
+   GET NUMBER
+========================================================= */
+
+function getAmount(id) {
+
+    const element = document.getElementById(id);
+
+    if (!element) {
+        return 0;
+    }
+
+    const value = parseFloat(element.value);
+
+    return isNaN(value)
+        ? 0
+        : Math.max(value, 0);
+}
+
+
+/* =========================================================
+   CALCULATE BILL
+========================================================= */
+
+function calculateBill() {
+
+    const consultation =
+        getAmount("consultation_fee");
+
+    const services =
+        getAmount("service_fee");
+
+    const medicine =
+        getAmount("medicine_fee");
+
+    const laboratory =
+        getAmount("laboratory_fee");
+
+    const other =
+        getAmount("other_charges");
+
+    let discount =
+        getAmount("discount");
+
+    let paid =
+        getAmount("paid_amount");
+
+
+    /* =====================================================
+       SUBTOTAL
+    ===================================================== */
+
+    const subtotal =
+        consultation +
+        services +
+        medicine +
+        laboratory +
+        other;
+
+
+    /* =====================================================
+       DISCOUNT VALIDATION
+    ===================================================== */
+
+    const discountError =
+        document.getElementById("discountError");
+
+    if (discount > subtotal) {
+
+        discount = subtotal;
+
+        document.getElementById(
+            "discount"
+        ).value = subtotal.toFixed(2);
+    }
+
+
+    /* =====================================================
+       TOTAL
+    ===================================================== */
+
+    const total =
+        Math.max(
+            subtotal - discount,
+            0
+        );
+
+
+    /* =====================================================
+       PAID VALIDATION
+    ===================================================== */
+
+    const paidError =
+        document.getElementById("paidError");
+
+    if (paid > total) {
+
+        paid = total;
+
+        document.getElementById(
+            "paid_amount"
+        ).value = total.toFixed(2);
+    }
+
+
+    /* =====================================================
+       REMAINING
+    ===================================================== */
+
+    const remaining =
+        Math.max(
+            total - paid,
+            0
+        );
+
+
+    /* =====================================================
+       UPDATE SUMMARY
+    ===================================================== */
+
+    document.getElementById(
+        "consultation_display"
+    ).textContent =
+        consultation.toFixed(2);
+
+
+    document.getElementById(
+        "services_display"
+    ).textContent =
+        services.toFixed(2);
+
+
+    document.getElementById(
+        "medicine_display"
+    ).textContent =
+        medicine.toFixed(2);
+
+
+    document.getElementById(
+        "laboratory_display"
+    ).textContent =
+        laboratory.toFixed(2);
+
+
+    document.getElementById(
+        "other_display"
+    ).textContent =
+        other.toFixed(2);
+
+
+    document.getElementById(
+        "subtotal"
+    ).textContent =
+        subtotal.toFixed(2);
+
+
+    document.getElementById(
+        "discount_display"
+    ).textContent =
+        discount.toFixed(2);
+
+
+    document.getElementById(
+        "total"
+    ).textContent =
+        total.toFixed(2);
+
+
+    document.getElementById(
+        "paid_display"
+    ).textContent =
+        paid.toFixed(2);
+
+
+    document.getElementById(
+        "remaining"
+    ).textContent =
+        remaining.toFixed(2);
+
+
+    /* =====================================================
+       PAYMENT STATUS
+    ===================================================== */
+
+    const status =
+        document.getElementById(
+            "payment_status"
+        );
+
+
+    if (total <= 0) {
+
+        status.innerHTML =
+            '<i class="bi bi-dash-circle"></i> Unpaid';
+
+        status.className =
+            "payment-status bg-secondary text-white";
+
+    }
+
+    else if (paid >= total) {
+
+        status.innerHTML =
+            '<i class="bi bi-check-circle"></i> Paid';
+
+        status.className =
+            "payment-status bg-success text-white";
+
+    }
+
+    else if (paid > 0) {
+
+        status.innerHTML =
+            '<i class="bi bi-clock"></i> Partial';
+
+        status.className =
+            "payment-status bg-warning text-dark";
+
+    }
+
+    else {
+
+        status.innerHTML =
+            '<i class="bi bi-exclamation-circle"></i> Unpaid';
+
+        status.className =
+            "payment-status bg-danger text-white";
+    }
+
+
+    /* =====================================================
+       HIDE NORMAL ERRORS
+    ===================================================== */
+
+    if (discountError) {
+
+        discountError.classList.remove(
+            "show-error"
+        );
+    }
+
+    if (paidError) {
+
+        paidError.classList.remove(
+            "show-error"
+        );
+    }
+}
+
+
+/* =========================================================
+   CHARGE INPUT EVENTS
+========================================================= */
+
+document
+    .querySelectorAll(".charge-input")
+    .forEach(function(input) {
+
+        input.addEventListener(
+            "input",
+            calculateBill
+        );
+
+    });
+
+
+/* =========================================================
+   DISCOUNT EVENT
+========================================================= */
+
+const discountInput =
+    document.getElementById("discount");
+
+if (discountInput) {
+
+    discountInput.addEventListener(
+        "input",
+        calculateBill
+    );
+}
+
+
+/* =========================================================
+   PAID EVENT
+========================================================= */
+
+const paidInput =
+    document.getElementById("paid_amount");
+
+if (paidInput) {
+
+    paidInput.addEventListener(
+        "input",
+        calculateBill
+    );
+}
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+const editBillForm =
+    document.getElementById("editBillForm");
+
+if (editBillForm) {
+
+    editBillForm.addEventListener(
+        "submit",
+        function(event) {
+
+            const consultation =
+                getAmount("consultation_fee");
+
+            const services =
+                getAmount("service_fee");
+
+            const medicine =
+                getAmount("medicine_fee");
+
+            const laboratory =
+                getAmount("laboratory_fee");
+
+            const other =
+                getAmount("other_charges");
+
+            const discount =
+                getAmount("discount");
+
+            const paid =
+                getAmount("paid_amount");
+
+
+            const subtotal =
+                consultation +
+                services +
+                medicine +
+                laboratory +
+                other;
+
+
+            const total =
+                Math.max(
+                    subtotal - discount,
+                    0
+                );
+
+
+            /* =============================================
+               DISCOUNT
+            ============================================== */
+
+            if (discount > subtotal) {
+
+                event.preventDefault();
+
+                document
+                    .getElementById(
+                        "discountError"
+                    )
+                    .classList.add(
+                        "show-error"
+                    );
+
+                document
+                    .getElementById(
+                        "discount"
+                    )
+                    .focus();
+
+                return;
+            }
+
+
+            /* =============================================
+               PAID
+            ============================================== */
+
+            if (paid > total) {
+
+                event.preventDefault();
+
+                document
+                    .getElementById(
+                        "paidError"
+                    )
+                    .classList.add(
+                        "show-error"
+                    );
+
+                document
+                    .getElementById(
+                        "paid_amount"
+                    )
+                    .focus();
+
+                return;
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   INITIAL CALCULATION
+========================================================= */
+
+calculateBill();
+
+</script>
+
+{% endblock %}
+

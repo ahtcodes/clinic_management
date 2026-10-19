@@ -1,0 +1,679 @@
+{% extends "base.html" %}
+
+{% block title %}
+Provide Medicine - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+    .provide-page {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* =====================================================
+       PAGE HEADER
+    ====================================================== */
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .page-subtitle {
+        margin: 5px 0 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .back-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+        border-color: #94a3b8;
+    }
+
+    /* =====================================================
+       MAIN CARD
+    ====================================================== */
+
+    .provide-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f8fafc;
+    }
+
+    .card-header-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .card-header-title i {
+        color: #2563eb;
+        font-size: 20px;
+    }
+
+    .card-header-text {
+        margin: 5px 0 0 29px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .card-body {
+        padding: 25px 22px;
+    }
+
+    /* =====================================================
+       MEDICINE INFO
+    ====================================================== */
+
+    .medicine-info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .info-box {
+        padding: 15px;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+
+    .info-label {
+        display: block;
+        margin-bottom: 5px;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .info-value {
+        color: #172033;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .stock-value {
+        color: #16a34a;
+    }
+
+    /* =====================================================
+       FORM
+    ====================================================== */
+
+    .form-section-title {
+        margin: 0 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #172033;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        min-height: 44px;
+        padding: 9px 12px;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        color: #172033;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .form-help {
+        display: block;
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .patient-select-wrapper {
+        position: relative;
+    }
+
+    .patient-select-wrapper i {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .patient-select {
+        padding-left: 38px;
+    }
+
+    .quantity-input {
+        max-width: 250px;
+    }
+
+    textarea.form-control {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    /* =====================================================
+       ACTIONS
+    ====================================================== */
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .cancel-btn,
+    .provide-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 9px 17px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .cancel-btn {
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #d1d5db;
+    }
+
+    .cancel-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+    }
+
+    .provide-submit-btn {
+        background: #16a34a;
+        color: #ffffff;
+        border: 1px solid #16a34a;
+    }
+
+    .provide-submit-btn:hover {
+        background: #15803d;
+        border-color: #15803d;
+        transform: translateY(-1px);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 900px) {
+        .medicine-info {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .back-btn {
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .medicine-info {
+            grid-template-columns: 1fr;
+        }
+
+        .card-body {
+            padding: 20px 16px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .cancel-btn,
+        .provide-submit-btn {
+            width: 100%;
+        }
+
+        .quantity-input {
+            max-width: 100%;
+        }
+    }
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="provide-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-box-arrow-right"></i>
+                Provide Medicine
+            </h1>
+
+            <p class="page-subtitle">
+                Select a patient and provide medicine from your inventory.
+            </p>
+        </div>
+
+        <a
+            href="{{ url_for('medicines.my_medicines') }}"
+            class="back-btn"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Medicines
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CARD
+    ====================================================== -->
+
+    <div class="provide-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header">
+
+            <h5 class="card-header-title">
+                <i class="bi bi-capsule-pill"></i>
+                Medicine Information
+            </h5>
+
+            <p class="card-header-text">
+                Review the medicine details before providing it to the patient.
+            </p>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <!-- =================================================
+                 MEDICINE DETAILS
+            ================================================== -->
+
+            <div class="medicine-info">
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Medicine
+                    </span>
+
+                    <div class="info-value">
+                        {{ medicine.medicine_name }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Generic Name
+                    </span>
+
+                    <div class="info-value">
+
+                        {% if medicine.generic_name %}
+                            {{ medicine.generic_name }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Strength
+                    </span>
+
+                    <div class="info-value">
+
+                        {% if medicine.strength %}
+                            {{ medicine.strength }}
+                        {% else %}
+                            —
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Available Stock
+                    </span>
+
+                    <div class="info-value stock-value">
+                        {{ medicine.quantity }}
+                        {% if medicine.unit %}
+                            {{ medicine.unit }}
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PROVIDE MEDICINE FORM
+            ================================================== -->
+
+            <form
+                method="POST"
+                action="{{ url_for('medicines.provide_medicine', medicine_id=medicine.id) }}"
+            >
+
+                <h5 class="form-section-title">
+                    Provide Medicine
+                </h5>
+
+
+                <!-- =================================================
+                     PATIENT
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label
+                        for="patient_id"
+                        class="form-label"
+                    >
+                        Select Patient
+                        <span class="required">*</span>
+                    </label>
+
+                    <div class="patient-select-wrapper">
+
+                        <i class="bi bi-person"></i>
+
+                        <select
+                            name="patient_id"
+                            id="patient_id"
+                            class="form-select patient-select"
+                            required
+                        >
+
+                            <option value="">
+                                -- Select Patient --
+                            </option>
+
+                            {% for patient in patients %}
+
+                                <option value="{{ patient.id }}">
+
+                                    {{ patient.full_name }}
+
+                                    {% if patient.patient_code %}
+                                        — {{ patient.patient_code }}
+                                    {% endif %}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    {% if not patients %}
+
+                        <small class="form-help">
+                            No patients are available.
+                        </small>
+
+                    {% else %}
+
+                        <small class="form-help">
+                            Select the patient who will receive this medicine.
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- =================================================
+                     QUANTITY
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label
+                        for="quantity"
+                        class="form-label"
+                    >
+                        Quantity
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        name="quantity"
+                        id="quantity"
+                        class="form-control quantity-input"
+                        min="1"
+                        max="{{ medicine.quantity }}"
+                        value="1"
+                        required
+                    >
+
+                    <small class="form-help">
+                        Maximum available quantity:
+                        {{ medicine.quantity }}
+                    </small>
+
+                </div>
+
+
+                <!-- =================================================
+                     NOTES
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label
+                        for="notes"
+                        class="form-label"
+                    >
+                        Notes
+                    </label>
+
+                    <textarea
+                        name="notes"
+                        id="notes"
+                        class="form-control"
+                        placeholder="Enter any instructions or notes..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTION BUTTONS
+                ================================================== -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for('medicines.my_medicines') }}"
+                        class="cancel-btn"
+                    >
+                        <i class="bi bi-x-lg"></i>
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="provide-submit-btn"
+                        {% if medicine.quantity <= 0 %}disabled{% endif %}
+                    >
+                        <i class="bi bi-box-arrow-right"></i>
+                        Provide Medicine
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const patientSelect = document.getElementById("patient_id");
+    const quantityInput = document.getElementById("quantity");
+
+    if (patientSelect) {
+
+        patientSelect.addEventListener("change", function () {
+
+            if (this.value) {
+                this.style.borderColor = "#2563eb";
+            } else {
+                this.style.borderColor = "";
+            }
+
+        });
+
+    }
+
+    if (quantityInput) {
+
+        quantityInput.addEventListener("input", function () {
+
+            const max = parseInt(this.max || "0");
+            const value = parseInt(this.value || "0");
+
+            if (max > 0 && value > max) {
+                this.value = max;
+            }
+
+            if (value < 1) {
+                this.value = 1;
+            }
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

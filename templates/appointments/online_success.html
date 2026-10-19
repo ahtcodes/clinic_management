@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+Appointment Submitted
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4 p-md-5 text-center">
+
+                    <!-- Success Icon -->
+
+                    <div class="mb-4">
+
+                        <div
+                            class="rounded-circle bg-success bg-opacity-10
+                                   d-inline-flex align-items-center
+                                   justify-content-center"
+                            style="width: 80px; height: 80px;"
+                        >
+
+                            <i
+                                class="bi bi-check-lg text-success"
+                                style="font-size: 42px;"
+                            ></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Heading -->
+
+                    <h2 class="fw-bold mb-2">
+                        Appointment Request Submitted
+                    </h2>
+
+                    <p class="text-muted mb-4">
+                        Your online appointment request has been
+                        submitted successfully.
+                    </p>
+
+
+                    <!-- Appointment Code -->
+
+                    <div class="alert alert-primary">
+
+                        <small class="text-muted d-block">
+                            Appointment Code
+                        </small>
+
+                        <strong class="fs-4">
+                            {{ appointment.appointment_code }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Appointment Details -->
+
+                    <div class="card bg-light border-0 text-start mb-4">
+
+                        <div class="card-body">
+
+                            <h5 class="fw-bold mb-3">
+                                Appointment Details
+                            </h5>
+
+                            <div class="row g-3">
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Patient Name
+                                    </small>
+
+                                    <strong>
+                                        {{ appointment.patient_name }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Phone
+                                    </small>
+
+                                    <strong>
+                                        {{ appointment.patient_phone }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Doctor
+                                    </small>
+
+                                    <strong>
+                                        {{ appointment.doctor.full_name }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Date
+                                    </small>
+
+                                    <strong>
+                                        {{ appointment.appointment_date }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Time
+                                    </small>
+
+                                    <strong>
+                                        {{ appointment.appointment_time.strftime('%I:%M %p') }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                    <small class="text-muted d-block">
+                                        Type
+                                    </small>
+
+                                    <strong>
+                                        Online Appointment
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="mb-4">
+
+                        <span class="badge bg-warning text-dark px-3 py-2">
+                            <i class="bi bi-clock me-1"></i>
+                            Pending Confirmation
+                        </span>
+
+                    </div>
+
+
+                    <p class="text-muted small mb-4">
+
+                        Please keep your appointment code
+                        <strong>{{ appointment.appointment_code }}</strong>
+                        for future reference.
+
+                    </p>
+
+
+                    <!-- Actions -->
+
+                    <div class="d-flex justify-content-center gap-2">
+
+                        <a
+                            href="{{ url_for('appointments.online_appointment') }}"
+                            class="btn btn-primary"
+                        >
+                            Book Another Appointment
+                        </a>
+
+                        <a
+                            href="/"
+                            class="btn btn-outline-secondary"
+                        >
+                            Home
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

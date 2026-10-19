@@ -1,0 +1,1367 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Schedule - Doctor Clinic
+{% endblock %}
+
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   MY SCHEDULE PAGE
+========================================================= */
+
+.schedule-page {
+    padding: 8px 2px 30px;
+}
+
+
+/* =========================================================
+   HERO HEADER
+========================================================= */
+
+.schedule-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    background:
+        radial-gradient(circle at 90% 20%, rgba(37, 99, 235, .28), transparent 32%),
+        linear-gradient(135deg, #0f172a 0%, #172554 55%, #1d4ed8 100%);
+    color: #fff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, .18);
+}
+
+.schedule-hero::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    right: -65px;
+    top: -75px;
+    background: rgba(255,255,255,.06);
+}
+
+.schedule-hero::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    right: 100px;
+    bottom: -75px;
+    background: rgba(255,255,255,.04);
+}
+
+.schedule-hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.schedule-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.schedule-hero-icon {
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(10px);
+    font-size: 28px;
+}
+
+.schedule-hero-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 5px;
+    letter-spacing: -.4px;
+}
+
+.schedule-hero-subtitle {
+    margin: 0;
+    color: rgba(255,255,255,.72);
+    font-size: 14px;
+}
+
+.schedule-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.15);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   DOCTOR PROFILE CARD
+========================================================= */
+
+.doctor-schedule-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, .07);
+    overflow: hidden;
+}
+
+.doctor-schedule-inner {
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.doctor-schedule-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.doctor-schedule-avatar {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+    color: #2563eb;
+    font-size: 25px;
+    border: 1px solid #bfdbfe;
+}
+
+.doctor-schedule-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.doctor-schedule-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.doctor-code {
+    padding: 4px 9px;
+    background: #f1f5f9;
+    border-radius: 7px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.doctor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.doctor-status.active {
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.doctor-status.inactive {
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+
+/* =========================================================
+   SCHEDULE MAIN CARD
+========================================================= */
+
+.schedule-main-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, .07);
+    overflow: hidden;
+}
+
+.schedule-card-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: linear-gradient(to right, #ffffff, #f8fbff);
+}
+
+.schedule-card-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.schedule-card-title-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.schedule-card-title {
+    margin: 0 0 3px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #111827;
+}
+
+.schedule-card-subtitle {
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.schedule-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 9px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.schedule-table-wrapper {
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    min-width: 950px;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.schedule-table thead th {
+    padding: 15px 16px;
+    background: #f8fafc;
+    color: #64748b;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    white-space: nowrap;
+}
+
+.schedule-table thead th:first-child {
+    padding-left: 24px;
+}
+
+.schedule-table thead th:last-child {
+    padding-right: 24px;
+}
+
+.schedule-table tbody td {
+    padding: 16px;
+    border-bottom: 1px solid #eef2f7;
+    color: #334155;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.schedule-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.schedule-table tbody tr {
+    transition: background .2s ease;
+}
+
+.schedule-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+
+/* =========================================================
+   DAY
+========================================================= */
+
+.day-cell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 145px;
+}
+
+.day-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.day-name {
+    font-weight: 800;
+    color: #111827;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+.time-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.time-value i {
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   DURATION
+========================================================= */
+
+.duration-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 11px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #dbeafe;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.schedule-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.schedule-status.available {
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.schedule-status.inactive {
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+
+/* =========================================================
+   EMPTY DAY
+========================================================= */
+
+.empty-schedule {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.empty-schedule i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.schedule-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.schedule-action {
+    height: 34px;
+    padding: 0 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .2s ease;
+    background: #fff;
+}
+
+.schedule-action.edit {
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+.schedule-action.edit:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    transform: translateY(-1px);
+}
+
+.schedule-action.disable {
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.schedule-action.disable:hover {
+    background: #fffbeb;
+    transform: translateY(-1px);
+}
+
+.schedule-action.enable {
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.schedule-action.enable:hover {
+    background: #f0fdf4;
+    transform: translateY(-1px);
+}
+
+.schedule-action.delete {
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.schedule-action.delete:hover {
+    background: #fef2f2;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SET SCHEDULE
+========================================================= */
+
+.set-schedule-btn {
+    height: 35px;
+    padding: 0 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9px;
+    background: #2563eb;
+    border: 1px solid #2563eb;
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    transition: all .2s ease;
+}
+
+.set-schedule-btn:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(37, 99, 235, .2);
+}
+
+
+/* =========================================================
+   INFO FOOTER
+========================================================= */
+
+.schedule-info {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.schedule-info-icon {
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    border-radius: 9px;
+    background: #dbeafe;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.schedule-info-title {
+    margin: 0 0 3px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #1e3a8a;
+}
+
+.schedule-info-text {
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .schedule-page {
+        padding: 5px 0 25px;
+    }
+
+    .schedule-hero {
+        padding: 22px 18px;
+        border-radius: 17px;
+    }
+
+    .schedule-hero-content {
+        align-items: flex-start;
+    }
+
+    .schedule-hero-left {
+        gap: 12px;
+    }
+
+    .schedule-hero-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 13px;
+        font-size: 21px;
+    }
+
+    .schedule-hero-title {
+        font-size: 22px;
+    }
+
+    .schedule-hero-subtitle {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .schedule-hero-badge {
+        display: none;
+    }
+
+    .doctor-schedule-inner {
+        padding: 18px;
+        align-items: flex-start;
+    }
+
+    .doctor-schedule-profile {
+        gap: 12px;
+    }
+
+    .doctor-schedule-avatar {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 13px;
+        font-size: 20px;
+    }
+
+    .doctor-schedule-name {
+        font-size: 16px;
+    }
+
+    .doctor-status {
+        padding: 7px 10px;
+        font-size: 11px;
+    }
+
+    .schedule-card-header {
+        padding: 18px;
+    }
+
+    .schedule-count {
+        display: none;
+    }
+
+    .schedule-card-title {
+        font-size: 15px;
+    }
+
+    .schedule-info {
+        padding: 14px;
+    }
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    .doctor-schedule-card,
+    .schedule-main-card {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    .doctor-schedule-name,
+    .schedule-card-title,
+    .day-name {
+        color: #f8fafc;
+    }
+
+    .doctor-schedule-meta {
+        color: #94a3b8;
+    }
+
+    .doctor-code {
+        background: #1f2937;
+        color: #cbd5e1;
+    }
+
+    .doctor-schedule-avatar {
+        background: rgba(37, 99, 235, .15);
+        border-color: rgba(96, 165, 250, .2);
+    }
+
+    .schedule-card-header {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    .schedule-card-subtitle {
+        color: #94a3b8;
+    }
+
+    .schedule-count {
+        background: #1f2937;
+        color: #cbd5e1;
+    }
+
+    .schedule-table thead th {
+        background: #0f172a;
+        color: #94a3b8;
+        border-color: #1f2937;
+    }
+
+    .schedule-table tbody td {
+        border-color: #1f2937;
+        color: #cbd5e1;
+    }
+
+    .schedule-table tbody tr:hover {
+        background: #172033;
+    }
+
+    .day-icon,
+    .schedule-card-title-icon {
+        background: rgba(37, 99, 235, .14);
+        color: #60a5fa;
+    }
+
+    .time-value {
+        background: #0f172a;
+        border-color: #1f2937;
+        color: #cbd5e1;
+    }
+
+    .duration-badge {
+        background: rgba(37, 99, 235, .13);
+        border-color: rgba(96, 165, 250, .18);
+        color: #93c5fd;
+    }
+
+    .schedule-action {
+        background: #111827;
+    }
+
+    .schedule-info {
+        background: rgba(37, 99, 235, .08);
+        border-color: rgba(96, 165, 250, .16);
+    }
+
+    .schedule-info-title {
+        color: #93c5fd;
+    }
+
+    .schedule-info-text {
+        color: #94a3b8;
+    }
+
+    .schedule-info-icon {
+        background: rgba(37, 99, 235, .15);
+        color: #60a5fa;
+    }
+
+    .empty-schedule {
+        color: #64748b;
+    }
+}
+
+</style>
+
+
+<div class="container-fluid schedule-page">
+
+
+    <!-- =====================================================
+         PREMIUM HEADER
+    ====================================================== -->
+
+    <div class="schedule-hero">
+
+        <div class="schedule-hero-content">
+
+            <div class="schedule-hero-left">
+
+                <div class="schedule-hero-icon">
+                    <i class="bi bi-calendar2-week"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="schedule-hero-title">
+                        My Schedule
+                    </h1>
+
+                    <p class="schedule-hero-subtitle">
+                        Manage your weekly appointment availability and consultation timings.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="schedule-hero-badge">
+
+                <i class="bi bi-clock-history"></i>
+
+                Weekly Availability
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DOCTOR INFORMATION
+    ====================================================== -->
+
+    <div class="doctor-schedule-card">
+
+        <div class="doctor-schedule-inner">
+
+            <div class="doctor-schedule-profile">
+
+                <div class="doctor-schedule-avatar">
+
+                    <i class="bi bi-person-badge"></i>
+
+                </div>
+
+
+                <div>
+
+                    <div class="doctor-schedule-name">
+
+                        {{ doctor.full_name }}
+
+                    </div>
+
+
+                    <div class="doctor-schedule-meta">
+
+                        <span>
+
+                            <i class="bi bi-heart-pulse me-1"></i>
+
+                            {{ doctor.specialization or "Doctor" }}
+
+                        </span>
+
+
+                        {% if doctor.doctor_code %}
+
+                            <span>•</span>
+
+                            <span class="doctor-code">
+
+                                <i class="bi bi-hash me-1"></i>
+
+                                {{ doctor.doctor_code }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOCTOR STATUS -->
+
+            {% if doctor.is_active %}
+
+                <div class="doctor-status active">
+
+                    <span class="status-dot"></span>
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Active Doctor
+
+                </div>
+
+            {% else %}
+
+                <div class="doctor-status inactive">
+
+                    <span class="status-dot"></span>
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Inactive Doctor
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         WEEKLY SCHEDULE
+    ====================================================== -->
+
+    <div class="schedule-main-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="schedule-card-header">
+
+            <div class="schedule-card-title-wrap">
+
+                <div class="schedule-card-title-icon">
+
+                    <i class="bi bi-calendar3"></i>
+
+                </div>
+
+                <div>
+
+                    <h5 class="schedule-card-title">
+
+                        Weekly Availability
+
+                    </h5>
+
+                    <p class="schedule-card-subtitle">
+
+                        Your available days and appointment timings.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="schedule-count">
+
+                <i class="bi bi-calendar-check"></i>
+
+                7 Days
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="schedule-table-wrapper">
+
+            {% set days = {
+                0: "Monday",
+                1: "Tuesday",
+                2: "Wednesday",
+                3: "Thursday",
+                4: "Friday",
+                5: "Saturday",
+                6: "Sunday"
+            } %}
+
+
+            <table class="schedule-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Day
+                        </th>
+
+                        <th>
+                            Start Time
+                        </th>
+
+                        <th>
+                            End Time
+                        </th>
+
+                        <th>
+                            Appointment Duration
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="text-end">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for weekday in range(7) %}
+
+                        {% set day_items = [] %}
+
+                        {% for availability in availabilities %}
+
+                            {% if availability.weekday == weekday %}
+
+                                {% set _ = day_items.append(availability) %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                        {% if day_items %}
+
+
+                            {% for availability in day_items %}
+
+                                <tr>
+
+
+                                    <!-- DAY -->
+
+                                    <td>
+
+                                        <div class="day-cell">
+
+                                            <div class="day-icon">
+
+                                                <i class="bi bi-calendar-day"></i>
+
+                                            </div>
+
+                                            <span class="day-name">
+
+                                                {{ days[weekday] }}
+
+                                            </span>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- START TIME -->
+
+                                    <td>
+
+                                        <span class="time-value">
+
+                                            <i class="bi bi-clock"></i>
+
+                                            {{ availability.start_time.strftime("%I:%M %p") }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- END TIME -->
+
+                                    <td>
+
+                                        <span class="time-value">
+
+                                            <i class="bi bi-clock-history"></i>
+
+                                            {{ availability.end_time.strftime("%I:%M %p") }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- DURATION -->
+
+                                    <td>
+
+                                        <span class="duration-badge">
+
+                                            <i class="bi bi-stopwatch"></i>
+
+                                            {{ availability.appointment_duration }}
+
+                                            minutes
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if availability.is_active %}
+
+                                            <span class="schedule-status available">
+
+                                                <i class="bi bi-check-circle-fill"></i>
+
+                                                Available
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="schedule-status inactive">
+
+                                                <i class="bi bi-pause-circle-fill"></i>
+
+                                                Inactive
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td>
+
+                                        <div class="schedule-actions">
+
+
+                                            <!-- EDIT -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'doctors.edit_availability',
+                                                    availability_id=availability.id
+                                                ) }}"
+                                                class="schedule-action edit"
+                                                title="Edit Schedule"
+                                            >
+
+                                                <i class="bi bi-pencil"></i>
+
+                                                Edit
+
+                                            </a>
+
+
+                                            <!-- TOGGLE -->
+
+                                            <form
+                                                method="POST"
+                                                action="{{ url_for(
+                                                    'doctors.toggle_availability',
+                                                    availability_id=availability.id
+                                                ) }}"
+                                                class="d-inline"
+                                            >
+
+                                                {% if availability.is_active %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="schedule-action disable"
+                                                        title="Disable Schedule"
+                                                    >
+
+                                                        <i class="bi bi-pause-circle"></i>
+
+                                                        Disable
+
+                                                    </button>
+
+                                                {% else %}
+
+                                                    <button
+                                                        type="submit"
+                                                        class="schedule-action enable"
+                                                        title="Enable Schedule"
+                                                    >
+
+                                                        <i class="bi bi-play-circle"></i>
+
+                                                        Enable
+
+                                                    </button>
+
+                                                {% endif %}
+
+                                            </form>
+
+
+                                            <!-- DELETE -->
+
+                                            <form
+                                                method="POST"
+                                                action="{{ url_for(
+                                                    'doctors.delete_availability',
+                                                    availability_id=availability.id
+                                                ) }}"
+                                                class="d-inline"
+                                                onsubmit="return confirm(
+                                                    'Are you sure you want to delete this schedule?'
+                                                );"
+                                            >
+
+                                                <button
+                                                    type="submit"
+                                                    class="schedule-action delete"
+                                                    title="Delete Schedule"
+                                                >
+
+                                                    <i class="bi bi-trash"></i>
+
+                                                    Delete
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+
+                        {% else %}
+
+
+                            <!-- EMPTY DAY -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="day-cell">
+
+                                        <div class="day-icon">
+
+                                            <i class="bi bi-calendar-day"></i>
+
+                                        </div>
+
+                                        <span class="day-name">
+
+                                            {{ days[weekday] }}
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td colspan="4">
+
+                                    <div class="empty-schedule">
+
+                                        <i class="bi bi-calendar-x"></i>
+
+                                        No schedule set for this day
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="schedule-actions">
+
+                                        <a
+                                            href="{{ url_for(
+                                                'doctors.add_availability',
+                                                doctor_id=doctor.id
+                                            ) }}"
+                                            class="set-schedule-btn"
+                                        >
+
+                                            <i class="bi bi-plus-lg"></i>
+
+                                            Set Schedule
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATION BOX
+    ====================================================== -->
+
+    <div class="schedule-info">
+
+        <div class="schedule-info-icon">
+
+            <i class="bi bi-info-circle"></i>
+
+        </div>
+
+
+        <div>
+
+            <h6 class="schedule-info-title">
+
+                Schedule Management
+
+            </h6>
+
+            <p class="schedule-info-text">
+
+                Keep your availability updated so patients can book appointments
+                only during your available hours. You can create multiple time
+                slots for the same day when needed.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+
+{% block title %}
+Staff Dashboard - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+.stat-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-title {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.icon-blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.icon-green {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.icon-orange {
+    background: #fff7ed;
+    color: #ea580c;
+}
+
+.icon-purple {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.section-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 125px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 18px rgba(0,0,0,0.08);
+}
+
+.quick-action i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.quick-action span {
+    font-weight: 600;
+}
+
+.quick-primary { color: #2563eb; }
+.quick-success { color: #059669; }
+.quick-warning { color: #d97706; }
+.quick-purple { color: #7c3aed; }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="topbar d-flex justify-content-between align-items-center">
+
+    <div>
+
+        <h2>
+            Staff Dashboard
+        </h2>
+
+        <p>
+            Welcome back,
+            <strong>{{ current_user.username }}</strong>
+        </p>
+
+    </div>
+
+    <span class="role-badge">
+
+        <i class="bi bi-person-workspace me-1"></i>
+
+        Staff
+
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     STAFF STATISTICS
+====================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Total Patients
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_patients }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Today's Appointments
+                        </div>
+
+                        <div class="stat-number">
+                            {{ today_appointments }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Consultations
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_consultations }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-orange">
+                        <i class="bi bi-file-medical"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="card stat-card">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stat-title">
+                            Prescriptions
+                        </div>
+
+                        <div class="stat-number">
+                            {{ total_prescriptions }}
+                        </div>
+
+                    </div>
+
+                    <div class="stat-icon icon-purple">
+                        <i class="bi bi-capsule"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     STAFF QUICK ACCESS
+====================================================== -->
+
+<div class="card section-card">
+
+    <div class="card-body p-4">
+
+        <h5 class="fw-bold mb-4">
+
+            <i class="bi bi-grid me-2"></i>
+
+            Quick Access
+
+        </h5>
+
+
+        <div class="row g-3">
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('patients.list_patients') }}"
+                    class="quick-action quick-primary"
+                >
+
+                    <i class="bi bi-people"></i>
+
+                    <span>
+                        Patients
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('doctors.list_doctors') }}"
+                    class="quick-action quick-success"
+                >
+
+                    <i class="bi bi-person-badge"></i>
+
+                    <span>
+                        Doctors
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('appointments.list_appointments') }}"
+                    class="quick-action quick-warning"
+                >
+
+                    <i class="bi bi-calendar-check"></i>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <div class="col-xl-3 col-md-6">
+
+                <a
+                    href="{{ url_for('prescriptions.all_prescriptions') }}"
+                    class="quick-action quick-purple"
+                >
+
+                    <i class="bi bi-capsule"></i>
+
+                    <span>
+                        Prescriptions
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="text-center mt-5 mb-3">
+
+    <small class="text-muted">
+
+        Doctor Clinic Management System
+        &nbsp;•&nbsp;
+        Staff Dashboard
+
+    </small>
+
+</div>
+
+{% endblock %}

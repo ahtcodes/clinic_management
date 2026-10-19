@@ -1,0 +1,658 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Batch - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .medicine-page {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .medicine-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .medicine-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .medicine-subtitle {
+        margin: 5px 0 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 15px;
+        background: #ffffff;
+        color: #334155;
+        border: 1px solid #dbe2ea;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .back-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+    }
+
+    .medicine-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-header-custom {
+        padding: 18px 22px;
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .card-header-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: #dbeafe;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .card-header-title {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .card-header-text {
+        margin: 2px 0 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .form-body {
+        padding: 25px 22px;
+    }
+
+    .form-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 7px;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    .form-control {
+        min-height: 44px;
+        border-color: #dbe2ea;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #172033;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .readonly-field {
+        background: #f8fafc !important;
+        color: #64748b !important;
+    }
+
+    .form-text {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 5px;
+    }
+
+    .status-box {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 9px 13px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+    }
+
+    .status-box .form-check {
+        margin: 0;
+    }
+
+    .status-box .form-check-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 22px;
+        margin-top: 8px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .cancel-btn,
+    .save-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 43px;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
+    .cancel-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+    }
+
+    .save-btn {
+        background: #2563eb;
+        color: #ffffff;
+        border: 1px solid #2563eb;
+    }
+
+    .save-btn:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    .batch-info {
+        margin-bottom: 24px;
+        padding: 14px 16px;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 9px;
+    }
+
+    .batch-info-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1e40af;
+        margin-bottom: 3px;
+    }
+
+    .batch-info-text {
+        font-size: 13px;
+        color: #475569;
+        margin: 0;
+    }
+
+    @media (max-width: 700px) {
+
+        .medicine-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .medicine-title {
+            font-size: 22px;
+        }
+
+        .form-body {
+            padding: 20px 16px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            width: 100%;
+        }
+
+        .card-header-custom {
+            padding: 16px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="medicine-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="medicine-header">
+
+        <div>
+
+            <h1 class="medicine-title">
+                Edit Batch
+            </h1>
+
+            <p class="medicine-subtitle">
+                Update stock, prices and expiry date for this batch.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for(
+                'medicines.edit_medicine',
+                medicine_id=medicine.id
+            ) }}"
+            class="back-btn"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Medicine
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <div class="medicine-card">
+
+        <div class="card-header-custom">
+
+            <div class="card-header-icon">
+                <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div>
+
+                <h2 class="card-header-title">
+                    {{ medicine.medicine_name }}
+                </h2>
+
+                <p class="card-header-text">
+                    Batch: {{ batch.batch_number }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'medicines.edit_batch',
+                batch_id=batch.id
+            ) }}"
+        >
+
+            <div class="form-body">
+
+                <!-- =================================================
+                     BATCH INFORMATION
+                ================================================== -->
+
+                <div class="batch-info">
+
+                    <div class="batch-info-title">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Batch Information
+                    </div>
+
+                    <p class="batch-info-text">
+                        You are editing only this batch.
+                        Other batches of
+                        <strong>{{ medicine.medicine_name }}</strong>
+                        will not be changed.
+                    </p>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- =================================================
+                         BATCH NUMBER
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Batch Number
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control readonly-field"
+                            value="{{ batch.batch_number }}"
+                            readonly
+                        >
+
+                        <div class="form-text">
+                            Batch number cannot be changed.
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         MEDICINE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Medicine
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control readonly-field"
+                            value="{{ medicine.medicine_name }}"
+                            readonly
+                        >
+
+                    </div>
+
+                    <!-- =================================================
+                        SUPPLIER / PURCHASED FROM
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="supplier_name"
+                            class="form-label"
+                        >
+                            Supplier / Purchased From
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="supplier_name"
+                            name="supplier_name"
+                            maxlength="200"
+                            value="{{ request.form.get(
+                                'supplier_name',
+                                batch.supplier_name or ''
+                            ) }}"
+                            placeholder="Enter supplier name"
+                        >
+
+                        <div class="form-text">
+                            Name of the supplier or pharmacy from where this batch was purchased.
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         QUANTITY
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="quantity"
+                            class="form-label"
+                        >
+                            Quantity
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="quantity"
+                            name="quantity"
+                            min="0"
+                            value="{{ request.form.get(
+                                'quantity',
+                                batch.quantity
+                            ) }}"
+                            required
+                        >
+
+                        <div class="form-text">
+                            Available stock in this batch.
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PURCHASE PRICE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="purchase_price"
+                            class="form-label"
+                        >
+                            Purchase Price (PKR)
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="purchase_price"
+                            name="purchase_price"
+                            min="0"
+                            step="0.01"
+                            value="{{ request.form.get(
+                                'purchase_price',
+                                batch.purchase_price or 0
+                            ) }}"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SELLING PRICE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="selling_price"
+                            class="form-label"
+                        >
+                            Selling Price (PKR)
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="selling_price"
+                            name="selling_price"
+                            min="0"
+                            step="0.01"
+                            value="{{ request.form.get(
+                                'selling_price',
+                                batch.selling_price or 0
+                            ) }}"
+                        >
+
+                    </div>
+
+
+                    <!-- =================================================
+                         EXPIRY DATE
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="expiry_date"
+                            class="form-label"
+                        >
+                            Expiry Date
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="expiry_date"
+                            name="expiry_date"
+
+                            {% if batch.expiry_date %}
+
+                            value="{{ request.form.get(
+                                'expiry_date',
+                                batch.expiry_date.strftime('%Y-%m-%d')
+                            ) }}"
+
+                            {% else %}
+
+                            value="{{ request.form.get(
+                                'expiry_date',
+                                ''
+                            ) }}"
+
+                            {% endif %}
+                        >
+
+                        <div class="form-text">
+                            This expiry date belongs only to
+                            {{ batch.batch_number }}.
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STATUS
+                    ================================================== -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Batch Status
+                        </label>
+
+                        <div class="status-box">
+
+                            <div class="form-check form-switch">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id="is_active"
+                                    name="is_active"
+
+                                    {% if request.form %}
+
+                                        {% if request.form.get(
+                                            'is_active'
+                                        ) == 'on' %}
+
+                                            checked
+
+                                        {% endif %}
+
+                                    {% elif batch.is_active %}
+
+                                        checked
+
+                                    {% endif %}
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="is_active"
+                                >
+                                    Active Batch
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACTIONS
+                ================================================== -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'medicines.edit_medicine',
+                            medicine_id=medicine.id
+                        ) }}"
+                        class="cancel-btn"
+                    >
+                        <i class="bi bi-x-lg"></i>
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        <i class="bi bi-check-lg"></i>
+                        Update Batch
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

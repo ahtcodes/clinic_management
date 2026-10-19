@@ -1,0 +1,1386 @@
+{% extends "base.html" %}
+
+{% block title %}
+Patients - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   PATIENTS PAGE
+========================================================= */
+
+.patients-page {
+    padding: 4px 2px 30px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.patient-page-header {
+    background:
+        linear-gradient(135deg, #0f172a 0%, #172554 55%, #1d4ed8 100%);
+    border-radius: 22px;
+    padding: 28px 30px;
+    color: #ffffff;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.16);
+}
+
+.patient-page-header::before {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    top: -110px;
+    right: -60px;
+}
+
+.patient-page-header::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    bottom: -90px;
+    right: 180px;
+}
+
+.patient-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.patient-title-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.patient-title-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 27px;
+    backdrop-filter: blur(8px);
+}
+
+.patient-page-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.5px;
+    color:white;
+}
+
+.patient-page-subtitle {
+    margin: 5px 0 0;
+    color: rgba(255,255,255,0.72);
+    font-size: 14px;
+}
+
+.patient-header-actions {
+    position: relative;
+    z-index: 2;
+}
+
+.add-patient-btn {
+    border: 0;
+    background: #ffffff;
+    color: #1d4ed8;
+    font-weight: 700;
+    padding: 11px 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: all .2s ease;
+}
+
+.add-patient-btn:hover {
+    background: #f8fafc;
+    color: #1e40af;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MINI STAT CARDS
+========================================================= */
+
+.patient-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.patient-stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 17px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 5px 18px rgba(15,23,42,0.05);
+    transition: all .2s ease;
+}
+
+.patient-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(15,23,42,0.09);
+}
+
+.patient-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    flex-shrink: 0;
+}
+
+.stat-blue {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.stat-green {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.stat-purple {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.patient-stat-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 3px;
+}
+
+.patient-stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+
+/* =========================================================
+   SEARCH CARD
+========================================================= */
+
+.patient-search-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 5px 18px rgba(15,23,42,0.05);
+}
+
+.search-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.patient-search-wrapper {
+    position: relative;
+}
+
+.patient-search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    z-index: 3;
+}
+
+.patient-search-input {
+    height: 46px;
+    border-radius: 12px !important;
+    border: 1px solid #dbe2ea;
+    padding-left: 43px;
+    padding-right: 15px;
+    font-size: 14px;
+    box-shadow: none !important;
+}
+
+.patient-search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10) !important;
+}
+
+.patient-search-btn {
+    height: 46px;
+    border-radius: 11px;
+    font-weight: 700;
+    padding: 0 20px;
+}
+
+.patient-clear-btn {
+    height: 46px;
+    border-radius: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TABLE CARD
+========================================================= */
+
+.patient-table-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(15,23,42,0.06);
+}
+
+.patient-table-header {
+    padding: 20px 22px;
+    border-bottom: 1px solid #e9edf2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #ffffff;
+}
+
+.patient-table-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.patient-table-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.patient-count-badge {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.patient-table-body {
+    padding: 0;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.patient-table {
+    min-width: 980px;
+    margin: 0;
+}
+
+.patient-table thead th {
+    background: #f8fafc !important;
+    color: #64748b;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-weight: 800;
+    padding: 15px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.patient-table tbody td {
+    padding: 16px;
+    border-bottom: 1px solid #eef2f6;
+    color: #334155;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.patient-table tbody tr {
+    transition: background .18s ease;
+}
+
+.patient-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.patient-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   PATIENT ID
+========================================================= */
+
+.patient-id-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   PATIENT NAME
+========================================================= */
+
+.patient-name-box {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.patient-avatar {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.patient-name {
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.patient-father {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.patient-gender-badge,
+.patient-blood-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.gender-male {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.gender-female {
+    background: #fdf2f8;
+    color: #db2777;
+}
+
+.gender-other {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.blood-badge {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+.patient-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.patient-phone i {
+    color: #64748b;
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.patient-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.patient-actions {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.patient-action-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px !important;
+    transition: all .18s ease;
+}
+
+.patient-action-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.patient-empty-state {
+    padding: 70px 25px;
+    text-align: center;
+}
+
+.patient-empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 18px;
+    border-radius: 22px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+}
+
+.patient-empty-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 7px;
+}
+
+.patient-empty-text {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .patient-stat-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .patient-page-header {
+        padding: 23px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .patients-page {
+        padding: 0 0 25px;
+    }
+
+    .patient-page-header {
+        border-radius: 17px;
+        padding: 20px;
+    }
+
+    .patient-title-area {
+        align-items: flex-start;
+    }
+
+    .patient-title-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 21px;
+    }
+
+    .patient-page-title {
+        font-size: 22px;
+    }
+
+    .patient-page-subtitle {
+        font-size: 12px;
+    }
+
+    .patient-header-actions {
+        margin-top: 18px;
+        width: 100%;
+    }
+
+    .add-patient-btn {
+        width: 100%;
+    }
+
+    .patient-stat-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .patient-search-card {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .patient-table-card {
+        border-radius: 15px;
+    }
+
+    .patient-table-header {
+        padding: 16px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .patient-page-header {
+        padding: 18px;
+    }
+
+    .patient-title-area {
+        gap: 11px;
+    }
+
+    .patient-title-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+    }
+
+    .patient-page-title {
+        font-size: 20px;
+    }
+
+    .patient-search-btn,
+    .patient-clear-btn {
+        width: 100%;
+    }
+
+    .patient-search-row > div {
+        width: 100%;
+    }
+
+    .patient-table-title {
+        font-size: 15px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid patients-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="patient-page-header">
+
+        <div class="patient-header-content">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <div class="patient-title-area">
+
+                        <div class="patient-title-icon">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="patient-page-title">
+                                Patients
+                            </h1>
+
+                            <p class="patient-page-subtitle">
+                                Manage clinic patients, records and information
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= ADD PATIENT ================= -->
+
+                {% if current_user.has_role("super_admin", "receptionist") %}
+
+                    <div class="col-lg-4 patient-header-actions">
+
+                        <div class="d-flex justify-content-lg-end">
+
+                            <a
+                                href="{{ url_for('patients.add_patient') }}"
+                                class="btn add-patient-btn"
+                            >
+
+                                <i class="bi bi-person-plus-fill me-2"></i>
+
+                                Add Patient
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STAT CARDS
+    ====================================================== -->
+
+    <div class="patient-stat-grid">
+
+        <div class="patient-stat-card">
+
+            <div class="patient-stat-icon stat-blue">
+
+                <i class="bi bi-people-fill"></i>
+
+            </div>
+
+            <div>
+
+                <div class="patient-stat-label">
+                    Patients Displayed
+                </div>
+
+                <div class="patient-stat-value">
+                    {{ patients|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="patient-stat-card">
+
+            <div class="patient-stat-icon stat-green">
+
+                <i class="bi bi-person-check-fill"></i>
+
+            </div>
+
+            <div>
+
+                <div class="patient-stat-label">
+                    Patient Records
+                </div>
+
+                <div class="patient-stat-value">
+                    {{ patients|length }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="patient-stat-card">
+
+            <div class="patient-stat-icon stat-purple">
+
+                <i class="bi bi-shield-check"></i>
+
+            </div>
+
+            <div>
+
+                <div class="patient-stat-label">
+                    Clinic Records
+                </div>
+
+                <div class="patient-stat-value">
+                    Active
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
+    <div class="patient-search-card">
+
+        <form
+            method="GET"
+            action="{{ url_for('patients.list_patients') }}"
+        >
+
+            <div class="row g-3 align-items-end patient-search-row">
+
+
+                <div class="col-lg-8">
+
+                    <label class="search-label">
+                        Search Patients
+                    </label>
+
+                    <div class="patient-search-wrapper">
+
+                        <i class="bi bi-search patient-search-icon"></i>
+
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ search or '' }}"
+                            class="form-control patient-search-input"
+                            placeholder="Search by patient ID, name or phone..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-auto">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary patient-search-btn"
+                    >
+
+                        <i class="bi bi-search me-1"></i>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+
+                <div class="col-lg-auto">
+
+                    <a
+                        href="{{ url_for('patients.list_patients') }}"
+                        class="btn btn-outline-secondary patient-clear-btn"
+                    >
+
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>
+
+                        Clear
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PATIENT TABLE
+    ====================================================== -->
+
+    <div class="patient-table-card">
+
+
+        <!-- ================= TABLE HEADER ================= -->
+
+        <div class="patient-table-header">
+
+            <div class="patient-table-title-wrapper">
+
+                <i class="bi bi-person-lines-fill text-primary"></i>
+
+                <h5 class="patient-table-title">
+                    Patient Directory
+                </h5>
+
+                <span class="patient-count-badge">
+
+                    {{ patients|length }}
+
+                    {% if patients|length == 1 %}
+                        Patient
+                    {% else %}
+                        Patients
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= TABLE BODY ================= -->
+
+        <div class="patient-table-body">
+
+            <div class="table-responsive">
+
+                <table class="table patient-table align-middle">
+
+
+                    <!-- ================= TABLE HEADER ================= -->
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="ps-4">
+                                Patient ID
+                            </th>
+
+                            <th>
+                                Patient
+                            </th>
+
+                            <th>
+                                Gender
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Blood Group
+                            </th>
+
+                            <th>
+                                Registered
+                            </th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <!-- ================= TABLE BODY ================= -->
+
+                    <tbody>
+
+
+                    {% for patient in patients %}
+
+                        <tr>
+
+
+                            <!-- ================= PATIENT ID ================= -->
+
+                            <td class="ps-4">
+
+                                <span class="patient-id-badge">
+
+                                    <i class="bi bi-hash"></i>
+
+                                    {{ patient.patient_code }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- ================= PATIENT NAME ================= -->
+
+                            <td>
+
+                                <div class="patient-name-box">
+
+                                    <div class="patient-avatar">
+
+                                        {% if patient.full_name %}
+
+                                            {{ patient.full_name[0]|upper }}
+
+                                        {% else %}
+
+                                            P
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <div class="patient-name">
+
+                                            {{ patient.full_name }}
+
+                                        </div>
+
+
+                                        {% if patient.father_name %}
+
+                                            <div class="patient-father">
+
+                                                <i class="bi bi-person me-1"></i>
+
+                                                {{ patient.father_name }}
+
+                                            </div>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+
+                            <!-- ================= GENDER ================= -->
+
+                            <td>
+
+                                {% if patient.gender == "Male" %}
+
+                                    <span class="patient-gender-badge gender-male">
+
+                                        <i class="bi bi-gender-male"></i>
+
+                                        Male
+
+                                    </span>
+
+                                {% elif patient.gender == "Female" %}
+
+                                    <span class="patient-gender-badge gender-female">
+
+                                        <i class="bi bi-gender-female"></i>
+
+                                        Female
+
+                                    </span>
+
+                                {% elif patient.gender %}
+
+                                    <span class="patient-gender-badge gender-other">
+
+                                        {{ patient.gender }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================= PHONE ================= -->
+
+                            <td>
+
+                                {% if patient.phone %}
+
+                                    <span class="patient-phone">
+
+                                        <i class="bi bi-telephone-fill"></i>
+
+                                        {{ patient.phone }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================= BLOOD GROUP ================= -->
+
+                            <td>
+
+                                {% if patient.blood_group %}
+
+                                    <span class="patient-blood-badge blood-badge">
+
+                                        <i class="bi bi-droplet-fill"></i>
+
+                                        {{ patient.blood_group }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================= REGISTERED ================= -->
+
+                            <td>
+
+                                {% if patient.created_at %}
+
+                                    <span class="patient-date">
+
+                                        <i class="bi bi-calendar3"></i>
+
+                                        {{ patient.created_at.strftime("%d %b %Y") }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        —
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+
+                            <!-- ================= ACTIONS ================= -->
+
+                            <td class="text-center">
+
+                                <div class="patient-actions">
+
+
+                                    <!-- ================= VIEW ================= -->
+
+                                    <a
+                                        href="{{ url_for(
+                                            'patients.view_patient',
+                                            patient_id=patient.id
+                                        ) }}"
+                                        class="btn btn-sm btn-outline-primary patient-action-btn"
+                                        title="View Patient"
+                                        data-bs-toggle="tooltip"
+                                    >
+
+                                        <i class="bi bi-eye-fill"></i>
+
+                                    </a>
+
+
+
+                                    <!-- ================= MESSAGE ================= -->
+                                    <!-- Doctor ONLY -->
+
+                                    {% if current_user.has_role("doctor") %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'chat.doctor_chat',
+                                                patient_id=patient.id
+                                            ) }}"
+                                            class="btn btn-sm btn-outline-success patient-action-btn"
+                                            title="Message Patient"
+                                            data-bs-toggle="tooltip"
+                                        >
+
+                                            <i class="bi bi-chat-dots-fill"></i>
+
+                                        </a>
+
+                                    {% endif %}
+
+
+
+                                    <!-- ================= EDIT ================= -->
+                                    <!-- Super Admin + Receptionist -->
+
+                                    {% if current_user.has_role(
+                                        "super_admin",
+                                        "receptionist"
+                                    ) %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'patients.edit_patient',
+                                                patient_id=patient.id
+                                            ) }}"
+                                            class="btn btn-sm btn-outline-secondary patient-action-btn"
+                                            title="Edit Patient"
+                                            data-bs-toggle="tooltip"
+                                        >
+
+                                            <i class="bi bi-pencil-fill"></i>
+
+                                        </a>
+
+                                    {% endif %}
+
+
+
+                                    <!-- ================= DELETE ================= -->
+                                    <!-- Super Admin ONLY -->
+
+                                    {% if current_user.has_role("super_admin") %}
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'patients.delete_patient',
+                                                patient_id=patient.id
+                                            ) }}"
+                                            class="d-inline"
+                                            onsubmit="return confirm(
+                                                'Are you sure you want to delete this patient?'
+                                            );"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger patient-action-btn"
+                                                title="Delete Patient"
+                                                data-bs-toggle="tooltip"
+                                            >
+
+                                                <i class="bi bi-trash3-fill"></i>
+
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% else %}
+
+
+                        <!-- =================================================
+                             EMPTY STATE
+                        ================================================== -->
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="p-0"
+                            >
+
+                                <div class="patient-empty-state">
+
+                                    <div class="patient-empty-icon">
+
+                                        <i class="bi bi-people"></i>
+
+                                    </div>
+
+                                    <div class="patient-empty-title">
+
+                                        No patients found
+
+                                    </div>
+
+
+                                    {% if search %}
+
+                                        <div class="patient-empty-text">
+
+                                            No patient matched
+
+                                            "<strong>{{ search }}</strong>"
+
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="patient-empty-text">
+
+                                            There are currently no patient records.
+                                            Start by adding your first patient.
+
+                                        </div>
+
+                                    {% endif %}
+
+
+
+                                    <!-- ================= ADD PATIENT ================= -->
+
+                                    {% if current_user.has_role(
+                                        "super_admin",
+                                        "receptionist"
+                                    ) %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'patients.add_patient'
+                                            ) }}"
+                                            class="btn btn-primary"
+                                        >
+
+                                            <i class="bi bi-person-plus-fill me-2"></i>
+
+                                            Add Patient
+
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOOLTIP INITIALIZATION
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tooltipElements =
+        document.querySelectorAll('[data-bs-toggle="tooltip"]');
+
+    tooltipElements.forEach(function (element) {
+
+        new bootstrap.Tooltip(element);
+
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

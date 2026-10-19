@@ -1,0 +1,1964 @@
+{% extends "base.html" %}
+
+{% block title %}
+Online Appointment - Doctor Clinic
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       ONLINE APPOINTMENT - PREMIUM MEDICAL UI
+       ========================================================= */
+
+    .online-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 35px 20px 70px;
+    box-sizing: border-box;
+    }
+
+    /* ================= HERO ================= */
+
+    .appointment-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 26px;
+        padding: 34px 36px;
+        margin-bottom: 24px;
+        background:
+            radial-gradient(circle at 90% 15%, rgba(59,130,246,.25), transparent 30%),
+            radial-gradient(circle at 10% 100%, rgba(14,165,233,.16), transparent 35%),
+            linear-gradient(135deg, #0b1730 0%, #102a56 55%, #174ea6 100%);
+        color: #fff;
+        box-shadow: 0 20px 50px rgba(15,23,42,.18);
+    }
+
+    .appointment-hero::before {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        border-radius: 50%;
+        right: -80px;
+        top: -100px;
+        background: rgba(255,255,255,.06);
+    }
+
+    .appointment-hero::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        left: 38%;
+        bottom: -100px;
+        background: rgba(96,165,250,.08);
+    }
+
+    .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+    }
+
+    .hero-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    }
+    .hero-icon {
+        width: 76px;
+        height: 76px;
+        flex: 0 0 76px;
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.18);
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.15),
+            0 12px 30px rgba(0,0,0,.15);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-title {
+        margin: 0 0 7px;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -.5px;
+        color:white;
+    }
+
+    .hero-subtitle {
+        margin: 0;
+        color: rgba(255,255,255,.76);
+        font-size: 14px;
+        line-height: 1.7;
+        max-width: 650px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.10);
+        border: 1px solid rgba(255,255,255,.16);
+        color: #dbeafe;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-badge i {
+        color: #4ade80;
+        font-size: 9px;
+    }
+
+    /* ================= FLASH ================= */
+
+    .flash-area {
+        margin-bottom: 22px;
+    }
+
+    .premium-alert {
+        border: 0;
+        border-radius: 16px;
+        padding: 14px 17px;
+        box-shadow: 0 8px 25px rgba(15,23,42,.07);
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-size: 14px;
+    }
+
+    .premium-alert i {
+        font-size: 18px;
+    }
+
+    /* ================= MAIN CARD ================= */
+
+    .appointment-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(255,255,255,.97);
+        border: 1px solid #e6edf7;
+        border-radius: 25px;
+        box-shadow:
+            0 20px 60px rgba(15,23,42,.08),
+            0 4px 15px rgba(37,99,235,.04);
+    }
+
+    .appointment-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #2563eb, #38bdf8, #2563eb);
+    }
+
+    .appointment-form {
+        padding: 30px;
+    }
+
+    /* ================= SECTION ================= */
+
+    .form-section {
+        padding: 25px;
+        margin-bottom: 22px;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #ffffff, #f8fbff);
+        border: 1px solid #e5edf7;
+        box-shadow: 0 7px 25px rgba(15,23,42,.035);
+    }
+
+    .form-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .section-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border: 1px solid #dbeafe;
+        font-size: 20px;
+    }
+
+    .section-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .section-description {
+        margin: 3px 0 0;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .section-number {
+        margin-left: auto;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2563eb;
+        background: #eff6ff;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    /* ================= FORM ================= */
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 8px;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .required-star {
+        color: #ef4444;
+    }
+
+    .input-wrap {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        color: #64748b;
+        font-size: 16px;
+        pointer-events: none;
+        transition: .2s ease;
+    }
+
+    .premium-input,
+    .premium-select,
+    .premium-textarea {
+        width: 100%;
+        border: 1px solid #dce5f0;
+        border-radius: 13px;
+        background: #fff;
+        color: #0f172a;
+        font-size: 14px;
+        padding: 13px 15px 13px 44px;
+        outline: none;
+        transition: all .22s ease;
+        box-shadow: 0 3px 10px rgba(15,23,42,.025);
+    }
+
+    .premium-input:hover,
+    .premium-select:hover,
+    .premium-textarea:hover {
+        border-color: #b8c9df;
+    }
+
+    .premium-input:focus,
+    .premium-select:focus,
+    .premium-textarea:focus {
+        border-color: #3b82f6;
+        box-shadow:
+            0 0 0 4px rgba(37,99,235,.09),
+            0 7px 20px rgba(37,99,235,.06);
+    }
+
+    .input-wrap:focus-within .input-icon {
+        color: #2563eb;
+    }
+
+    .premium-select {
+        cursor: pointer;
+        appearance: auto;
+    }
+
+    .premium-textarea {
+        min-height: 125px;
+        resize: vertical;
+        padding-top: 14px;
+    }
+
+    .textarea-wrap .input-icon {
+        top: 18px;
+        transform: none;
+    }
+
+    .form-help {
+        margin-top: 7px;
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    /* ================= ACCOUNT BOX ================= */
+
+    .account-box {
+        position: relative;
+        overflow: hidden;
+        padding: 21px;
+        border-radius: 18px;
+        margin-bottom: 22px;
+        background:
+            radial-gradient(circle at 100% 0%, rgba(37,99,235,.12), transparent 30%),
+            linear-gradient(135deg, #eff6ff, #f8fbff);
+        border: 1px solid #d9e8fb;
+    }
+
+    .account-box::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        right: -55px;
+        bottom: -60px;
+        background: rgba(37,99,235,.06);
+    }
+
+    .account-head {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .account-icon {
+        width: 45px;
+        height: 45px;
+        flex: 0 0 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        box-shadow: 0 9px 20px rgba(37,99,235,.22);
+    }
+
+    .account-title {
+        margin: 0 0 4px;
+        color: #0f172a;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .account-description {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .password-status {
+        min-height: 20px;
+        margin-top: 7px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .password-status.valid {
+        color: #16a34a;
+    }
+
+    .password-status.invalid {
+        color: #dc2626;
+    }
+
+    /* ================= APPOINTMENT DETAILS ================= */
+
+    .schedule-highlight {
+        padding: 20px;
+        margin-bottom: 22px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #f8fbff, #eef6ff);
+        border: 1px solid #dceafb;
+    }
+
+    .schedule-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #1e3a8a;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .schedule-title i {
+        font-size: 17px;
+    }
+
+    .slot-status {
+        min-height: 20px;
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .slot-status.loading {
+        color: #2563eb;
+    }
+
+    .slot-status.success {
+        color: #16a34a;
+    }
+
+    .slot-status.error {
+        color: #dc2626;
+    }
+
+    /* ================= INFO NOTES ================= */
+
+    .info-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 17px;
+        margin-top: 20px;
+        border-radius: 16px;
+        border: 1px solid #dbeafe;
+        background: #eff6ff;
+        color: #1e40af;
+    }
+
+    .info-note i {
+        margin-top: 2px;
+        font-size: 18px;
+    }
+
+    .info-note strong {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 13px;
+    }
+
+    .info-note span {
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .security-note {
+        border-color: #d1fae5;
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .security-note span {
+        color: #475569;
+    }
+
+    /* ================= BUTTONS ================= */
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        padding-top: 25px;
+        margin-top: 25px;
+        border-top: 1px solid #e8eef6;
+    }
+
+    .btn-clear,
+    .btn-submit {
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 13px;
+        border: 0;
+        font-size: 13px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        transition: all .22s ease;
+    }
+
+    .btn-clear {
+        color: #475569;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-clear:hover {
+        color: #1e293b;
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+
+    .btn-submit {
+        min-width: 205px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        box-shadow: 0 10px 24px rgba(37,99,235,.22);
+    }
+
+    .btn-submit:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(37,99,235,.30);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+        opacity: .75;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* ================= FOOTER INFO ================= */
+
+    .appointment-footer {
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        flex-wrap: wrap;
+        padding: 22px 10px 0;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    .footer-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .footer-item i {
+        color: #2563eb;
+        font-size: 14px;
+    }
+
+    /* ================= ANIMATION ================= */
+
+    .appointment-hero,
+    .appointment-card {
+        animation: pageAppear .45s ease both;
+    }
+
+    .appointment-card {
+        animation-delay: .06s;
+    }
+
+    @keyframes pageAppear {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 900px) {
+        .online-page {
+            padding: 12px 4px 30px;
+        }
+
+        .appointment-hero {
+            padding: 27px 25px;
+        }
+
+        .hero-content {
+            align-items: flex-start;
+        }
+
+        .hero-badge {
+            display: none;
+        }
+
+        .appointment-form {
+            padding: 22px;
+        }
+
+        .form-section {
+            padding: 21px;
+        }
+    }
+
+    @media (max-width: 650px) {
+        .appointment-hero {
+            border-radius: 20px;
+        }
+
+        .hero-left {
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .hero-icon {
+            width: 58px;
+            height: 58px;
+            flex-basis: 58px;
+            border-radius: 17px;
+            font-size: 25px;
+        }
+
+        .hero-title {
+            font-size: 23px;
+        }
+
+        .hero-subtitle {
+            font-size: 12px;
+        }
+
+        .appointment-card {
+            border-radius: 19px;
+        }
+
+        .appointment-form {
+            padding: 15px;
+        }
+
+        .form-section {
+            padding: 17px;
+            border-radius: 16px;
+        }
+
+        .section-number {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .btn-clear,
+        .btn-submit {
+            width: 100%;
+        }
+
+        .appointment-footer {
+            gap: 13px;
+        }
+    }
+
+    @media (max-width: 430px) {
+        .online-page {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .appointment-hero {
+            padding: 22px 18px;
+        }
+
+        .hero-icon {
+            width: 52px;
+            height: 52px;
+            flex-basis: 52px;
+            font-size: 22px;
+        }
+
+        .hero-title {
+            font-size: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 11px;
+        }
+
+        .form-section {
+            padding: 14px;
+        }
+
+        .account-box,
+        .schedule-highlight {
+            padding: 15px;
+        }
+
+        .premium-input,
+        .premium-select,
+        .premium-textarea {
+            font-size: 13px;
+        }
+    }
+</style>
+
+
+<div class="online-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <div class="appointment-hero">
+
+        <div class="hero-content">
+
+            <div class="hero-left">
+
+                <div class="hero-icon">
+                    <i class="bi bi-calendar2-heart"></i>
+                </div>
+
+                <div>
+                    <h1 class="hero-title">
+                        Book an Appointment
+                    </h1>
+
+                    <p class="hero-subtitle">
+                        Schedule your appointment with our doctors quickly and securely.
+                        Create your patient account and manage your appointments easily.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="hero-badge">
+                <i class="bi bi-circle-fill"></i>
+                Online Booking Available
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+         ===================================================== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-area">
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="premium-alert alert
+                        {% if category == 'success' %}
+                            alert-success
+                        {% elif category == 'danger' %}
+                            alert-danger
+                        {% elif category == 'warning' %}
+                            alert-warning
+                        {% else %}
+                            alert-info
+                        {% endif %}"
+                    >
+
+                        {% if category == 'success' %}
+                            <i class="bi bi-check-circle-fill"></i>
+                        {% elif category == 'danger' %}
+                            <i class="bi bi-exclamation-octagon-fill"></i>
+                        {% elif category == 'warning' %}
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        {% else %}
+                            <i class="bi bi-info-circle-fill"></i>
+                        {% endif %}
+
+                        <span>{{ message }}</span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- =====================================================
+         MAIN CARD
+         ===================================================== -->
+    <div class="appointment-card">
+
+        <form
+            id="onlineAppointmentForm"
+            method="POST"
+            action="{{ url_for('appointments.online_appointment') }}"
+            class="appointment-form"
+        >
+
+            <!-- =================================================
+                 PATIENT INFORMATION
+                 ================================================= -->
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        <i class="bi bi-person-vcard"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title">
+                            Patient Information
+                        </h2>
+
+                        <p class="section-description">
+                            Enter the patient's basic contact information.
+                        </p>
+                    </div>
+
+                    <div class="section-number">
+                        01
+                    </div>
+
+                </div>
+
+
+                <div class="row g-3">
+
+                    <!-- Patient Name -->
+                    <div class="col-md-4">
+
+                        <label
+                            for="patient_name"
+                            class="form-label"
+                        >
+                            Patient Name
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-wrap">
+
+                            <i class="bi bi-person input-icon"></i>
+
+                            <input
+                                type="text"
+                                class="premium-input"
+                                id="patient_name"
+                                name="patient_name"
+                                maxlength="150"
+                                required
+                                placeholder="Enter full name"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="col-md-4">
+
+                        <label
+                            for="patient_phone"
+                            class="form-label"
+                        >
+                            Phone Number
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-wrap">
+
+                            <i class="bi bi-telephone input-icon"></i>
+
+                            <input
+                                type="tel"
+                                class="premium-input"
+                                id="patient_phone"
+                                name="patient_phone"
+                                maxlength="30"
+                                required
+                                placeholder="03XX XXXXXXX"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="col-md-4">
+
+                        <label
+                            for="patient_email"
+                            class="form-label"
+                        >
+                            Email Address
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-wrap">
+
+                            <i class="bi bi-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                class="premium-input"
+                                id="patient_email"
+                                name="patient_email"
+                                maxlength="150"
+                                required
+                                placeholder="patient@example.com"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PATIENT ACCOUNT
+                 ================================================= -->
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title">
+                            Patient Account
+                        </h2>
+
+                        <p class="section-description">
+                            Create login credentials to access your patient dashboard.
+                        </p>
+                    </div>
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                </div>
+
+
+                <!-- Account Information -->
+                <div class="account-box">
+
+                    <div class="account-head">
+
+                        <div class="account-icon">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3 class="account-title">
+                                Create Your Patient Login
+                            </h3>
+
+                            <p class="account-description">
+                                Your account will allow you to view appointments,
+                                communicate with doctors and access your patient portal.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        <!-- Username -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="username"
+                                class="form-label"
+                            >
+                                Username
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-at input-icon"></i>
+
+                                <input
+                                    type="text"
+                                    class="premium-input"
+                                    id="username"
+                                    name="username"
+                                    minlength="3"
+                                    maxlength="100"
+                                    required
+                                    placeholder="Choose username"
+                                >
+
+                            </div>
+
+                            <div class="form-help">
+                                Minimum 3 characters.
+                            </div>
+
+                        </div>
+
+
+                        <!-- Password -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="password"
+                                class="form-label"
+                            >
+                                Password
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-lock input-icon"></i>
+
+                                <input
+                                    type="password"
+                                    class="premium-input"
+                                    id="password"
+                                    name="password"
+                                    minlength="8"
+                                    required
+                                    placeholder="Create password"
+                                >
+
+                            </div>
+
+                            <div class="form-help">
+                                Minimum 8 characters.
+                            </div>
+
+                        </div>
+
+
+                        <!-- Confirm Password -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="confirm_password"
+                                class="form-label"
+                            >
+                                Confirm Password
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-shield-check input-icon"></i>
+
+                                <input
+                                    type="password"
+                                    class="premium-input"
+                                    id="confirm_password"
+                                    name="confirm_password"
+                                    minlength="8"
+                                    required
+                                    placeholder="Repeat password"
+                                >
+
+                            </div>
+
+                            <div
+                                id="passwordMatchMessage"
+                                class="password-status"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Security Note -->
+                <div class="info-note security-note">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    <div>
+
+                        <strong>
+                            Your account is secure
+                        </strong>
+
+                        <span>
+                            Keep your username and password private.
+                            You will use these credentials to access your patient dashboard.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 APPOINTMENT DETAILS
+                 ================================================= -->
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="section-title">
+                            Appointment Details
+                        </h2>
+
+                        <p class="section-description">
+                            Select your preferred doctor, date and available time.
+                        </p>
+                    </div>
+
+                    <div class="section-number">
+                        03
+                    </div>
+
+                </div>
+
+
+                <!-- Schedule Highlight -->
+                <div class="schedule-highlight">
+
+                    <div class="schedule-title">
+                        <i class="bi bi-clock-history"></i>
+                        Select Appointment Schedule
+                    </div>
+
+
+                    <div class="row g-3">
+
+                        <!-- Doctor -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="doctor_id"
+                                class="form-label"
+                            >
+                                Select Doctor
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-person-badge input-icon"></i>
+
+                                <select
+                                    class="premium-select"
+                                    id="doctor_id"
+                                    name="doctor_id"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select doctor
+                                    </option>
+
+                                    {% for doctor in doctors %}
+
+                                        <option value="{{ doctor.id }}">
+                                            Dr. {{ doctor.full_name }}
+                                            {% if doctor.specialization %}
+                                                - {{ doctor.specialization }}
+                                            {% endif %}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Date -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="appointment_date"
+                                class="form-label"
+                            >
+                                Appointment Date
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-calendar3 input-icon"></i>
+
+                                <input
+                                    type="date"
+                                    class="premium-input"
+                                    id="appointment_date"
+                                    name="appointment_date"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Time -->
+                        <div class="col-md-4">
+
+                            <label
+                                for="appointment_time"
+                                class="form-label"
+                            >
+                                Available Time
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="bi bi-clock input-icon"></i>
+
+                                <select
+                                    class="premium-select"
+                                    id="appointment_time"
+                                    name="appointment_time"
+                                    required
+                                    disabled
+                                >
+
+                                    <option value="">
+                                        First select doctor and date
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div
+                                id="slotMessage"
+                                class="slot-status"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Reason -->
+                <div>
+
+                    <label
+                        for="reason"
+                        class="form-label"
+                    >
+                        Reason for Appointment
+                    </label>
+
+                    <div class="input-wrap textarea-wrap">
+
+                        <i class="bi bi-chat-left-text input-icon"></i>
+
+                        <textarea
+                            class="premium-textarea"
+                            id="reason"
+                            name="reason"
+                            maxlength="1000"
+                            placeholder="Briefly describe the reason for your appointment..."
+                        ></textarea>
+
+                    </div>
+
+                    <div class="form-help">
+                        Maximum 1000 characters.
+                    </div>
+
+                </div>
+
+
+                <!-- Important Note -->
+                <div class="info-note">
+
+                    <i class="bi bi-info-circle-fill"></i>
+
+                    <div>
+
+                        <strong>
+                            Important Appointment Information
+                        </strong>
+
+                        <span>
+                            Please arrive a few minutes before your scheduled appointment.
+                            Your request will be reviewed by the clinic and the appointment
+                            status will be updated accordingly.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+                 ================================================= -->
+            <div class="form-actions">
+
+                <button
+                    type="reset"
+                    class="btn-clear"
+                    id="clearButton"
+                >
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Clear Form
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-submit"
+                    id="submitButton"
+                >
+                    <i class="bi bi-calendar2-check"></i>
+                    Request Appointment
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER INFO
+         ===================================================== -->
+    <div class="appointment-footer">
+
+        <div class="footer-item">
+            <i class="bi bi-shield-check"></i>
+            Secure Patient Registration
+        </div>
+
+        <div class="footer-item">
+            <i class="bi bi-clock-history"></i>
+            Real-time Available Slots
+        </div>
+
+        <div class="footer-item">
+            <i class="bi bi-hospital"></i>
+            Doctor Clinic
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("onlineAppointmentForm");
+
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm_password");
+
+    const passwordMatchMessage =
+        document.getElementById("passwordMatchMessage");
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+    const clearButton =
+        document.getElementById("clearButton");
+
+    const doctorSelect =
+        document.getElementById("doctor_id");
+
+    const appointmentDate =
+        document.getElementById("appointment_date");
+
+    const appointmentTime =
+        document.getElementById("appointment_time");
+
+    const slotMessage =
+        document.getElementById("slotMessage");
+
+
+    /* =====================================================
+       SET MIN DATE = TODAY
+       ===================================================== */
+
+    const today = new Date();
+
+    const yyyy = today.getFullYear();
+
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+
+    const dd = String(today.getDate()).padStart(2, "0");
+
+    const todayString = `${yyyy}-${mm}-${dd}`;
+
+    appointmentDate.min = todayString;
+
+
+    /* =====================================================
+       FORMAT TIME
+       Backend value remains HH:MM
+       Example:
+       13:00 -> 1:00 PM
+       13:20 -> 1:20 PM
+       ===================================================== */
+
+    function formatTime12Hour(time24) {
+
+        const parts = time24.split(":");
+
+        let hours = parseInt(parts[0], 10);
+
+        const minutes = parts[1];
+
+        const period = hours >= 12 ? "PM" : "AM";
+
+        if (hours === 0) {
+            hours = 12;
+        }
+        else if (hours > 12) {
+            hours -= 12;
+        }
+
+        return `${hours}:${minutes} ${period}`;
+    }
+
+
+    /* =====================================================
+       PASSWORD MATCH
+       ===================================================== */
+
+    function checkPasswords() {
+
+        const pass = password.value;
+
+        const confirm = confirmPassword.value;
+
+        if (!pass && !confirm) {
+
+            passwordMatchMessage.textContent = "";
+
+            passwordMatchMessage.className =
+                "password-status";
+
+            password.classList.remove(
+                "is-valid",
+                "is-invalid"
+            );
+
+            confirmPassword.classList.remove(
+                "is-valid",
+                "is-invalid"
+            );
+
+            return true;
+        }
+
+
+        if (pass === confirm && pass.length >= 8) {
+
+            passwordMatchMessage.innerHTML =
+                '<i class="bi bi-check-circle-fill"></i> Passwords match.';
+
+            passwordMatchMessage.className =
+                "password-status valid";
+
+            password.classList.remove("is-invalid");
+            password.classList.add("is-valid");
+
+            confirmPassword.classList.remove("is-invalid");
+            confirmPassword.classList.add("is-valid");
+
+            return true;
+        }
+
+
+        if (confirm.length > 0) {
+
+            passwordMatchMessage.innerHTML =
+                '<i class="bi bi-exclamation-circle-fill"></i> Passwords do not match.';
+
+            passwordMatchMessage.className =
+                "password-status invalid";
+
+            confirmPassword.classList.remove("is-valid");
+            confirmPassword.classList.add("is-invalid");
+
+        }
+
+        return false;
+    }
+
+
+    password.addEventListener("input", checkPasswords);
+
+    confirmPassword.addEventListener(
+        "input",
+        checkPasswords
+    );
+
+
+    /* =====================================================
+       LOAD AVAILABLE SLOTS
+       ===================================================== */
+
+    async function loadAvailableSlots() {
+
+        const doctorId = doctorSelect.value;
+
+        const selectedDate = appointmentDate.value;
+
+
+        appointmentTime.innerHTML =
+            '<option value="">Loading available times...</option>';
+
+        appointmentTime.disabled = true;
+
+        slotMessage.textContent = "";
+
+        slotMessage.className =
+            "slot-status loading";
+
+
+        if (!doctorId || !selectedDate) {
+
+            appointmentTime.innerHTML =
+                '<option value="">First select doctor and date</option>';
+
+            appointmentTime.disabled = true;
+
+            slotMessage.textContent = "";
+
+            slotMessage.className =
+                "slot-status";
+
+            return;
+        }
+
+
+        slotMessage.innerHTML =
+            '<i class="bi bi-arrow-repeat"></i> Checking available slots...';
+
+
+        try {
+
+            const response = await fetch(
+                `/appointments/available-slots?doctor_id=${encodeURIComponent(doctorId)}&appointment_date=${encodeURIComponent(selectedDate)}`
+            );
+
+
+            const data = await response.json();
+
+
+            appointmentTime.innerHTML = "";
+
+
+            if (
+                !data.slots ||
+                data.slots.length === 0
+            ) {
+
+                appointmentTime.innerHTML =
+                    '<option value="">No available slots</option>';
+
+                appointmentTime.disabled = true;
+
+                slotMessage.innerHTML =
+                    '<i class="bi bi-calendar-x"></i> No available appointment slots for this date.';
+
+                slotMessage.className =
+                    "slot-status error";
+
+                return;
+            }
+
+
+            const defaultOption =
+                document.createElement("option");
+
+            defaultOption.value = "";
+
+            defaultOption.textContent =
+                "Select available time";
+
+            appointmentTime.appendChild(
+                defaultOption
+            );
+
+
+            data.slots.forEach(function (slot) {
+
+                const option =
+                    document.createElement("option");
+
+                /*
+                 * IMPORTANT:
+                 * Actual value remains 13:00 etc.
+                 * Only visible text becomes 1:00 PM.
+                 */
+                option.value = slot.value;
+
+                option.textContent =
+                    formatTime12Hour(slot.value);
+
+                appointmentTime.appendChild(
+                    option
+                );
+
+            });
+
+
+            appointmentTime.disabled = false;
+
+
+            slotMessage.innerHTML =
+                `<i class="bi bi-check-circle-fill"></i> ${data.slots.length} appointment slot${data.slots.length > 1 ? "s" : ""} available.`;
+
+            slotMessage.className =
+                "slot-status success";
+
+        }
+        catch (error) {
+
+            console.error(
+                "Error loading appointment slots:",
+                error
+            );
+
+
+            appointmentTime.innerHTML =
+                '<option value="">Unable to load slots</option>';
+
+            appointmentTime.disabled = true;
+
+
+            slotMessage.innerHTML =
+                '<i class="bi bi-exclamation-triangle-fill"></i> Unable to load available slots. Please try again.';
+
+            slotMessage.className =
+                "slot-status error";
+        }
+
+    }
+
+
+    /* =====================================================
+       DOCTOR CHANGE
+       ===================================================== */
+
+    doctorSelect.addEventListener(
+        "change",
+        loadAvailableSlots
+    );
+
+
+    /* =====================================================
+       DATE CHANGE
+       ===================================================== */
+
+    appointmentDate.addEventListener(
+        "change",
+        function () {
+
+            if (
+                appointmentDate.value &&
+                appointmentDate.value < todayString
+            ) {
+
+                appointmentDate.value = "";
+
+                appointmentTime.innerHTML =
+                    '<option value="">First select doctor and date</option>';
+
+                appointmentTime.disabled = true;
+
+                slotMessage.innerHTML =
+                    '<i class="bi bi-exclamation-triangle-fill"></i> Please select today or a future date.';
+
+                slotMessage.className =
+                    "slot-status error";
+
+                return;
+            }
+
+
+            loadAvailableSlots();
+
+        }
+    );
+
+
+    /* =====================================================
+       FORM SUBMIT
+       ===================================================== */
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            let valid = true;
+
+
+            /* Password match */
+
+            if (!checkPasswords()) {
+
+                valid = false;
+
+            }
+
+
+            /* Password length */
+
+            if (password.value.length < 8) {
+
+                password.classList.add(
+                    "is-invalid"
+                );
+
+                valid = false;
+
+            }
+
+
+            /* Username */
+
+            if (username.value.trim().length < 3) {
+
+                username.classList.add(
+                    "is-invalid"
+                );
+
+                valid = false;
+
+            }
+
+
+            /* Doctor */
+
+            if (!doctorSelect.value) {
+
+                doctorSelect.classList.add(
+                    "is-invalid"
+                );
+
+                valid = false;
+
+            }
+
+
+            /* Date */
+
+            if (!appointmentDate.value) {
+
+                appointmentDate.classList.add(
+                    "is-invalid"
+                );
+
+                valid = false;
+
+            }
+
+
+            /* Time */
+
+            if (!appointmentTime.value) {
+
+                appointmentTime.classList.add(
+                    "is-invalid"
+                );
+
+                valid = false;
+
+            }
+
+
+            if (!valid) {
+
+                event.preventDefault();
+
+                return;
+
+            }
+
+
+            /* Disable button */
+
+            submitButton.disabled = true;
+
+            submitButton.innerHTML =
+                `
+                <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                ></span>
+                Processing Request...
+                `;
+
+        }
+    );
+
+
+    /* =====================================================
+       RESET FORM
+       ===================================================== */
+
+    form.addEventListener(
+        "reset",
+        function () {
+
+            setTimeout(function () {
+
+                appointmentDate.min =
+                    todayString;
+
+                appointmentTime.innerHTML =
+                    '<option value="">First select doctor and date</option>';
+
+                appointmentTime.disabled = true;
+
+                slotMessage.textContent = "";
+
+                slotMessage.className =
+                    "slot-status";
+
+
+                passwordMatchMessage.textContent = "";
+
+                passwordMatchMessage.className =
+                    "password-status";
+
+
+                document
+                    .querySelectorAll(
+                        ".is-valid, .is-invalid"
+                    )
+                    .forEach(function (element) {
+
+                        element.classList.remove(
+                            "is-valid",
+                            "is-invalid"
+                        );
+
+                    });
+
+
+                submitButton.disabled = false;
+
+                submitButton.innerHTML =
+                    `
+                    <i class="bi bi-calendar2-check"></i>
+                    Request Appointment
+                    `;
+
+            }, 0);
+
+        }
+    );
+
+
+    /* =====================================================
+       REMOVE INVALID STATE WHILE USER TYPES
+       ===================================================== */
+
+    [
+        username,
+        password,
+        confirmPassword,
+        appointmentDate
+    ].forEach(function (element) {
+
+        element.addEventListener(
+            "input",
+            function () {
+
+                element.classList.remove(
+                    "is-invalid"
+                );
+
+            }
+        );
+
+    });
+
+
+    doctorSelect.addEventListener(
+        "change",
+        function () {
+
+            doctorSelect.classList.remove(
+                "is-invalid"
+            );
+
+        }
+    );
+
+
+    appointmentTime.addEventListener(
+        "change",
+        function () {
+
+            appointmentTime.classList.remove(
+                "is-invalid"
+            );
+
+        }
+    );
+
+});
+</script>
+
+{% endblock %}

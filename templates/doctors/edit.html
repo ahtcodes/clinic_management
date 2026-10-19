@@ -1,0 +1,1226 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Doctor - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   EDIT DOCTOR PAGE
+========================================================= */
+
+.edit-doctor-page {
+    padding-bottom: 35px;
+}
+
+/* =========================================================
+   HERO HEADER
+========================================================= */
+
+.edit-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #172554 55%,
+        #2563eb 100%
+    );
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    color: #fff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.edit-hero::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.045);
+    right: -80px;
+    top: -110px;
+}
+
+.edit-hero::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.035);
+    right: 170px;
+    bottom: -100px;
+}
+
+.edit-hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.edit-profile {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.edit-avatar {
+    width: 68px;
+    height: 68px;
+    min-width: 68px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+    backdrop-filter: blur(8px);
+}
+
+.edit-title {
+    font-size: 27px;
+    font-weight: 800;
+    margin: 0 0 5px;
+    letter-spacing: -0.4px;
+}
+
+.edit-subtitle {
+    margin: 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.edit-hero-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.hero-action {
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.hero-view {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+.hero-view:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-back {
+    color: #0f172a;
+    background: #fff;
+    border-color: #fff;
+}
+
+.hero-back:hover {
+    color: #0f172a;
+    background: #f8fafc;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.edit-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 7px 24px rgba(15, 23, 42, 0.06);
+}
+
+.edit-card-header {
+    padding: 21px 24px;
+    border-bottom: 1px solid #eef2f7;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-header-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 20px;
+}
+
+.card-header-title {
+    margin: 0;
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.card-header-subtitle {
+    margin-top: 2px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.edit-card-body {
+    padding: 25px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section {
+    margin-bottom: 27px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.section-heading-icon {
+    width: 31px;
+    height: 31px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.section-heading-title {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 750;
+    margin: 0;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group-custom {
+    margin-bottom: 4px;
+}
+
+.form-label-custom {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.required-star {
+    color: #dc2626;
+}
+
+.form-control-custom,
+.form-select-custom {
+    min-height: 45px;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    background: #fff;
+    color: #0f172a;
+    font-size: 13px;
+    padding: 10px 13px;
+    transition: all 0.2s ease;
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.form-control-custom::placeholder {
+    color: #94a3b8;
+}
+
+.form-control-custom:disabled {
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.form-help {
+    color: #94a3b8;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+/* =========================================================
+   INPUT GROUP
+========================================================= */
+
+.input-group-custom {
+    display: flex;
+}
+
+.input-group-custom .input-prefix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    padding: 0 12px;
+    border: 1px solid #dbe2ea;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.input-group-custom .form-control-custom {
+    border-radius: 0 10px 10px 0;
+}
+
+/* =========================================================
+   DOCTOR CODE
+========================================================= */
+
+.code-box {
+    position: relative;
+}
+
+.code-box .code-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-select-wrapper {
+    position: relative;
+}
+
+.status-help-box {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.status-help-box i {
+    color: #2563eb;
+}
+
+/* =========================================================
+   ACCOUNT INFO
+========================================================= */
+
+.account-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    padding: 16px 17px;
+    margin-top: 25px;
+}
+
+.account-info-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.account-info-title {
+    color: #1e3a8a;
+    font-size: 13px;
+    font-weight: 750;
+    margin-bottom: 4px;
+}
+
+.account-info-text {
+    color: #475569;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   SELECT ACCOUNT
+========================================================= */
+
+.account-select-box {
+    position: relative;
+}
+
+.account-select-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* =========================================================
+   FORM FOOTER
+========================================================= */
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 28px;
+    padding-top: 21px;
+    border-top: 1px solid #eef2f7;
+}
+
+.footer-left {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.footer-left i {
+    color: #2563eb;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.btn-custom {
+    min-height: 43px;
+    border-radius: 10px;
+    padding: 9px 17px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.btn-cancel {
+    border-color: #dbe2ea;
+    color: #475569;
+    background: #fff;
+}
+
+.btn-cancel:hover {
+    background: #f8fafc;
+    color: #334155;
+}
+
+.btn-update {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #fff;
+    min-width: 145px;
+}
+
+.btn-update:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #fff;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    .edit-card {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    .edit-card-header {
+        border-color: #1f2937;
+    }
+
+    .card-header-title,
+    .section-heading-title {
+        color: #f8fafc;
+    }
+
+    .card-header-subtitle,
+    .form-help,
+    .footer-left,
+    .account-select-note {
+        color: #94a3b8;
+    }
+
+    .section-heading {
+        border-color: #1f2937;
+    }
+
+    .form-label-custom {
+        color: #e2e8f0;
+    }
+
+    .form-control-custom,
+    .form-select-custom {
+        background: #0f172a;
+        color: #f8fafc;
+        border-color: #334155;
+    }
+
+    .form-control-custom:disabled {
+        background: #1e293b;
+        color: #94a3b8;
+    }
+
+    .input-group-custom .input-prefix {
+        background: #1e293b;
+        border-color: #334155;
+        color: #cbd5e1;
+    }
+
+    .account-info {
+        background: #172554;
+        border-color: #1e3a8a;
+    }
+
+    .account-info-title {
+        color: #bfdbfe;
+    }
+
+    .account-info-text {
+        color: #cbd5e1;
+    }
+
+    .form-footer {
+        border-color: #1f2937;
+    }
+
+    .btn-cancel {
+        background: #111827;
+        color: #cbd5e1;
+        border-color: #334155;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .edit-hero-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .edit-hero-actions {
+        width: 100%;
+    }
+
+    .edit-hero-actions .hero-action {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .edit-hero {
+        padding: 22px 18px;
+        border-radius: 17px;
+    }
+
+    .edit-avatar {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        font-size: 26px;
+    }
+
+    .edit-title {
+        font-size: 22px;
+    }
+
+    .edit-card-body {
+        padding: 18px;
+    }
+
+    .edit-card-header {
+        padding: 18px;
+    }
+
+    .form-section {
+        margin-bottom: 23px;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footer-left {
+        text-align: center;
+    }
+
+    .footer-actions {
+        width: 100%;
+    }
+
+    .footer-actions .btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .edit-profile {
+        gap: 12px;
+    }
+
+    .edit-title {
+        font-size: 19px;
+    }
+
+    .edit-subtitle {
+        font-size: 11px;
+    }
+
+    .edit-hero-actions {
+        flex-direction: column;
+    }
+
+    .edit-hero-actions .hero-action {
+        width: 100%;
+    }
+
+    .footer-actions {
+        flex-direction: column;
+    }
+
+    .footer-actions .btn {
+        width: 100%;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-2 edit-doctor-page">
+
+```
+<!-- =====================================================
+     HERO HEADER
+====================================================== -->
+
+<div class="edit-hero">
+
+    <div class="edit-hero-content">
+
+        <div class="edit-profile">
+
+            <div class="edit-avatar">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+
+            <div>
+
+                <h1 class="edit-title">
+                    Edit Doctor
+                </h1>
+
+                <p class="edit-subtitle">
+
+                    <i class="bi bi-upc-scan me-1"></i>
+
+                    {{ doctor.doctor_code or 'N/A' }}
+
+                    <span class="mx-2">•</span>
+
+                    {{ doctor.full_name or 'Doctor' }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="edit-hero-actions">
+
+            <a
+                href="{{ url_for(
+                    'doctors.view_doctor',
+                    doctor_id=doctor.id
+                ) }}"
+                class="btn hero-action hero-view"
+            >
+                <i class="bi bi-eye me-1"></i>
+                View Doctor
+            </a>
+
+
+            <a
+                href="{{ url_for('doctors.list_doctors') }}"
+                class="btn hero-action hero-back"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EDIT CARD
+====================================================== -->
+
+<div class="edit-card">
+
+    <div class="edit-card-header">
+
+        <div class="card-header-icon">
+            <i class="bi bi-pencil-square"></i>
+        </div>
+
+        <div>
+
+            <h2 class="card-header-title">
+                Doctor Information
+            </h2>
+
+            <div class="card-header-subtitle">
+                Update the doctor's professional and account details
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="edit-card-body">
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'doctors.edit_doctor',
+                doctor_id=doctor.id
+            ) }}"
+        >
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================== -->
+
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-heading-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+
+                    <h3 class="section-heading-title">
+                        Personal Information
+                    </h3>
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- Full Name -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Full Name
+                                <span class="required-star">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.full_name or '' }}"
+                                placeholder="Enter doctor's full name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Doctor Code -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Doctor Code
+                            </label>
+
+                            <div class="code-box">
+
+                                <input
+                                    type="text"
+                                    class="form-control form-control-custom"
+                                    value="{{ doctor.doctor_code or '' }}"
+                                    disabled
+                                >
+
+                                <i class="bi bi-lock-fill code-icon"></i>
+
+                            </div>
+
+                            <div class="form-help">
+                                Doctor code cannot be changed.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                name="phone"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.phone or '' }}"
+                                placeholder="Enter phone number"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.email or '' }}"
+                                placeholder="doctor@example.com"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PROFESSIONAL INFORMATION
+            ================================================== -->
+
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-heading-icon">
+                        <i class="bi bi-mortarboard"></i>
+                    </div>
+
+                    <h3 class="section-heading-title">
+                        Professional Information
+                    </h3>
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- Specialization -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Specialization
+                            </label>
+
+                            <input
+                                type="text"
+                                name="specialization"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.specialization or '' }}"
+                                placeholder="e.g. Cardiologist"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Qualification -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Qualification
+                            </label>
+
+                            <input
+                                type="text"
+                                name="qualification"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.qualification or '' }}"
+                                placeholder="e.g. MBBS, FCPS"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Room Number -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Room Number
+                            </label>
+
+                            <input
+                                type="text"
+                                name="room_number"
+                                class="form-control form-control-custom"
+                                value="{{ doctor.room_number or '' }}"
+                                placeholder="e.g. Room 101"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Consultation Fee -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Consultation Fee
+                            </label>
+
+                            <div class="input-group-custom">
+
+                                <span class="input-prefix">
+                                    Rs.
+                                </span>
+
+                                <input
+                                    type="number"
+                                    name="consultation_fee"
+                                    class="form-control form-control-custom"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ doctor.consultation_fee or 0 }}"
+                                    placeholder="0.00"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN ACCOUNT & STATUS
+            ================================================== -->
+
+            <div class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-heading-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+
+                    <h3 class="section-heading-title">
+                        Login Account & Status
+                    </h3>
+
+                </div>
+
+
+                <div class="row g-4">
+
+
+                    <!-- Doctor Login Account -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Doctor Login Account
+                            </label>
+
+                            <div class="account-select-box">
+
+                                <select
+                                    name="doctor_user_id"
+                                    class="form-select form-select-custom"
+                                >
+
+                                    <option value="">
+                                        No account linked
+                                    </option>
+
+
+                                    {% for user in doctor_users %}
+
+                                        <option
+                                            value="{{ user.id }}"
+                                            {% if user.doctor_id == doctor.id %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            {{ user.username }}
+
+                                            {% if user.email %}
+                                                — {{ user.email }}
+                                            {% endif %}
+
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                            <div class="account-select-note">
+
+                                <i class="bi bi-info-circle"></i>
+
+                                Select the login account belonging to this doctor.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-6">
+
+                        <div class="form-group-custom">
+
+                            <label class="form-label-custom">
+                                Doctor Status
+                            </label>
+
+                            <div class="status-select-wrapper">
+
+                                <select
+                                    name="is_active"
+                                    class="form-select form-select-custom"
+                                >
+
+                                    <option
+                                        value="1"
+                                        {% if doctor.is_active %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Active
+                                    </option>
+
+                                    <option
+                                        value="0"
+                                        {% if not doctor.is_active %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        Inactive
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="status-help-box">
+
+                                <i class="bi bi-circle-fill"></i>
+
+                                Active doctors can be used for appointments and clinic operations.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCOUNT INFORMATION
+                ================================================== -->
+
+                <div class="account-info">
+
+                    <div class="account-info-icon">
+
+                        <i class="bi bi-person-lock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="account-info-title">
+                            Doctor Login Account
+                        </div>
+
+                        <div class="account-info-text">
+
+                            The selected user account will be linked to this doctor.
+                            The doctor can use this account to access their schedule,
+                            consultations, prescriptions and other doctor features.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM FOOTER
+            ================================================== -->
+
+            <div class="form-footer">
+
+                <div class="footer-left">
+
+                    <i class="bi bi-shield-check me-1"></i>
+
+                    Only authorized administrators can update doctor information.
+
+                </div>
+
+
+                <div class="footer-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'doctors.view_doctor',
+                            doctor_id=doctor.id
+                        ) }}"
+                        class="btn btn-custom btn-cancel"
+                    >
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-custom btn-update"
+                    >
+                        <i class="bi bi-check-lg me-1"></i>
+                        Update Doctor
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

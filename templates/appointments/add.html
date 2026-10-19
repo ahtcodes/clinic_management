@@ -1,0 +1,1456 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add New Patient - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    /* =====================================================
+       PAGE
+    ====================================================== */
+
+    .patient-page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 30px 20px 50px;
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+    ====================================================== */
+
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
+
+    .page-header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .page-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        background: #e8f1ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        flex-shrink: 0;
+    }
+
+    .page-title {
+        margin: 0;
+        color: #172033;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+        margin: 5px 0 0;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       BACK BUTTON
+    ====================================================== */
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        border: 1px solid #dbe2ea;
+        background: #ffffff;
+        color: #475569;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .back-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+        border-color: #cbd5e1;
+    }
+
+
+    /* =====================================================
+       MAIN FORM
+    ====================================================== */
+
+    .patient-form {
+        width: 100%;
+    }
+
+
+    /* =====================================================
+       SECTION CARD
+    ====================================================== */
+
+    .section-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        margin-bottom: 22px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 23px 26px;
+        border-bottom: 1px solid #edf1f5;
+        background: #ffffff;
+    }
+
+    .section-header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+        background: #e8f1ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        flex-shrink: 0;
+    }
+
+    .section-title {
+        margin: 0;
+        color: #172033;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .section-description {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .section-number {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .section-body {
+        padding: 28px 26px;
+    }
+
+
+    /* =====================================================
+       FORM GROUP
+    ====================================================== */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .required {
+        color: #ef4444;
+        margin-left: 2px;
+    }
+
+
+    /* =====================================================
+       INPUT WRAPPER
+    ====================================================== */
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 17px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 48px;
+        border: 1px solid #dbe3ec;
+        border-radius: 11px;
+        color: #172033;
+        background: #ffffff;
+        font-size: 14px;
+        padding: 11px 14px;
+        box-shadow: none;
+        transition: all 0.2s ease;
+    }
+
+    .input-wrapper .form-control {
+        padding-left: 46px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    textarea.form-control {
+        min-height: 110px;
+        resize: vertical;
+        padding-top: 13px;
+    }
+
+
+    /* =====================================================
+       ACCOUNT BOX
+    ====================================================== */
+
+    .account-box {
+        background: linear-gradient(
+            135deg,
+            #eff6ff 0%,
+            #f8fbff 55%,
+            #eef4ff 100%
+        );
+
+        border: 1px solid #d8e7ff;
+        border-radius: 17px;
+        padding: 24px;
+    }
+
+    .account-box-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .account-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 15px;
+        background: #2563eb;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+        flex-shrink: 0;
+    }
+
+    .account-title {
+        margin: 0;
+        color: #172033;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .account-description {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       PASSWORD
+    ====================================================== */
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .password-wrapper .form-control {
+        padding-right: 48px;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 17px;
+        padding: 5px;
+    }
+
+    .password-toggle:hover {
+        color: #2563eb;
+    }
+
+    .form-help {
+        display: block;
+        margin-top: 7px;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       SECURITY NOTE
+    ====================================================== */
+
+    .security-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-top: 20px;
+        padding: 13px 15px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.70);
+        border: 1px solid #dce9fb;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .security-note i {
+        color: #2563eb;
+        font-size: 16px;
+        margin-top: 1px;
+    }
+
+
+    /* =====================================================
+       ACTION BAR
+    ====================================================== */
+
+    .action-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 18px 20px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .cancel-btn,
+    .save-btn {
+        min-height: 45px;
+        border-radius: 9px;
+        padding: 10px 19px;
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .cancel-btn {
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #dbe2ea;
+    }
+
+    .cancel-btn:hover {
+        background: #f8fafc;
+        color: #172033;
+        border-color: #cbd5e1;
+    }
+
+    .save-btn {
+        border: 1px solid #2563eb;
+        background: #2563eb;
+        color: #ffffff;
+        min-width: 170px;
+    }
+
+    .save-btn:hover {
+        background: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.20);
+    }
+
+    .save-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+
+    /* =====================================================
+       ALERT
+    ====================================================== */
+
+    .custom-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        padding: 13px 15px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .custom-alert i {
+        font-size: 17px;
+        margin-top: 1px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ====================================================== */
+
+    @media (max-width: 767px) {
+
+        .patient-page {
+            padding: 22px 14px 35px;
+        }
+
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .page-header-left {
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .page-subtitle {
+            font-size: 13px;
+        }
+
+        .back-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .section-header {
+            padding: 19px;
+        }
+
+        .section-body {
+            padding: 20px 19px;
+        }
+
+        .section-title {
+            font-size: 17px;
+        }
+
+        .section-icon {
+            width: 46px;
+            height: 46px;
+            font-size: 20px;
+        }
+
+        .section-number {
+            width: 34px;
+            height: 34px;
+        }
+
+        .account-box {
+            padding: 18px;
+        }
+
+        .account-box-header {
+            align-items: flex-start;
+        }
+
+        .action-bar {
+            flex-direction: column-reverse;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="patient-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div class="page-header-left">
+
+            <div class="page-icon">
+                <i class="bi bi-person-plus-fill"></i>
+            </div>
+
+            <div>
+
+                <h1 class="page-title">
+                    Add New Patient
+                </h1>
+
+                <p class="page-subtitle">
+                    Create a patient profile and patient portal account.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('patients.list_patients') }}"
+            class="back-btn"
+        >
+            <i class="bi bi-arrow-left"></i>
+            Back to Patients
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('patients.add_patient') }}"
+        id="patientForm"
+        class="patient-form"
+    >
+
+        <!-- =================================================
+             PATIENT INFORMATION
+        ================================================== -->
+
+        <div class="section-card">
+
+            <div class="section-header">
+
+                <div class="section-header-left">
+
+                    <div class="section-icon">
+                        <i class="bi bi-person-vcard"></i>
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Patient Information
+                        </h2>
+
+                        <p class="section-description">
+                            Enter the patient's basic personal and contact information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="section-number">
+                    01
+                </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="row g-4">
+
+                    <!-- Patient Name -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="full_name"
+                                class="form-label"
+                            >
+                                Patient Name
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-person input-icon"></i>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="full_name"
+                                    name="full_name"
+                                    maxlength="150"
+                                    required
+                                    placeholder="Enter full name"
+                                    autocomplete="name"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Father Name -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="father_name"
+                                class="form-label"
+                            >
+                                Father Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-person-badge input-icon"></i>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="father_name"
+                                    name="father_name"
+                                    maxlength="150"
+                                    placeholder="Enter father's name"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="gender"
+                                class="form-label"
+                            >
+                                Gender
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="gender"
+                                name="gender"
+                            >
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Date of Birth -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="date_of_birth"
+                                class="form-label"
+                            >
+                                Date of Birth
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-calendar3 input-icon"></i>
+
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="date_of_birth"
+                                    name="date_of_birth"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Blood Group -->
+
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="blood_group"
+                                class="form-label"
+                            >
+                                Blood Group
+                            </label>
+
+                            <select
+                                class="form-select"
+                                id="blood_group"
+                                name="blood_group"
+                            >
+
+                                <option value="">
+                                    Select blood group
+                                </option>
+
+                                <option value="A+">
+                                    A+
+                                </option>
+
+                                <option value="A-">
+                                    A-
+                                </option>
+
+                                <option value="B+">
+                                    B+
+                                </option>
+
+                                <option value="B-">
+                                    B-
+                                </option>
+
+                                <option value="AB+">
+                                    AB+
+                                </option>
+
+                                <option value="AB-">
+                                    AB-
+                                </option>
+
+                                <option value="O+">
+                                    O+
+                                </option>
+
+                                <option value="O-">
+                                    O-
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="phone"
+                                class="form-label"
+                            >
+                                Phone Number
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-telephone input-icon"></i>
+
+                                <input
+                                    type="tel"
+                                    class="form-control"
+                                    id="phone"
+                                    name="phone"
+                                    maxlength="30"
+                                    placeholder="03XX XXXXXXX"
+                                    autocomplete="tel"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="email"
+                                class="form-label"
+                            >
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-envelope input-icon"></i>
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="email"
+                                    name="email"
+                                    maxlength="150"
+                                    placeholder="patient@example.com"
+                                    autocomplete="email"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="col-12">
+
+                        <div class="form-group">
+
+                            <label
+                                for="address"
+                                class="form-label"
+                            >
+                                Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <textarea
+                                    class="form-control"
+                                    id="address"
+                                    name="address"
+                                    maxlength="500"
+                                    placeholder="Enter complete address"
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Emergency Contact -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="emergency_contact"
+                                class="form-label"
+                            >
+                                Emergency Contact
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <i class="bi bi-telephone-plus input-icon"></i>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="emergency_contact"
+                                    name="emergency_contact"
+                                    maxlength="100"
+                                    placeholder="Emergency contact number"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Medical History -->
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+
+                            <label
+                                for="medical_history"
+                                class="form-label"
+                            >
+                                Medical History
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                id="medical_history"
+                                name="medical_history"
+                                maxlength="1000"
+                                placeholder="Previous illnesses, surgeries, conditions..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Allergies -->
+
+                    <div class="col-12">
+
+                        <div class="form-group">
+
+                            <label
+                                for="allergies"
+                                class="form-label"
+                            >
+                                Allergies
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                id="allergies"
+                                name="allergies"
+                                maxlength="1000"
+                                placeholder="List any known allergies..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PATIENT ACCOUNT
+        ================================================== -->
+
+        <div class="section-card">
+
+            <div class="section-header">
+
+                <div class="section-header-left">
+
+                    <div class="section-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Patient Account
+                        </h2>
+
+                        <p class="section-description">
+                            Create login credentials to access the patient dashboard.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="section-number">
+                    02
+                </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="account-box">
+
+                    <!-- Account Header -->
+
+                    <div class="account-box-header">
+
+                        <div class="account-icon">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3 class="account-title">
+                                Create Your Patient Login
+                            </h3>
+
+                            <p class="account-description">
+                                The patient will use this account to view appointments,
+                                communicate with doctors and access the patient portal.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+                        <!-- Username -->
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <div class="form-group">
+
+                                <label
+                                    for="username"
+                                    class="form-label"
+                                >
+                                    Username
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="input-wrapper">
+
+                                    <i class="bi bi-at input-icon"></i>
+
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="username"
+                                        name="username"
+                                        minlength="3"
+                                        maxlength="80"
+                                        required
+                                        placeholder="Create username"
+                                        autocomplete="username"
+                                    >
+
+                                </div>
+
+                                <span class="form-help">
+                                    Minimum 3 characters.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Password -->
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <div class="form-group">
+
+                                <label
+                                    for="password"
+                                    class="form-label"
+                                >
+                                    Password
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="password-wrapper">
+
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="password"
+                                        name="password"
+                                        minlength="6"
+                                        required
+                                        placeholder="Create password"
+                                        autocomplete="new-password"
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('password', 'passwordIcon')"
+                                        aria-label="Show password"
+                                    >
+                                        <i
+                                            class="bi bi-eye"
+                                            id="passwordIcon"
+                                        ></i>
+                                    </button>
+
+                                </div>
+
+                                <span class="form-help">
+                                    Minimum 6 characters.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Confirm Password -->
+
+                        <div class="col-lg-4 col-md-12">
+
+                            <div class="form-group">
+
+                                <label
+                                    for="confirm_password"
+                                    class="form-label"
+                                >
+                                    Confirm Password
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="password-wrapper">
+
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="confirm_password"
+                                        name="confirm_password"
+                                        minlength="6"
+                                        required
+                                        placeholder="Repeat password"
+                                        autocomplete="new-password"
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('confirm_password', 'confirmPasswordIcon')"
+                                        aria-label="Show confirm password"
+                                    >
+                                        <i
+                                            class="bi bi-eye"
+                                            id="confirmPasswordIcon"
+                                        ></i>
+                                    </button>
+
+                                </div>
+
+                                <span class="form-help">
+                                    Enter the same password again.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Security Note -->
+
+                    <div class="security-note">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        <div>
+                            Patient login information is securely stored.
+                            The password is saved as a secure hash and is not
+                            stored as plain text.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="action-bar">
+
+            <a
+                href="{{ url_for('patients.list_patients') }}"
+                class="cancel-btn"
+            >
+                <i class="bi bi-x-lg"></i>
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="save-btn"
+                id="submitBtn"
+            >
+
+                <i class="bi bi-person-plus-fill"></i>
+
+                <span id="submitText">
+                    Add Patient
+                </span>
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+    /* =====================================================
+       PASSWORD TOGGLE
+    ====================================================== */
+
+    function togglePassword(
+        inputId,
+        iconId
+    ) {
+
+        const input =
+            document.getElementById(inputId);
+
+        const icon =
+            document.getElementById(iconId);
+
+        if (!input || !icon) {
+            return;
+        }
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            icon.classList.remove(
+                "bi-eye"
+            );
+
+            icon.classList.add(
+                "bi-eye-slash"
+            );
+
+        } else {
+
+            input.type = "password";
+
+            icon.classList.remove(
+                "bi-eye-slash"
+            );
+
+            icon.classList.add(
+                "bi-eye"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DATE OF BIRTH - PREVENT FUTURE DATE
+    ====================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const dob =
+                document.getElementById(
+                    "date_of_birth"
+                );
+
+            if (dob) {
+
+                const today =
+                    new Date()
+                        .toISOString()
+                        .split("T")[0];
+
+                dob.max = today;
+
+            }
+
+
+            /* =============================================
+               FORM SUBMIT
+            ============================================== */
+
+            const form =
+                document.getElementById(
+                    "patientForm"
+                );
+
+            const submitBtn =
+                document.getElementById(
+                    "submitBtn"
+                );
+
+            const submitText =
+                document.getElementById(
+                    "submitText"
+                );
+
+
+            if (form) {
+
+                form.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        const password =
+                            document.getElementById(
+                                "password"
+                            );
+
+                        const confirmPassword =
+                            document.getElementById(
+                                "confirm_password"
+                            );
+
+
+                        /* =================================
+                           PASSWORD CHECK
+                        ================================== */
+
+                        if (
+                            password &&
+                            confirmPassword &&
+                            password.value !==
+                            confirmPassword.value
+                        ) {
+
+                            event.preventDefault();
+
+                            alert(
+                                "Passwords do not match."
+                            );
+
+                            confirmPassword.focus();
+
+                            return;
+
+                        }
+
+
+                        /* =================================
+                           LOADING STATE
+                        ================================== */
+
+                        if (submitBtn) {
+
+                            submitBtn.disabled =
+                                true;
+
+                        }
+
+                        if (submitText) {
+
+                            submitText.textContent =
+                                "Creating Patient...";
+
+                        }
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+{% endblock %}

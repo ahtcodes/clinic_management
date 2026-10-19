@@ -1,0 +1,479 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ patient.full_name }} - Patient
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid py-2">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="bi bi-person-vcard me-2"></i>
+
+                Patient Profile
+
+            </h2>
+
+            <p class="text-muted mb-0">
+                {{ patient.patient_code }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <!-- =================================================
+                 EDIT PATIENT
+                 ONLY SUPER ADMIN + RECEPTIONIST
+            ================================================== -->
+
+            {% if current_user.has_role(
+                'super_admin',
+                'receptionist'
+            ) %}
+
+                <a
+                    href="{{ url_for(
+                        'patients.edit_patient',
+                        patient_id=patient.id
+                    ) }}"
+                    class="btn btn-primary me-2"
+                >
+
+                    <i class="bi bi-pencil me-1"></i>
+
+                    Edit Patient
+
+                </a>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 BACK BUTTON
+            ================================================== -->
+
+            <a
+                href="{{ url_for('patients.list_patients') }}"
+                class="btn btn-outline-secondary"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    
+
+
+    <!-- =====================================================
+         MAIN ROW
+    ====================================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- =================================================
+             PERSONAL INFORMATION
+        ================================================== -->
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-person me-2"></i>
+
+                        Personal Information
+
+                    </h5>
+
+
+                    <div class="row g-4">
+
+
+                        <!-- Patient ID -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Patient ID
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                <span
+                                    class="badge bg-primary-subtle text-primary"
+                                >
+
+                                    {{ patient.patient_code }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Full Name -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Full Name
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {{ patient.full_name }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Father / Husband -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Father / Husband Name
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {{ patient.father_name or "-" }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Gender -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Gender
+                            </small>
+
+                            <div class="mt-1">
+
+                                {% if patient.gender %}
+
+                                    <span
+                                        class="badge bg-info-subtle text-info"
+                                    >
+
+                                        {{ patient.gender }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Date of Birth -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Date of Birth
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {% if patient.date_of_birth %}
+
+                                    {{ patient.date_of_birth }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Blood Group -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Blood Group
+                            </small>
+
+                            <div class="mt-1">
+
+                                {% if patient.blood_group %}
+
+                                    <span
+                                        class="badge bg-danger-subtle text-danger"
+                                    >
+
+                                        {{ patient.blood_group }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Phone -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Phone
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {% if patient.phone %}
+
+                                    <i
+                                        class="bi bi-telephone me-1"
+                                    ></i>
+
+                                    {{ patient.phone }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Email -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Email
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {{ patient.email or "-" }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Emergency Contact -->
+
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Emergency Contact
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {{ patient.emergency_contact or "-" }}
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Address -->
+
+                        <div class="col-12">
+
+                            <small class="text-muted">
+                                Address
+                            </small>
+
+                            <div class="fw-semibold mt-1">
+
+                                {{ patient.address or "-" }}
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MEDICAL INFORMATION
+        ================================================== -->
+
+        <div class="col-lg-4">
+
+
+            <!-- Medical Information -->
+
+            <div class="card border-0 shadow-sm mb-4">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-file-medical me-2"></i>
+
+                        Medical Information
+
+                    </h5>
+
+
+                    <hr>
+
+
+                    <!-- Medical History -->
+
+                    <div class="mb-4">
+
+                        <small class="text-muted">
+                            Medical History
+                        </small>
+
+                        <p class="mt-2 mb-0">
+
+                            {{ patient.medical_history or
+                               "No medical history recorded." }}
+
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Allergies -->
+
+                    <div>
+
+                        <small class="text-muted">
+                            Allergies
+                        </small>
+
+                        <p class="mt-2 mb-0">
+
+                            {{ patient.allergies or
+                               "No allergies recorded." }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REGISTRATION
+            ================================================== -->
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-calendar-check me-2"></i>
+
+                        Patient Registration
+
+                    </h5>
+
+
+                    <hr>
+
+
+                    <small class="text-muted">
+                        Registered On
+                    </small>
+
+                    <div class="fw-semibold mt-1">
+
+                        {% if patient.created_at %}
+
+                            {{ patient.created_at.strftime(
+                                "%d %B %Y, %I:%M %p"
+                            ) }}
+
+                        {% else %}
+
+                            -
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

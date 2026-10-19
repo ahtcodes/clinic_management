@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Doctor Clinic</title>
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <style>
+
+        body {
+            background: #f8fafc;
+            color: #1f2937;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .brand {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .brand i {
+            color: #2563eb;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 90px 0;
+            background: #eef5ff;
+        }
+
+        .hero h1 {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .hero p {
+            color: #6b7280;
+            font-size: 18px;
+            max-width: 600px;
+        }
+
+        .hero-icon {
+            font-size: 150px;
+            color: #2563eb;
+        }
+
+        /* SERVICES */
+
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+        }
+
+        .service-icon {
+            font-size: 35px;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        /* WHY US */
+
+        .why-section {
+            background: #ffffff;
+        }
+
+        .check-icon {
+            color: #16a34a;
+            margin-right: 8px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: #d1d5db;
+            padding: 25px 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a
+            href="{{ url_for('home.index') }}"
+            class="navbar-brand brand"
+        >
+
+            <i class="bi bi-hospital me-2"></i>
+
+            Doctor Clinic
+
+        </a>
+
+
+        <div class="ms-auto">
+
+            <a
+                href="{{ url_for('auth.login') }}"
+                class="btn btn-outline-primary me-2"
+            >
+
+                Staff Login
+
+            </a>
+
+
+            <a
+                href="{{ url_for('appointments.online_appointment') }}"
+                class="btn btn-primary"
+            >
+
+                Book Appointment
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <span class="badge text-bg-primary mb-3">
+                    Quality Healthcare
+                </span>
+
+                <h1 class="display-4 mb-3">
+
+                    Your Health,
+                    <br>
+                    Our Priority
+
+                </h1>
+
+                <p class="mb-4">
+
+                    Get professional medical care and easily
+                    book an appointment with our doctors.
+
+                </p>
+
+
+                <a
+                    href="{{ url_for('appointments.online_appointment') }}"
+                    class="btn btn-primary btn-lg me-2"
+                >
+
+                    <i class="bi bi-calendar-check me-2"></i>
+
+                    Book Online Appointment
+
+                </a>
+
+
+                <a
+                    href="#services"
+                    class="btn btn-outline-secondary btn-lg"
+                >
+
+                    Our Services
+
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-5 text-center mt-5 mt-lg-0">
+
+                <i class="bi bi-hospital hero-icon"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+<section
+    id="services"
+    class="py-5"
+>
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Our Services
+            </h2>
+
+            <p class="text-muted">
+                Simple and reliable healthcare services.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <div class="col-md-4">
+
+                <div class="service-card">
+
+                    <i class="bi bi-person-badge service-icon"></i>
+
+                    <h5 class="fw-bold">
+                        Doctor Consultation
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Consult with our doctors for
+                        professional medical guidance.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="service-card">
+
+                    <i class="bi bi-calendar-check service-icon"></i>
+
+                    <h5 class="fw-bold">
+                        Online Appointment
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Book your appointment online
+                        without visiting the clinic first.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="service-card">
+
+                    <i class="bi bi-heart-pulse service-icon"></i>
+
+                    <h5 class="fw-bold">
+                        Patient Care
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Easy access to consultations,
+                        prescriptions and patient records.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     WHY CHOOSE US
+========================= -->
+
+<section class="why-section py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h2 class="fw-bold mb-4">
+                    Why Choose Doctor Clinic?
+                </h2>
+
+                <p class="text-muted">
+
+                    We provide a simple and convenient way
+                    to manage your healthcare appointments.
+
+                </p>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <p>
+                    <i class="bi bi-check-circle-fill check-icon"></i>
+                    Easy online appointment booking
+                </p>
+
+                <p>
+                    <i class="bi bi-check-circle-fill check-icon"></i>
+                    Professional doctors
+                </p>
+
+                <p>
+                    <i class="bi bi-check-circle-fill check-icon"></i>
+                    Simple patient management
+                </p>
+
+                <p>
+                    <i class="bi bi-check-circle-fill check-icon"></i>
+                    Convenient consultation process
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CALL TO ACTION
+========================= -->
+
+<section class="py-5 bg-primary text-white">
+
+    <div class="container text-center">
+
+        <h2 class="fw-bold mb-3">
+            Need an Appointment?
+        </h2>
+
+        <p class="mb-4">
+            Book your appointment online today.
+        </p>
+
+        <a
+            href="{{ url_for('appointments.online_appointment') }}"
+            class="btn btn-light btn-lg"
+        >
+
+            Book Appointment
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container text-center">
+
+        <div class="mb-2">
+
+            <i class="bi bi-hospital me-2"></i>
+
+            <strong>Doctor Clinic</strong>
+
+        </div>
+
+        <small>
+            Doctor Clinic Management System
+        </small>
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>

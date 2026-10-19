@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Edit Bill - Doctor Clinic
+    </title>
+
+
+    <!-- ================= BOOTSTRAP ================= -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- ================= BOOTSTRAP ICONS ================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <style>
+
+        body {
+            background-color: #f5f7fa;
+        }
+
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+
+        .main-card {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+
+        .section-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .section-card .card-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px 20px;
+        }
+
+
+        .section-card .card-body {
+            padding: 22px;
+        }
+
+
+        .section-title {
+            font-weight: 700;
+            margin: 0;
+        }
+
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            min-height: 44px;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+        }
+
+
+        .input-group .form-control {
+            border-radius: 0 8px 8px 0;
+        }
+
+
+        .input-group-text {
+            border-radius: 8px 0 0 8px;
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+
+        .summary-card {
+            border: none;
+            border-radius: 14px;
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .summary-header {
+            background: #212529;
+            color: white;
+            padding: 18px 20px;
+        }
+
+
+        .summary-body {
+            padding: 22px;
+            background: white;
+        }
+
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+
+        .summary-total {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+
+        .summary-remaining {
+            background: #fff5f5;
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 15px;
+        }
+
+
+        .summary-paid {
+            background: #f0fff4;
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+
+        .bill-code {
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+
+        .patient-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+
+        .btn {
+            border-radius: 8px;
+        }
+
+
+        textarea {
+            resize: vertical;
+        }
+
+
+        .required {
+            color: #dc3545;
+        }
+
+
+        .invalid-feedback-custom {
+            display: none;
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+
+        .show-error {
+            display: block;
+        }
+
+
+        /* =================================================
+           ADDITIONAL SERVICES
+        ================================================== */
+
+        .services-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+
+        .service-item:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .service-name {
+            font-weight: 600;
+        }
+
+
+        .service-price {
+            font-weight: 700;
+            color: #198754;
+        }
+
+
+        .no-services {
+            padding: 15px;
+            text-align: center;
+            color: #6c757d;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px dashed #ced4da;
+        }
+
+
+        .service-total-box {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #dee2e6;
+        }
+
+
+        @media (max-width: 991px) {
+
+            .summary-card {
+                position: static;
+            }
+
+        }
+
+
+        @media print {
+
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container-fluid py-4">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div
+        class="page-header
+               d-flex
+               justify-content-between
+               align-items-center
+               flex-wrap
+               gap-3
+               no-print"
+    >
+
+        <div>
+
+            <div class="d-flex align-items-center gap-2 mb-1">
+
+                <i
+                    class="bi bi-pencil-square text-primary"
+                    style="font-size: 28px;"
+                ></i>
+
+                <h2 class="fw-bold mb-0">
+                    Edit Bill
+                </h2>
+
+            </div>
+
+            <p class="text-muted mb-0">
+                Update billing information and payment details
+            </p>
+
+        </div>
+
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="{{ url_for('billing.list_bills') }}"
+                class="btn btn-outline-secondary"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back to Billing
+
+            </a>
+
+
+            <a
+                href="{{ url_for('billing.view_bill', id=bill.id) }}"
+                class="btn btn-outline-primary"
+            >
+
+                <i class="bi bi-eye me-1"></i>
+
+                View Bill
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+   
+
+    <!-- =====================================================
+         BILL IDENTIFICATION
+    ====================================================== -->
+
+    <div class="card main-card shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div
+                class="d-flex
+                       justify-content-between
+                       align-items-center
+                       flex-wrap
+                       gap-3"
+            >
+
+                <div>
+
+                    <small class="text-muted d-block mb-1">
+                        BILL NUMBER
+                    </small>
+
+                    <span class="badge bg-primary bill-code px-3 py-2">
+
+                        <i class="bi bi-receipt me-1"></i>
+
+                        {{ bill.bill_code }}
+
+                    </span>
+
+                </div>
+
+
+                <div class="text-md-end">
+
+                    <small class="text-muted d-block">
+                        Created
+                    </small>
+
+                    <strong>
+
+                        {% if bill.created_at %}
+
+                            {{ bill.created_at.strftime(
+                                "%d %b %Y, %I:%M %p"
+                            ) }}
+
+                        {% else %}
+
+                            -
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN FORM
+    ====================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('billing.edit_bill', id=bill.id) }}"
+        id="editBillForm"
+    >
+
+        <div class="row g-4">
+
+
+            <!-- =================================================
+                 LEFT COLUMN
+            ================================================== -->
+
+            <div class="col-lg-8">
+
+
+                <!-- =============================================
+                     PATIENT INFORMATION
+                ============================================== -->
+
+                <div class="card section-card mb-4">
+
+                    <div class="card-header">
+
+                        <h5 class="section-title">
+
+                            <i
+                                class="bi bi-person-vcard
+                                       text-primary
+                                       me-2"
+                            ></i>
+
+                            Patient Information
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Patient -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="patient_id"
+                                    class="form-label"
+                                >
+
+                                    Patient
+
+                                    <span class="required">*</span>
+
+                                </label>
+
+
+                                <select
+                                    id="patient_id"
+                                    name="patient_id"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select Patient
+                                    </option>
+
+
+                                    {% for patient in patients %}
+
+                                    <option
+                                        value="{{ patient.id }}"
+                                        {% if patient.id == bill.patient_id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ patient.patient_code }}
+                                        -
+                                        {{ patient.full_name }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Appointment -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="appointment_id"
+                                    class="form-label"
+                                >
+
+                                    Appointment
+
+                                </label>
+
+
+                                <select
+                                    id="appointment_id"
+                                    name="appointment_id"
+                                    class="form-select"
+                                >
+
+                                    <option value="">
+                                        No Appointment
+                                    </option>
+
+
+                                    {% for appointment in appointments %}
+
+                                    <option
+                                        value="{{ appointment.id }}"
+                                        {% if appointment.id == bill.appointment_id %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ appointment.appointment_code }}
+
+                                        -
+
+                                        {% if appointment.patient %}
+                                            {{ appointment.patient.full_name }}
+                                        {% else %}
+                                            {{ appointment.patient_name or "Patient" }}
+                                        {% endif %}
+
+                                        -
+
+                                        {% if appointment.appointment_date %}
+
+                                            {{ appointment.appointment_date.strftime(
+                                                "%d %b %Y"
+                                            ) }}
+
+                                        {% endif %}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Current Patient Preview -->
+
+                        <div class="patient-info mt-4">
+
+                            <div class="row align-items-center">
+
+                                <div class="col-md-8">
+
+                                    <small class="text-muted">
+                                        Current Patient
+                                    </small>
+
+                                    <div class="fw-bold mt-1">
+
+                                        {% if bill.patient %}
+
+                                            {{ bill.patient.full_name }}
+
+                                        {% else %}
+
+                                            Patient
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <small class="text-muted">
+
+                                        {% if bill.patient %}
+
+                                            {{ bill.patient.patient_code }}
+
+                                            {% if bill.patient.phone %}
+
+                                                &nbsp; • &nbsp;
+
+                                                {{ bill.patient.phone }}
+
+                                            {% endif %}
+
+                                        {% endif %}
+
+                                    </small>
+
+                                </div>
+
+
+                                <div
+                                    class="col-md-4
+                                           text-md-end
+                                           mt-3
+                                           mt-md-0"
+                                >
+
+                                    {% if bill.payment_status == "Paid" %}
+
+                                        <span class="badge bg-success">
+
+                                            <i
+                                                class="bi bi-check-circle me-1"
+                                            ></i>
+
+                                            Paid
+
+                                        </span>
+
+                                    {% elif bill.payment_status == "Partial" %}
+
+                                        <span
+                                            class="badge
+                                                   bg-warning
+                                                   text-dark"
+                                        >
+
+                                            <i
+                                                class="bi bi-clock me-1"
+                                            ></i>
+
+                                            Partial
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+
+                                            <i
+                                                class="bi bi-exclamation-circle
+                                                       me-1"
+                                            ></i>
+
+                                            Unpaid
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     CLINIC CHARGES
+                ============================================== -->
+
+                <div class="card section-card mb-4">
+
+                    <div class="card-header">
+
+                        <h5 class="section-title">
+
+                            <i
+                                class="bi bi-cash-stack
+                                       text-primary
+                                       me-2"
+                            ></i>
+
+                            Clinic Charges
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Consultation Fee -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="consultation_fee"
+                                    class="form-label"
+                                >
+
+                                    Consultation Fee
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="consultation_fee"
+                                        name="consultation_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.consultation_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Medicine Fee -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="medicine_fee"
+                                    class="form-label"
+                                >
+
+                                    Medicine Fee
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="medicine_fee"
+                                        name="medicine_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.medicine_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Laboratory Fee -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="laboratory_fee"
+                                    class="form-label"
+                                >
+
+                                    Laboratory Fee
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="laboratory_fee"
+                                        name="laboratory_fee"
+                                        class="form-control charge-input"
+                                        value="{{ bill.laboratory_fee or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Other Charges -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="other_charges"
+                                    class="form-label"
+                                >
+
+                                    Other Charges
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="other_charges"
+                                        name="other_charges"
+                                        class="form-control charge-input"
+                                        value="{{ bill.other_charges or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Discount -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="discount"
+                                    class="form-label"
+                                >
+
+                                    Discount
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="discount"
+                                        name="discount"
+                                        class="form-control"
+                                        value="{{ bill.discount or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+
+                                <div
+                                    id="discountError"
+                                    class="invalid-feedback-custom"
+                                >
+
+                                    Discount cannot be greater than subtotal.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     ADDITIONAL SERVICES
+                ============================================== -->
+
+                <div class="card section-card mb-4">
+
+                    <div class="card-header">
+
+                        <h5 class="section-title">
+
+                            <i
+                                class="bi bi-clipboard2-pulse
+                                       text-primary
+                                       me-2"
+                            ></i>
+
+                            Additional Services
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="services-box">
+
+
+                            {% set consultation = None %}
+
+
+                            {% if bill.appointment %}
+
+                                {% set consultation = bill.appointment.consultation %}
+
+                            {% endif %}
+
+
+                            {% if consultation and consultation.services %}
+
+
+                                {% for service in consultation.services %}
+
+                                    <div class="service-item">
+
+                                        <div>
+
+                                            <div class="service-name">
+
+                                                <i
+                                                    class="bi bi-check-circle-fill
+                                                           text-success
+                                                           me-1"
+                                                ></i>
+
+                                                {{ service.service_name }}
+
+                                            </div>
+
+                                            <small class="text-muted">
+
+                                                Provided during consultation
+
+                                            </small>
+
+                                        </div>
+
+
+                                        <div class="service-price">
+
+                                            Rs.
+                                            {{ "%.2f"|format(
+                                                service.service_fee|float
+                                            ) }}
+
+                                        </div>
+
+                                    </div>
+
+                                {% endfor %}
+
+
+                                <div class="service-total-box">
+
+                                    <div
+                                        class="d-flex
+                                               justify-content-between
+                                               align-items-center"
+                                    >
+
+                                        <strong>
+                                            Additional Services Total
+                                        </strong>
+
+                                        <strong class="text-success">
+
+                                            Rs.
+
+                                            <span id="service_fee_display">
+
+                                                {{ "%.2f"|format(
+                                                    bill.service_fee|float
+                                                ) }}
+
+                                            </span>
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                            {% else %}
+
+                                <div class="no-services">
+
+                                    <i
+                                        class="bi bi-info-circle
+                                               me-1"
+                                    ></i>
+
+                                    No additional services were provided
+                                    during this consultation.
+
+                                    <div class="fw-bold mt-2">
+
+                                        Additional Services:
+                                        Rs. 0.00
+
+                                    </div>
+
+                                </div>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                        <!-- Hidden service fee sent to backend -->
+
+                        <input
+                            type="hidden"
+                            id="service_fee"
+                            name="service_fee"
+                            value="{{ bill.service_fee or 0 }}"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     PAYMENT
+                ============================================== -->
+
+                <div class="card section-card mb-4">
+
+                    <div class="card-header">
+
+                        <h5 class="section-title">
+
+                            <i
+                                class="bi bi-credit-card
+                                       text-primary
+                                       me-2"
+                            ></i>
+
+                            Payment Information
+
+                        </h5>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <div class="row g-4">
+
+
+                            <!-- Paid Amount -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="paid_amount"
+                                    class="form-label"
+                                >
+
+                                    Paid Amount
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text">
+                                        Rs.
+                                    </span>
+
+
+                                    <input
+                                        type="number"
+                                        id="paid_amount"
+                                        name="paid_amount"
+                                        class="form-control"
+                                        value="{{ bill.paid_amount or 0 }}"
+                                        min="0"
+                                        step="0.01"
+                                    >
+
+                                </div>
+
+
+                                <div
+                                    id="paidError"
+                                    class="invalid-feedback-custom"
+                                >
+
+                                    Paid amount cannot be greater than total.
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Payment Method -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="payment_method"
+                                    class="form-label"
+                                >
+
+                                    Payment Method
+
+                                </label>
+
+
+                                <select
+                                    id="payment_method"
+                                    name="payment_method"
+                                    class="form-select"
+                                >
+
+                                    {% for method in [
+                                        "Cash",
+                                        "Card",
+                                        "Online",
+                                        "Bank Transfer"
+                                    ] %}
+
+                                    <option
+                                        value="{{ method }}"
+                                        {% if bill.payment_method == method %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ method }}
+
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Notes -->
+
+                            <div class="col-12">
+
+                                <label
+                                    for="notes"
+                                    class="form-label"
+                                >
+
+                                    Notes
+
+                                </label>
+
+
+                                <textarea
+                                    id="notes"
+                                    name="notes"
+                                    class="form-control"
+                                    rows="4"
+                                    placeholder="Add any additional billing or payment notes..."
+                                >{{ bill.notes or "" }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     ACTION BUTTONS
+                ============================================== -->
+
+                <div
+                    class="d-flex
+                           justify-content-end
+                           gap-2
+                           mb-4
+                           no-print"
+                >
+
+                    <a
+                        href="{{ url_for(
+                            'billing.view_bill',
+                            id=bill.id
+                        ) }}"
+                        class="btn btn-outline-secondary px-4"
+                    >
+
+                        <i class="bi bi-x-lg me-1"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        id="updateButton"
+                        class="btn btn-primary px-4"
+                    >
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Update Bill
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT COLUMN - SUMMARY
+            ================================================== -->
+
+            <div class="col-lg-4">
+
+                <div class="card summary-card">
+
+
+                    <!-- Summary Header -->
+
+                    <div class="summary-header">
+
+                        <div
+                            class="d-flex
+                                   justify-content-between
+                                   align-items-center"
+                        >
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+
+                                    <i
+                                        class="bi bi-calculator me-2"
+                                    ></i>
+
+                                    Bill Summary
+
+                                </h5>
+
+
+                                <small class="text-white-50">
+
+                                    {{ bill.bill_code }}
+
+                                </small>
+
+                            </div>
+
+
+                            <i
+                                class="bi bi-receipt"
+                                style="font-size: 30px;"
+                            ></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Summary Body -->
+
+                    <div class="summary-body">
+
+
+                        <!-- Consultation -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Consultation
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="consultation_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Additional Services -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Additional Services
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="services_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Medicine -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Medicine
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="medicine_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Laboratory -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Laboratory
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="laboratory_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Other -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Other Charges
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="other_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <hr>
+
+
+                        <!-- Subtotal -->
+
+                        <div class="summary-row">
+
+                            <span class="fw-bold">
+
+                                Subtotal
+
+                            </span>
+
+
+                            <strong>
+
+                                Rs.
+
+                                <span id="subtotal">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Discount -->
+
+                        <div class="summary-row">
+
+                            <span class="text-muted">
+
+                                Discount
+
+                            </span>
+
+
+                            <strong class="text-danger">
+
+                                - Rs.
+
+                                <span id="discount_display">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <hr>
+
+
+                        <!-- Total -->
+
+                        <div class="summary-row">
+
+                            <span class="fw-bold">
+
+                                Total
+
+                            </span>
+
+
+                            <strong class="summary-total">
+
+                                Rs.
+
+                                <span id="total">
+                                    0.00
+                                </span>
+
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Paid -->
+
+                        <div class="summary-paid">
+
+                            <div
+                                class="d-flex
+                                       justify-content-between
+                                       align-items-center"
+                            >
+
+                                <span>
+
+                                    <i
+                                        class="bi bi-check-circle
+                                               text-success
+                                               me-1"
+                                    ></i>
+
+                                    Paid
+
+                                </span>
+
+
+                                <strong class="text-success">
+
+                                    Rs.
+
+                                    <span id="paid_display">
+                                        0.00
+                                    </span>
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Remaining -->
+
+                        <div class="summary-remaining">
+
+                            <div
+                                class="d-flex
+                                       justify-content-between
+                                       align-items-center"
+                            >
+
+                                <span class="fw-bold">
+
+                                    <i
+                                        class="bi bi-exclamation-circle
+                                               text-danger
+                                               me-1"
+                                    ></i>
+
+                                    Remaining
+
+                                </span>
+
+
+                                <strong
+                                    class="text-danger"
+                                    style="font-size: 20px;"
+                                >
+
+                                    Rs.
+
+                                    <span id="remaining">
+                                        0.00
+                                    </span>
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+
+                        <div class="text-center mt-4">
+
+                            <small
+                                class="text-muted d-block mb-2"
+                            >
+
+                                Payment Status
+
+                            </small>
+
+
+                            <span
+                                id="payment_status"
+                                class="badge bg-secondary fs-6 px-3 py-2"
+                            >
+
+                                Unpaid
+
+                            </span>
+
+                        </div>
+
+
+                        <hr class="my-4">
+
+
+                        <!-- Update Button -->
+
+                        <button
+                            type="submit"
+                            id="summaryUpdateButton"
+                            class="btn btn-primary btn-lg w-100"
+                        >
+
+                            <i
+                                class="bi bi-check-circle me-1"
+                            ></i>
+
+                            Update Bill
+
+                        </button>
+
+
+                        <a
+                            href="{{ url_for(
+                                'billing.view_bill',
+                                id=bill.id
+                            ) }}"
+                            class="btn btn-outline-secondary w-100 mt-2"
+                        >
+
+                            <i class="bi bi-arrow-left me-1"></i>
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+    /* =====================================================
+       GET NUMBER
+    ====================================================== */
+
+    function getAmount(id) {
+
+        const element = document.getElementById(id);
+
+        if (!element) {
+            return 0;
+        }
+
+        const value = parseFloat(element.value);
+
+        return isNaN(value)
+            ? 0
+            : Math.max(value, 0);
+
+    }
+
+
+    /* =====================================================
+       CALCULATE BILL
+    ====================================================== */
+
+    function calculateBill() {
+
+
+        const consultation =
+            getAmount("consultation_fee");
+
+
+        const services =
+            getAmount("service_fee");
+
+
+        const medicine =
+            getAmount("medicine_fee");
+
+
+        const laboratory =
+            getAmount("laboratory_fee");
+
+
+        const other =
+            getAmount("other_charges");
+
+
+        let discount =
+            getAmount("discount");
+
+
+        let paid =
+            getAmount("paid_amount");
+
+
+        /* =================================================
+           SUBTOTAL
+        ================================================== */
+
+        const subtotal =
+            consultation +
+            services +
+            medicine +
+            laboratory +
+            other;
+
+
+        /* =================================================
+           DISCOUNT VALIDATION
+        ================================================== */
+
+        const discountError =
+            document.getElementById(
+                "discountError"
+            );
+
+
+        if (discount > subtotal) {
+
+            discount = subtotal;
+
+            document.getElementById(
+                "discount"
+            ).value =
+                subtotal.toFixed(2);
+
+        }
+
+
+        /* =================================================
+           TOTAL
+        ================================================== */
+
+        const total =
+            Math.max(
+                subtotal - discount,
+                0
+            );
+
+
+        /* =================================================
+           PAID VALIDATION
+        ================================================== */
+
+        const paidError =
+            document.getElementById(
+                "paidError"
+            );
+
+
+        if (paid > total) {
+
+            paid = total;
+
+            document.getElementById(
+                "paid_amount"
+            ).value =
+                total.toFixed(2);
+
+        }
+
+
+        /* =================================================
+           REMAINING
+        ================================================== */
+
+        const remaining =
+            Math.max(
+                total - paid,
+                0
+            );
+
+
+        /* =================================================
+           UPDATE SUMMARY
+        ================================================== */
+
+        document.getElementById(
+            "consultation_display"
+        ).textContent =
+            consultation.toFixed(2);
+
+
+        document.getElementById(
+            "services_display"
+        ).textContent =
+            services.toFixed(2);
+
+
+        document.getElementById(
+            "medicine_display"
+        ).textContent =
+            medicine.toFixed(2);
+
+
+        document.getElementById(
+            "laboratory_display"
+        ).textContent =
+            laboratory.toFixed(2);
+
+
+        document.getElementById(
+            "other_display"
+        ).textContent =
+            other.toFixed(2);
+
+
+        document.getElementById(
+            "subtotal"
+        ).textContent =
+            subtotal.toFixed(2);
+
+
+        document.getElementById(
+            "discount_display"
+        ).textContent =
+            discount.toFixed(2);
+
+
+        document.getElementById(
+            "total"
+        ).textContent =
+            total.toFixed(2);
+
+
+        document.getElementById(
+            "paid_display"
+        ).textContent =
+            paid.toFixed(2);
+
+
+        document.getElementById(
+            "remaining"
+        ).textContent =
+            remaining.toFixed(2);
+
+
+        /* =================================================
+           PAYMENT STATUS
+        ================================================== */
+
+        const status =
+            document.getElementById(
+                "payment_status"
+            );
+
+
+        if (total <= 0) {
+
+            status.textContent =
+                "Unpaid";
+
+            status.className =
+                "badge bg-secondary fs-6 px-3 py-2";
+
+        }
+
+        else if (paid >= total) {
+
+            status.textContent =
+                "Paid";
+
+            status.className =
+                "badge bg-success fs-6 px-3 py-2";
+
+        }
+
+        else if (paid > 0) {
+
+            status.textContent =
+                "Partial";
+
+            status.className =
+                "badge bg-warning text-dark fs-6 px-3 py-2";
+
+        }
+
+        else {
+
+            status.textContent =
+                "Unpaid";
+
+            status.className =
+                "badge bg-danger fs-6 px-3 py-2";
+
+        }
+
+
+        /* =================================================
+           HIDE ERRORS DURING NORMAL CALCULATION
+        ================================================== */
+
+        discountError.classList.remove(
+            "show-error"
+        );
+
+
+        paidError.classList.remove(
+            "show-error"
+        );
+
+    }
+
+
+    /* =====================================================
+       CHARGE INPUT EVENTS
+    ====================================================== */
+
+    document
+        .querySelectorAll(".charge-input")
+        .forEach(function(input) {
+
+            input.addEventListener(
+                "input",
+                calculateBill
+            );
+
+        });
+
+
+    /* =====================================================
+       DISCOUNT EVENT
+    ====================================================== */
+
+    document
+        .getElementById("discount")
+        .addEventListener(
+            "input",
+            calculateBill
+        );
+
+
+    /* =====================================================
+       PAID EVENT
+    ====================================================== */
+
+    document
+        .getElementById("paid_amount")
+        .addEventListener(
+            "input",
+            calculateBill
+        );
+
+
+    /* =====================================================
+       FORM VALIDATION
+    ====================================================== */
+
+    document
+        .getElementById("editBillForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+
+                const consultation =
+                    getAmount(
+                        "consultation_fee"
+                    );
+
+
+                const services =
+                    getAmount(
+                        "service_fee"
+                    );
+
+
+                const medicine =
+                    getAmount(
+                        "medicine_fee"
+                    );
+
+
+                const laboratory =
+                    getAmount(
+                        "laboratory_fee"
+                    );
+
+
+                const other =
+                    getAmount(
+                        "other_charges"
+                    );
+
+
+                const discount =
+                    getAmount(
+                        "discount"
+                    );
+
+
+                const paid =
+                    getAmount(
+                        "paid_amount"
+                    );
+
+
+                const subtotal =
+                    consultation +
+                    services +
+                    medicine +
+                    laboratory +
+                    other;
+
+
+                const total =
+                    Math.max(
+                        subtotal - discount,
+                        0
+                    );
+
+
+                /* =========================================
+                   DISCOUNT
+                ========================================== */
+
+                if (discount > subtotal) {
+
+                    event.preventDefault();
+
+
+                    document
+                        .getElementById(
+                            "discountError"
+                        )
+                        .classList.add(
+                            "show-error"
+                        );
+
+
+                    document
+                        .getElementById(
+                            "discount"
+                        )
+                        .focus();
+
+
+                    return;
+
+                }
+
+
+                /* =========================================
+                   PAID
+                ========================================== */
+
+                if (paid > total) {
+
+                    event.preventDefault();
+
+
+                    document
+                        .getElementById(
+                            "paidError"
+                        )
+                        .classList.add(
+                            "show-error"
+                        );
+
+
+                    document
+                        .getElementById(
+                            "paid_amount"
+                        )
+                        .focus();
+
+
+                    return;
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       INITIAL CALCULATION
+    ====================================================== */
+
+    calculateBill();
+
+</script>
+
+
+<!-- ================= BOOTSTRAP JS ================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1227 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctor Details - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   DOCTOR DETAILS PAGE
+========================================================= */
+
+.doctor-details-page {
+    padding-bottom: 30px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.doctor-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, #0f172a 0%, #172554 55%, #1d4ed8 100%);
+    border-radius: 22px;
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    color: #fff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.doctor-hero::before {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    right: -70px;
+    top: -90px;
+}
+
+.doctor-hero::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    right: 100px;
+    bottom: -100px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.doctor-profile {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.doctor-avatar {
+    width: 76px;
+    height: 76px;
+    min-width: 76px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    backdrop-filter: blur(8px);
+}
+
+.doctor-name {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 5px;
+    letter-spacing: -0.5px;
+}
+
+.doctor-code {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hero-btn {
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+
+.hero-btn-back {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-btn-back:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+}
+
+.hero-btn-edit {
+    background: #fff;
+    color: #1d4ed8;
+    border: none;
+}
+
+.hero-btn-edit:hover {
+    background: #f8fafc;
+    color: #1e40af;
+}
+
+/* =========================================================
+   QUICK STATS
+========================================================= */
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 21px;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.stat-value {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 22px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.details-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+
+.details-card-header {
+    padding: 20px 22px;
+    border-bottom: 1px solid #eef2f7;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 750;
+    color: #0f172a;
+}
+
+.header-subtitle {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.details-card-body {
+    padding: 22px;
+}
+
+/* =========================================================
+   INFORMATION ITEM
+========================================================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.info-item {
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+    border-radius: 13px;
+    padding: 15px;
+    transition: 0.2s ease;
+}
+
+.info-item:hover {
+    border-color: #dbeafe;
+    background: #f8fbff;
+}
+
+.info-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 650;
+    margin-bottom: 7px;
+}
+
+.info-label i {
+    color: #2563eb;
+    font-size: 14px;
+}
+
+.info-value {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 650;
+    word-break: break-word;
+}
+
+/* =========================================================
+   FEE CARD
+========================================================= */
+
+.fee-box {
+    background: linear-gradient(135deg, #eff6ff, #f8fafc);
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.fee-label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 650;
+    margin-bottom: 6px;
+}
+
+.fee-value {
+    color: #1d4ed8;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.fee-value span {
+    font-size: 14px;
+    font-weight: 650;
+    color: #64748b;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 18px;
+}
+
+.status-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.status-subtitle {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-active {
+    color: #15803d;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+}
+
+.status-inactive {
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   ACCOUNT BOX
+========================================================= */
+
+.account-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.account-header {
+    background: #f8fafc;
+    padding: 13px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.account-body {
+    padding: 16px;
+}
+
+.account-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.account-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.account-username {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.account-email {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 2px;
+    word-break: break-word;
+}
+
+.no-account {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* =========================================================
+   INFORMATION NOTE
+========================================================= */
+
+.info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #1e40af;
+    border-radius: 14px;
+    padding: 15px 16px;
+    margin-top: 20px;
+}
+
+.info-note-icon {
+    font-size: 18px;
+    margin-top: 1px;
+}
+
+.info-note-title {
+    font-size: 13px;
+    font-weight: 750;
+    margin-bottom: 3px;
+}
+
+.info-note-text {
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+/* =========================================================
+   BOTTOM ACTIONS
+========================================================= */
+
+.bottom-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #eef2f7;
+}
+
+.btn-custom {
+    border-radius: 10px;
+    padding: 10px 17px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.btn-primary-custom {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.btn-primary-custom:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    .stat-card,
+    .details-card {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    .stat-value,
+    .header-title,
+    .info-value,
+    .account-username {
+        color: #f8fafc;
+    }
+
+    .stat-label,
+    .header-subtitle,
+    .info-label,
+    .fee-label,
+    .status-subtitle,
+    .account-email {
+        color: #94a3b8;
+    }
+
+    .info-item {
+        background: #0f172a;
+        border-color: #1f2937;
+    }
+
+    .info-item:hover {
+        background: #111c30;
+        border-color: #1e3a8a;
+    }
+
+    .account-header {
+        background: #0f172a;
+        border-color: #1f2937;
+        color: #e2e8f0;
+    }
+
+    .account-box {
+        border-color: #1f2937;
+    }
+
+    .status-box {
+        border-color: #1f2937;
+    }
+
+    .status-title {
+        color: #e2e8f0;
+    }
+
+    .bottom-actions {
+        border-color: #1f2937;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .doctor-hero {
+        padding: 22px 18px;
+        border-radius: 17px;
+    }
+
+    .hero-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .doctor-profile {
+        width: 100%;
+    }
+
+    .doctor-avatar {
+        width: 62px;
+        height: 62px;
+        min-width: 62px;
+        font-size: 27px;
+    }
+
+    .doctor-name {
+        font-size: 22px;
+    }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+    .hero-actions .hero-btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-card-body {
+        padding: 17px;
+    }
+
+    .quick-stats {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .doctor-name {
+        font-size: 19px;
+    }
+
+    .doctor-code {
+        font-size: 12px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .hero-actions .hero-btn {
+        width: 100%;
+    }
+
+    .fee-value {
+        font-size: 26px;
+    }
+
+    .bottom-actions {
+        flex-direction: column-reverse;
+    }
+
+    .bottom-actions .btn {
+        width: 100%;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-2 doctor-details-page">
+
+```
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<div class="doctor-hero">
+
+    <div class="hero-content">
+
+        <div class="doctor-profile">
+
+            <div class="doctor-avatar">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+
+            <div>
+
+                <h1 class="doctor-name">
+                    {{ doctor.full_name or 'Doctor' }}
+                </h1>
+
+                <p class="doctor-code">
+                    <i class="bi bi-hash me-1"></i>
+                    {{ doctor.doctor_code or 'N/A' }}
+
+                    {% if doctor.specialization %}
+                        <span class="mx-2">•</span>
+                        {{ doctor.specialization }}
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-actions">
+
+            <a
+                href="{{ url_for('doctors.list_doctors') }}"
+                class="btn hero-btn hero-btn-back"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+
+
+            {% if current_user.has_role("super_admin") %}
+
+                <a
+                    href="{{ url_for(
+                        'doctors.edit_doctor',
+                        doctor_id=doctor.id
+                    ) }}"
+                    class="btn hero-btn hero-btn-edit"
+                >
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Edit Doctor
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     QUICK STATS
+====================================================== -->
+
+<div class="quick-stats">
+
+    <!-- Specialization -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-heart-pulse"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-label">
+                Specialization
+            </div>
+
+            <div class="stat-value">
+                {{ doctor.specialization or '-' }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Qualification -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-mortarboard"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-label">
+                Qualification
+            </div>
+
+            <div class="stat-value">
+                {{ doctor.qualification or '-' }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Room -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            <i class="bi bi-door-open"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-label">
+                Room Number
+            </div>
+
+            <div class="stat-value">
+                {{ doctor.room_number or '-' }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Status -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            {% if doctor.is_active %}
+                <i class="bi bi-check-circle"></i>
+            {% else %}
+                <i class="bi bi-pause-circle"></i>
+            {% endif %}
+        </div>
+
+        <div>
+
+            <div class="stat-label">
+                Account Status
+            </div>
+
+            <div class="stat-value">
+
+                {% if doctor.is_active %}
+                    Active
+                {% else %}
+                    Inactive
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<div class="details-grid">
+
+
+    <!-- =================================================
+         LEFT - PERSONAL / PROFESSIONAL INFORMATION
+    ================================================== -->
+
+    <div class="details-card">
+
+        <div class="details-card-header">
+
+            <div class="header-icon">
+                <i class="bi bi-person-lines-fill"></i>
+            </div>
+
+            <div>
+
+                <h3 class="header-title">
+                    Doctor Information
+                </h3>
+
+                <div class="header-subtitle">
+                    Personal and professional details
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="details-card-body">
+
+            <div class="info-grid">
+
+
+                <!-- Full Name -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-person"></i>
+                        Full Name
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.full_name or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Doctor Code -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-upc-scan"></i>
+                        Doctor Code
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.doctor_code or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Specialization -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-heart-pulse"></i>
+                        Specialization
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.specialization or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Qualification -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-mortarboard"></i>
+                        Qualification
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.qualification or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-telephone"></i>
+                        Phone
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.phone or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-envelope"></i>
+                        Email
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.email or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Room -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-door-open"></i>
+                        Room Number
+                    </div>
+
+                    <div class="info-value">
+                        {{ doctor.room_number or '-' }}
+                    </div>
+
+                </div>
+
+
+                <!-- Consultation Fee -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        <i class="bi bi-cash-stack"></i>
+                        Consultation Fee
+                    </div>
+
+                    <div class="info-value">
+                        Rs. {{ doctor.consultation_fee or 0 }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Information Note -->
+
+            <div class="info-note">
+
+                <div class="info-note-icon">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+
+                <div>
+
+                    <div class="info-note-title">
+                        Doctor Information
+                    </div>
+
+                    <div class="info-note-text">
+                        This page is read-only. Doctor information can only
+                        be updated by an authorized administrator.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         RIGHT - ACCOUNT / STATUS / FEE
+    ================================================== -->
+
+    <div class="details-card">
+
+        <div class="details-card-header">
+
+            <div class="header-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+            <div>
+
+                <h3 class="header-title">
+                    Account & Status
+                </h3>
+
+                <div class="header-subtitle">
+                    Login and clinic status
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="details-card-body">
+
+
+            <!-- Consultation Fee -->
+
+            <div class="fee-box">
+
+                <div class="fee-label">
+                    Consultation Fee
+                </div>
+
+                <div class="fee-value">
+
+                    Rs. {{ doctor.consultation_fee or 0 }}
+
+                    <span>
+                        / consultation
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Status -->
+
+            <div class="status-box">
+
+                <div>
+
+                    <div class="status-title">
+                        Doctor Status
+                    </div>
+
+                    <div class="status-subtitle">
+                        Current availability status
+                    </div>
+
+                </div>
+
+
+                {% if doctor.is_active %}
+
+                    <span class="status-badge status-active">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Active
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge status-inactive">
+                        <i class="bi bi-x-circle-fill"></i>
+                        Inactive
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Login Account -->
+
+            <div class="account-box">
+
+                <div class="account-header">
+                    <i class="bi bi-person-lock me-2"></i>
+                    Doctor Login Account
+                </div>
+
+
+                <div class="account-body">
+
+                    {% if doctor.user %}
+
+                        <div class="account-row">
+
+                            <div class="account-icon">
+                                <i class="bi bi-person-check-fill"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="account-username">
+                                    {{ doctor.user.username }}
+                                </div>
+
+                                {% if doctor.user.email %}
+
+                                    <div class="account-email">
+                                        <i class="bi bi-envelope me-1"></i>
+                                        {{ doctor.user.email }}
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="account-email">
+                                        No email linked
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="no-account">
+
+                            <i class="bi bi-exclamation-circle"></i>
+
+                            <span>
+                                No doctor login account linked.
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Bottom Actions -->
+
+            <div class="bottom-actions">
+
+                <a
+                    href="{{ url_for('doctors.list_doctors') }}"
+                    class="btn btn-outline-secondary btn-custom"
+                >
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back to Doctors
+                </a>
+
+
+                {% if current_user.has_role("super_admin") %}
+
+                    <a
+                        href="{{ url_for(
+                            'doctors.edit_doctor',
+                            doctor_id=doctor.id
+                        ) }}"
+                        class="btn btn-primary btn-primary-custom btn-custom"
+                    >
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Edit Doctor
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

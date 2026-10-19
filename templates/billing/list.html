@@ -1,0 +1,1158 @@
+{% extends "base.html" %}
+
+{% block title %}
+Billing - Doctor Clinic
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       BILLING PAGE
+    ========================================================= */
+
+    .billing-page {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 8px 10px 40px;
+    }
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .billing-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 28px 30px;
+        margin-bottom: 24px;
+        background:
+            linear-gradient(
+                135deg,
+                #0f172a 0%,
+                #172554 48%,
+                #2563eb 100%
+            );
+        color: #fff;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .billing-hero::before {
+        content: "";
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        right: -80px;
+        top: -120px;
+        background: rgba(255, 255, 255, 0.07);
+    }
+
+    .billing-hero::after {
+        content: "";
+        position: absolute;
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        right: 180px;
+        bottom: -125px;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .billing-hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .billing-hero-left {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .billing-hero-icon {
+        width: 64px;
+        height: 64px;
+        flex: 0 0 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 29px;
+    }
+
+    .billing-hero-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color:white;
+    }
+
+    .billing-hero-subtitle {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+    }
+
+    .create-bill-btn {
+        position: relative;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: #fff;
+        color: #1d4ed8;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        box-shadow: 0 7px 18px rgba(0, 0, 0, 0.13);
+        transition: 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .create-bill-btn:hover {
+        color: #1e40af;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    /* =========================================================
+       BILL LIST CARD
+    ========================================================= */
+
+    .billing-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    }
+
+    .billing-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 20px 23px;
+        border-bottom: 1px solid #eef2f7;
+        background: #fff;
+    }
+
+    .billing-list-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin: 0;
+        color: #0f172a;
+        font-size: 17px;
+        font-weight: 800;
+    }
+
+    .billing-list-icon {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 18px;
+    }
+
+    .billing-count {
+        min-width: 32px;
+        height: 28px;
+        padding: 0 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .billing-list-subtitle {
+        margin: 5px 0 0 49px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    /* =========================================================
+       TABLE
+    ========================================================= */
+
+    .billing-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .billing-table {
+        width: 100%;
+        min-width: 1100px;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .billing-table thead th {
+        padding: 14px 13px;
+        background: #f8fafc;
+        color: #64748b;
+        border-top: 1px solid #eef2f7;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .billing-table thead th:first-child {
+        padding-left: 23px;
+    }
+
+    .billing-table tbody td {
+        padding: 16px 13px;
+        border-bottom: 1px solid #eef2f7;
+        color: #334155;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .billing-table tbody tr {
+        transition: 0.18s ease;
+    }
+
+    .billing-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .billing-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    /* =========================================================
+       BILL CODE
+    ========================================================= */
+
+    .bill-code {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 9px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+    }
+
+    .bill-code i {
+        font-size: 12px;
+    }
+
+    /* =========================================================
+       PATIENT
+    ========================================================= */
+
+    .patient-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 170px;
+    }
+
+    .patient-avatar {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 16px;
+    }
+
+    .patient-name {
+        display: block;
+        color: #0f172a;
+        font-weight: 750;
+        line-height: 1.3;
+    }
+
+    .patient-code {
+        display: block;
+        margin-top: 3px;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+       AMOUNTS
+    ========================================================= */
+
+    .amount-main {
+        color: #0f172a;
+        font-size: 13px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .amount-paid {
+        color: #334155;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .amount-remaining {
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .remaining-due {
+        color: #dc2626;
+    }
+
+    .remaining-clear {
+        color: #16a34a;
+    }
+
+    /* =========================================================
+       PAYMENT STATUS
+    ========================================================= */
+
+    .payment-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .status-paid {
+        background: #ecfdf3;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+
+    .status-partial {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+    }
+
+    .status-unpaid {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    /* =========================================================
+       PAYMENT METHOD
+    ========================================================= */
+
+    .payment-method {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .payment-method i {
+        color: #2563eb;
+        font-size: 14px;
+    }
+
+    .empty-value {
+        color: #94a3b8;
+    }
+
+    /* =========================================================
+       DATE
+    ========================================================= */
+
+    .bill-date {
+        color: #334155;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .bill-date i {
+        color: #64748b;
+        margin-right: 5px;
+    }
+
+    /* =========================================================
+       ACTIONS
+    ========================================================= */
+
+    .bill-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .bill-action-btn {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #fff;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .bill-view-btn {
+        border: 1px solid #bfdbfe;
+        color: #2563eb;
+    }
+
+    .bill-view-btn:hover {
+        background: #eff6ff;
+        color: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    .bill-edit-btn {
+        border: 1px solid #cbd5e1;
+        color: #475569;
+    }
+
+    .bill-edit-btn:hover {
+        background: #f8fafc;
+        color: #0f172a;
+        transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .empty-billing {
+        padding: 70px 25px;
+        text-align: center;
+    }
+
+    .empty-billing-icon {
+        width: 78px;
+        height: 78px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: #f1f5f9;
+        color: #94a3b8;
+        font-size: 34px;
+    }
+
+    .empty-billing h4 {
+        margin-bottom: 7px;
+        color: #0f172a;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .empty-billing p {
+        max-width: 430px;
+        margin: 0 auto 20px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .empty-create-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 16px;
+        border-radius: 11px;
+        background: #2563eb;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 750;
+        box-shadow: 0 7px 16px rgba(37, 99, 235, 0.18);
+        transition: 0.2s ease;
+    }
+
+    .empty-create-btn:hover {
+        color: #fff;
+        background: #1d4ed8;
+        transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       DARK MODE
+    ========================================================= */
+
+    body.dark-mode .billing-card,
+    body.dark-mode .billing-card-header {
+        background: #111827;
+        border-color: #263244;
+    }
+
+    body.dark-mode .billing-list-title,
+    body.dark-mode .patient-name,
+    body.dark-mode .amount-main,
+    body.dark-mode .empty-billing h4 {
+        color: #f8fafc;
+    }
+
+    body.dark-mode .billing-list-subtitle,
+    body.dark-mode .patient-code,
+    body.dark-mode .bill-date,
+    body.dark-mode .amount-paid {
+        color: #94a3b8;
+    }
+
+    body.dark-mode .billing-table thead th {
+        background: #0f172a;
+        color: #94a3b8;
+        border-color: #263244;
+    }
+
+    body.dark-mode .billing-table tbody td {
+        color: #cbd5e1;
+        border-color: #263244;
+    }
+
+    body.dark-mode .billing-table tbody tr:hover {
+        background: #162033;
+    }
+
+    body.dark-mode .bill-code,
+    body.dark-mode .billing-count,
+    body.dark-mode .billing-list-icon,
+    body.dark-mode .patient-avatar {
+        background: #172554;
+        color: #bfdbfe;
+    }
+
+    body.dark-mode .bill-action-btn {
+        background: #111827;
+    }
+
+    body.dark-mode .bill-view-btn {
+        border-color: #1e40af;
+        color: #93c5fd;
+    }
+
+    body.dark-mode .bill-edit-btn {
+        border-color: #334155;
+        color: #cbd5e1;
+    }
+
+    body.dark-mode .empty-billing-icon {
+        background: #1e293b;
+        color: #64748b;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 850px) {
+
+        .billing-page {
+            padding: 5px 5px 30px;
+        }
+
+        .billing-hero {
+            border-radius: 18px;
+            padding: 21px;
+        }
+
+        .billing-hero-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .billing-hero-left {
+            align-items: flex-start;
+        }
+
+        .billing-hero-icon {
+            width: 53px;
+            height: 53px;
+            flex-basis: 53px;
+            font-size: 23px;
+        }
+
+        .billing-hero-title {
+            font-size: 22px;
+        }
+
+        .create-bill-btn {
+            width: 100%;
+        }
+
+        .billing-card {
+            border-radius: 16px;
+        }
+
+        .billing-card-header {
+            padding: 17px;
+        }
+    }
+
+    @media (max-width: 600px) {
+
+        .billing-list-title {
+            font-size: 15px;
+        }
+
+        .billing-list-subtitle {
+            margin-left: 0;
+            margin-top: 7px;
+        }
+
+        .billing-card-header {
+            align-items: flex-start;
+        }
+
+        .empty-billing {
+            padding: 55px 18px;
+        }
+    }
+
+    /* =========================================================
+       PRINT
+    ========================================================= */
+
+    @media print {
+
+        .billing-hero {
+            background: #fff !important;
+            color: #000 !important;
+            border: 1px solid #ddd;
+            box-shadow: none;
+        }
+
+        .billing-hero::before,
+        .billing-hero::after,
+        .create-bill-btn,
+        .bill-actions {
+            display: none !important;
+        }
+
+        .billing-card {
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
+
+        .billing-page {
+            max-width: 100%;
+            padding: 0;
+        }
+    }
+</style>
+
+
+<div class="billing-page">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="billing-hero">
+
+        <div class="billing-hero-content">
+
+            <div class="billing-hero-left">
+
+                <div class="billing-hero-icon">
+                    <i class="bi bi-receipt"></i>
+                </div>
+
+                <div>
+
+                    <h1 class="billing-hero-title">
+                        Billing
+                    </h1>
+
+                    <p class="billing-hero-subtitle">
+                        Manage clinic bills and payment records
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CREATE BILL
+                 SUPER ADMIN / RECEPTIONIST ONLY -->
+
+            {% if current_user.has_role(
+                "super_admin",
+                "receptionist"
+            ) %}
+
+                <a
+                    href="{{ url_for('billing.add_bill') }}"
+                    class="create-bill-btn"
+                >
+
+                    <i class="bi bi-plus-circle"></i>
+
+                    Create Bill
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BILL LIST
+    ====================================================== -->
+
+    <div class="billing-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="billing-card-header">
+
+            <div>
+
+                <h2 class="billing-list-title">
+
+                    <span class="billing-list-icon">
+                        <i class="bi bi-list-ul"></i>
+                    </span>
+
+                    Bill List
+
+                    <span class="billing-count">
+                        {{ bills|length }}
+                    </span>
+
+                </h2>
+
+                <p class="billing-list-subtitle">
+                    All clinic bills and payment records
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TABLE
+        ================================================== -->
+
+        <div class="billing-table-wrapper">
+
+            <table class="billing-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Bill ID
+                        </th>
+
+                        <th>
+                            Patient
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Paid
+                        </th>
+
+                        <th>
+                            Remaining
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th class="text-center">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for bill in bills %}
+
+                        <tr>
+
+                            <!-- BILL ID -->
+
+                            <td>
+
+                                <span class="bill-code">
+
+                                    <i class="bi bi-receipt"></i>
+
+                                    {{ bill.bill_code }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- PATIENT -->
+
+                            <td>
+
+                                {% if bill.patient %}
+
+                                    <div class="patient-cell">
+
+                                        <div class="patient-avatar">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+
+                                        <div>
+
+                                            <span class="patient-name">
+                                                {{ bill.patient.full_name }}
+                                            </span>
+
+                                            <span class="patient-code">
+                                                {{ bill.patient.patient_code }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="empty-value">
+                                        Unknown
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- TOTAL -->
+
+                            <td>
+
+                                <span class="amount-main">
+
+                                    Rs.
+                                    {{ "%.2f"|format(
+                                        bill.total_amount or 0
+                                    ) }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- PAID -->
+
+                            <td>
+
+                                <span class="amount-paid">
+
+                                    Rs.
+                                    {{ "%.2f"|format(
+                                        bill.paid_amount or 0
+                                    ) }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- REMAINING -->
+
+                            <td>
+
+                                {% if (bill.remaining_amount or 0) > 0 %}
+
+                                    <span class="amount-remaining remaining-due">
+
+                                        Rs.
+                                        {{ "%.2f"|format(
+                                            bill.remaining_amount or 0
+                                        ) }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="amount-remaining remaining-clear">
+
+                                        Rs. 0.00
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                {% if bill.payment_status == "Paid" %}
+
+                                    <span class="payment-status status-paid">
+
+                                        <i class="bi bi-check-circle"></i>
+
+                                        Paid
+
+                                    </span>
+
+
+                                {% elif bill.payment_status == "Partial" %}
+
+                                    <span class="payment-status status-partial">
+
+                                        <i class="bi bi-clock"></i>
+
+                                        Partial
+
+                                    </span>
+
+
+                                {% else %}
+
+                                    <span class="payment-status status-unpaid">
+
+                                        <i class="bi bi-exclamation-circle"></i>
+
+                                        Unpaid
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- PAYMENT METHOD -->
+
+                            <td>
+
+                                {% if bill.payment_method %}
+
+                                    <span class="payment-method">
+
+                                        <i class="bi bi-credit-card"></i>
+
+                                        {{ bill.payment_method }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="empty-value">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                {% if bill.created_at %}
+
+                                    <span class="bill-date">
+
+                                        <i class="bi bi-calendar3"></i>
+
+                                        {{ bill.created_at.strftime(
+                                            "%d %b %Y"
+                                        ) }}
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="empty-value">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+                                <div class="bill-actions">
+
+                                    <!-- VIEW -->
+
+                                    <a
+                                        href="{{ url_for(
+                                            'billing.view_bill',
+                                            id=bill.id
+                                        ) }}"
+                                        class="bill-action-btn bill-view-btn"
+                                        title="View Bill"
+                                    >
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </a>
+
+
+                                    <!-- EDIT
+                                         SUPER ADMIN / RECEPTIONIST ONLY -->
+
+                                    {% if current_user.has_role(
+                                        "super_admin",
+                                        "receptionist"
+                                    ) %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'billing.edit_bill',
+                                                id=bill.id
+                                            ) }}"
+                                            class="bill-action-btn bill-edit-btn"
+                                            title="Edit Bill"
+                                        >
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% else %}
+
+                        <!-- =================================================
+                             EMPTY STATE
+                        ================================================== -->
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                style="border-bottom: 0;"
+                            >
+
+                                <div class="empty-billing">
+
+                                    <div class="empty-billing-icon">
+
+                                        <i class="bi bi-receipt"></i>
+
+                                    </div>
+
+                                    <h4>
+                                        No Bills Found
+                                    </h4>
+
+                                    <p>
+                                        No billing records have been created yet.
+                                    </p>
+
+
+                                    <!-- CREATE BILL
+                                         SUPER ADMIN / RECEPTIONIST ONLY -->
+
+                                    {% if current_user.has_role(
+                                        "super_admin",
+                                        "receptionist"
+                                    ) %}
+
+                                        <a
+                                            href="{{ url_for(
+                                                'billing.add_bill'
+                                            ) }}"
+                                            class="empty-create-btn"
+                                        >
+
+                                            <i class="bi bi-plus-circle"></i>
+
+                                            Create First Bill
+
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

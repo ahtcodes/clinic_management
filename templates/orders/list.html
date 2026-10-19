@@ -1,0 +1,1203 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Orders - Doctor Clinic
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   ORDERS PAGE
+========================================================= */
+
+.orders-page {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 8px 18px 35px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.orders-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+    border-radius: 20px;
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #172554 48%,
+        #2563eb 100%
+    );
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+}
+
+.orders-hero::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    right: -80px;
+    top: -120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+
+.orders-hero::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    right: 160px;
+    bottom: -110px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.orders-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.orders-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.orders-icon {
+    width: 55px;
+    height: 55px;
+    flex: 0 0 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 25px;
+}
+
+.orders-hero h2 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.orders-hero p {
+    margin: 8px 0 0;
+    color: rgba(255,255,255,0.78);
+    font-size: 14px;
+}
+
+.create-order-btn {
+    position: relative;
+    z-index: 3;
+    min-height: 44px;
+    padding: 10px 17px;
+    border: 0;
+    border-radius: 10px;
+    color: #0f172a;
+    background: #ffffff;
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.create-order-btn:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+}
+
+/* =========================================================
+   ORDER LIST CARD
+========================================================= */
+
+.orders-card {
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+}
+
+.orders-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 19px 22px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.orders-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.orders-section-title i {
+    color: #2563eb;
+    font-size: 19px;
+}
+
+.orders-section-subtitle {
+    margin: 4px 0 0 29px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.orders-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    min-height: 30px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    color: #1d4ed8;
+    background: #dbeafe;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.orders-table {
+    margin: 0;
+}
+
+.orders-table thead th {
+    padding: 14px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    white-space: nowrap;
+}
+
+.orders-table tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #eef2f7;
+    color: #334155;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.orders-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.orders-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.orders-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.order-number {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    color: #2563eb;
+    background: #eff6ff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   ORDER CODE
+========================================================= */
+
+.order-code {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 9px;
+    border-radius: 8px;
+    color: #1d4ed8;
+    background: #eff6ff;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+/* =========================================================
+   PATIENT
+========================================================= */
+
+.patient-name {
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.patient-code {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* =========================================================
+   DOCTOR
+========================================================= */
+
+.doctor-name {
+    color: #334155;
+    font-weight: 700;
+}
+
+/* =========================================================
+   MEDICINES
+========================================================= */
+
+.medicine-list {
+    min-width: 175px;
+    max-width: 240px;
+}
+
+.medicine-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+    color: #334155;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.medicine-row:last-child {
+    margin-bottom: 0;
+}
+
+.medicine-row i {
+    color: #2563eb;
+    flex: 0 0 auto;
+}
+
+.medicine-quantity {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.more-medicines {
+    display: inline-block;
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.order-total {
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.status-pending {
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+}
+
+.status-confirmed {
+    color: #166534;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+}
+
+.status-cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+}
+
+.status-default {
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.order-date {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.order-time {
+    display: block;
+    margin-top: 3px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.order-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.order-action {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.order-action-view {
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.order-action-view:hover {
+    color: #ffffff;
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.order-action-confirm {
+    color: #15803d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.order-action-confirm:hover {
+    color: #ffffff;
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+.order-action-cancel {
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.order-action-cancel:hover {
+    color: #ffffff;
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-orders {
+    padding: 70px 25px;
+    text-align: center;
+}
+
+.empty-orders-icon {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    color: #94a3b8;
+    background: #f1f5f9;
+    font-size: 34px;
+}
+
+.empty-orders h5 {
+    margin-bottom: 7px;
+    color: #334155;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.empty-orders p {
+    margin-bottom: 22px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.empty-create-btn {
+    border-radius: 10px;
+    padding: 10px 17px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .orders-card,
+[data-bs-theme="dark"] .orders-card-header {
+    background: #111827;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .orders-section-title {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .orders-section-subtitle {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .orders-table thead th {
+    color: #cbd5e1;
+    background: #172033;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .orders-table tbody td {
+    color: #cbd5e1;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .orders-table tbody tr:hover {
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .patient-name,
+[data-bs-theme="dark"] .order-total {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .patient-code,
+[data-bs-theme="dark"] .medicine-quantity,
+[data-bs-theme="dark"] .more-medicines,
+[data-bs-theme="dark"] .order-time {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .doctor-name,
+[data-bs-theme="dark"] .medicine-row,
+[data-bs-theme="dark"] .order-date {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .empty-orders-icon {
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .empty-orders h5 {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .empty-orders p {
+    color: #94a3b8;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .orders-table {
+        min-width: 1100px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .orders-page {
+        padding: 5px 10px 25px;
+    }
+
+    .orders-hero {
+        padding: 21px 18px;
+        border-radius: 16px;
+    }
+
+    .orders-title-row {
+        align-items: flex-start;
+    }
+
+    .orders-icon {
+        width: 45px;
+        height: 45px;
+        flex-basis: 45px;
+        font-size: 20px;
+    }
+
+    .orders-hero h2 {
+        font-size: 21px;
+    }
+
+    .orders-hero p {
+        font-size: 12px;
+    }
+
+    .create-order-btn {
+        width: 100%;
+        margin-top: 18px;
+    }
+
+    .orders-card-header {
+        padding: 16px;
+    }
+
+    .orders-section-title {
+        font-size: 15px;
+    }
+
+    .orders-section-subtitle {
+        margin-left: 27px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .orders-count {
+        font-size: 10px;
+        padding: 5px 9px;
+    }
+
+}
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    .orders-page {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .orders-hero {
+        color: #000000;
+        background: #ffffff;
+        border: 2px solid #0f172a;
+        box-shadow: none;
+    }
+
+    .orders-hero p {
+        color: #475569;
+    }
+
+    .create-order-btn,
+    .order-actions {
+        display: none !important;
+    }
+
+    .orders-card {
+        box-shadow: none;
+        border: 1px solid #cbd5e1;
+    }
+
+}
+
+</style>
+
+
+<div class="orders-page">
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="orders-hero">
+
+        <div class="row align-items-center position-relative">
+
+            <div class="col-lg-8">
+
+                <div class="orders-hero-content">
+
+                    <div class="orders-title-row">
+
+                        <div class="orders-icon">
+
+                            <i class="bi bi-cart-check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Medicine Orders
+                            </h2>
+
+                            <p>
+                                Manage and monitor patient medicine orders
+                                from one place.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 text-lg-end">
+
+                <a
+                    href="{{ url_for('orders.add_order') }}"
+                    class="btn create-order-btn"
+                >
+
+                    <i class="bi bi-plus-circle me-1"></i>
+
+                    Create Order
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDER LIST
+    ====================================================== -->
+
+    <div class="orders-card">
+
+
+        <!-- HEADER -->
+
+        <div class="orders-card-header">
+
+            <div>
+
+                <h5 class="orders-section-title">
+
+                    <i class="bi bi-list-ul"></i>
+
+                    Order List
+
+                </h5>
+
+                <div class="orders-section-subtitle">
+
+                    All medicine orders
+
+                </div>
+
+            </div>
+
+
+            <span class="orders-count">
+
+                {{ orders|length }}
+
+                {% if orders|length == 1 %}
+                    Order
+                {% else %}
+                    Orders
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="card-body p-0">
+
+            {% if orders %}
+
+                <div class="table-responsive">
+
+                    <table class="table orders-table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="px-3">
+                                    #
+                                </th>
+
+                                <th>
+                                    Order
+                                </th>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Doctor
+                                </th>
+
+                                <th>
+                                    Medicines
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th class="text-end px-3">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for order in orders %}
+
+                                <tr>
+
+
+                                    <!-- NUMBER -->
+
+                                    <td class="px-3">
+
+                                        <span class="order-number">
+
+                                            {{ loop.index }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- ORDER -->
+
+                                    <td>
+
+                                        <span class="order-code">
+
+                                            <i class="bi bi-receipt me-1"></i>
+
+                                            {{ order.order_code }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PATIENT -->
+
+                                    <td>
+
+                                        {% if order.patient %}
+
+                                            <div class="patient-name">
+
+                                                {{ order.patient.full_name }}
+
+                                            </div>
+
+                                            {% if order.patient.patient_code %}
+
+                                                <span class="patient-code">
+
+                                                    {{ order.patient.patient_code }}
+
+                                                </span>
+
+                                            {% endif %}
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+                                                N/A
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- DOCTOR -->
+
+                                    <td>
+
+                                        {% if order.doctor %}
+
+                                            <span class="doctor-name">
+
+                                                <i class="bi bi-person-badge me-1"></i>
+
+                                                Dr.
+                                                {{ order.doctor.full_name }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+                                                N/A
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- MEDICINES -->
+
+                                    <td>
+
+                                        {% if order.items %}
+
+                                            <div class="medicine-list">
+
+                                                {% for item in order.items[:3] %}
+
+                                                    <div class="medicine-row">
+
+                                                        <i class="bi bi-capsule"></i>
+
+                                                        <span>
+
+                                                            {{ item.medicine_name }}
+
+                                                            <span class="medicine-quantity">
+
+                                                                × {{ item.quantity }}
+
+                                                            </span>
+
+                                                        </span>
+
+                                                    </div>
+
+                                                {% endfor %}
+
+
+                                                {% if order.items|length > 3 %}
+
+                                                    <span class="more-medicines">
+
+                                                        + {{ order.items|length - 3 }}
+                                                        more
+
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </div>
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+
+                                                No medicines
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- TOTAL -->
+
+                                    <td>
+
+                                        <span class="order-total">
+
+                                            Rs.
+                                            {{ "%.2f"|format(
+                                                order.total_amount or 0
+                                            ) }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if order.status == "pending" %}
+
+                                            <span class="order-status status-pending">
+
+                                                <i class="bi bi-clock"></i>
+
+                                                Pending
+
+                                            </span>
+
+
+                                        {% elif order.status == "confirmed" %}
+
+                                            <span class="order-status status-confirmed">
+
+                                                <i class="bi bi-check-circle"></i>
+
+                                                Confirmed
+
+                                            </span>
+
+
+                                        {% elif order.status == "cancelled" %}
+
+                                            <span class="order-status status-cancelled">
+
+                                                <i class="bi bi-x-circle"></i>
+
+                                                Cancelled
+
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="order-status status-default">
+
+                                                {{ order.status|capitalize }}
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- DATE -->
+
+                                    <td>
+
+                                        {% if order.created_at %}
+
+                                            <div class="order-date">
+
+                                                {{ order.created_at.strftime(
+                                                    "%d %b %Y"
+                                                ) }}
+
+                                            </div>
+
+                                            <span class="order-time">
+
+                                                {{ order.created_at.strftime(
+                                                    "%I:%M %p"
+                                                ) }}
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="text-muted">
+                                                N/A
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td class="text-end px-3">
+
+                                        <div class="order-actions">
+
+
+                                            <!-- VIEW -->
+
+                                            <a
+                                                href="{{ url_for(
+                                                    'orders.view_order',
+                                                    order_id=order.id
+                                                ) }}"
+                                                class="btn order-action order-action-view"
+                                                title="View Order"
+                                            >
+
+                                                <i class="bi bi-eye"></i>
+
+                                            </a>
+
+
+                                            <!-- CONFIRM -->
+
+                                            {% if order.status == "pending" %}
+
+                                                <form
+                                                    method="POST"
+                                                    action="{{ url_for(
+                                                        'orders.confirm_order',
+                                                        order_id=order.id
+                                                    ) }}"
+                                                    class="d-inline"
+                                                >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn order-action order-action-confirm"
+                                                        title="Confirm Order"
+                                                        onclick="return confirm(
+                                                            'Confirm this order? Medicine stock will be reduced.'
+                                                        )"
+                                                    >
+
+                                                        <i class="bi bi-check-lg"></i>
+
+                                                    </button>
+
+                                                </form>
+
+
+                                                <!-- CANCEL -->
+
+                                                <form
+                                                    method="POST"
+                                                    action="{{ url_for(
+                                                        'orders.cancel_order',
+                                                        order_id=order.id
+                                                    ) }}"
+                                                    class="d-inline"
+                                                >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn order-action order-action-cancel"
+                                                        title="Cancel Order"
+                                                        onclick="return confirm(
+                                                            'Cancel this order?'
+                                                        )"
+                                                    >
+
+                                                        <i class="bi bi-x-lg"></i>
+
+                                                    </button>
+
+                                                </form>
+
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================== -->
+
+                <div class="empty-orders">
+
+                    <div class="empty-orders-icon">
+
+                        <i class="bi bi-cart-x"></i>
+
+                    </div>
+
+                    <h5>
+                        No Orders Found
+                    </h5>
+
+                    <p>
+                        No medicine orders have been created yet.
+                    </p>
+
+                    <a
+                        href="{{ url_for('orders.add_order') }}"
+                        class="btn btn-primary empty-create-btn"
+                    >
+
+                        <i class="bi bi-plus-circle me-1"></i>
+
+                        Create First Order
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+

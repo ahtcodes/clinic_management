@@ -1,0 +1,1780 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Consultation - Doctor Clinic
+    </title>
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fafc 0%,
+                    #eef4ff 50%,
+                    #f8fafc 100%
+                );
+            color: #0f172a;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        .consultation-page {
+            max-width: 1450px;
+            margin: 0 auto;
+            padding: 38px 18px 60px;
+        }
+
+
+        /* =====================================================
+           TOP HEADER
+        ====================================================== */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+
+        .page-heading {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        .page-heading-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: #ffffff;
+
+            font-size: 24px;
+
+            box-shadow:
+                0 10px 24px
+                rgba(37, 99, 235, 0.22);
+        }
+
+
+        .page-heading h1 {
+            margin: 0;
+            font-size: 27px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.4px;
+        }
+
+
+        .page-heading p {
+            margin: 4px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .btn-back,
+        .btn-print {
+            min-height: 42px;
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        .btn-back {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #334155;
+        }
+
+
+        .btn-back:hover {
+            background: #f8fafc;
+            color: #1d4ed8;
+            border-color: #93c5fd;
+        }
+
+
+        .btn-print {
+            border: none;
+            background: #0f172a;
+            color: #ffffff;
+        }
+
+
+        .btn-print:hover {
+            background: #1e293b;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           MAIN RECORD
+        ====================================================== */
+
+        .record-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            overflow: hidden;
+
+            box-shadow:
+                0 18px 45px
+                rgba(15, 23, 42, 0.09);
+        }
+
+
+        /* =====================================================
+           RECORD HERO
+        ====================================================== */
+
+        .record-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 30px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(96, 165, 250, 0.30),
+                    transparent 34%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.18),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0f172a 0%,
+                    #172554 55%,
+                    #1d4ed8 100%
+                );
+
+            color: #ffffff;
+        }
+
+
+        .record-hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+
+            right: -90px;
+            top: -110px;
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.10);
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+        }
+
+
+        .clinic-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .clinic-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.18);
+
+            font-size: 27px;
+        }
+
+
+        .clinic-title h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+
+        .clinic-title p {
+            margin: 4px 0 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 13px;
+        }
+
+
+        .consultation-id {
+            text-align: right;
+        }
+
+
+        .consultation-id-label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: rgba(255, 255, 255, 0.65);
+
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        .consultation-code {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.13);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.18);
+
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           BODY
+        ====================================================== */
+
+        .record-body {
+            padding: 32px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ====================================================== */
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            font-size: 17px;
+        }
+
+
+        .section-heading h3 {
+            margin: 0;
+
+            color: #0f172a;
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+
+        .section-heading p {
+            margin: 2px 0 0;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           APPOINTMENT INFORMATION
+        ====================================================== */
+
+        .appointment-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+        }
+
+
+        .appointment-card {
+            position: relative;
+
+            padding: 18px;
+
+            background: #f8fafc;
+
+            border:
+                1px solid
+                #e2e8f0;
+
+            border-radius: 13px;
+
+            transition:
+                transform .2s ease,
+                border-color .2s ease,
+                box-shadow .2s ease;
+        }
+
+
+        .appointment-card:hover {
+            transform: translateY(-2px);
+
+            border-color: #bfdbfe;
+
+            box-shadow:
+                0 8px 20px
+                rgba(37, 99, 235, 0.07);
+        }
+
+
+        .appointment-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-bottom: 7px;
+
+            color: #64748b;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+
+        .appointment-label i {
+            color: #2563eb;
+        }
+
+
+        .appointment-value {
+            color: #0f172a;
+
+            font-size: 15px;
+            font-weight: 750;
+        }
+
+
+        .appointment-sub {
+            margin-top: 4px;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MEDICAL CONTENT
+        ====================================================== */
+
+        .content-box {
+            min-height: 86px;
+
+            padding: 19px 20px;
+
+            border:
+                1px solid
+                #e2e8f0;
+
+            border-radius: 13px;
+
+            background: #ffffff;
+
+            color: #334155;
+
+            font-size: 14px;
+            line-height: 1.75;
+
+            box-shadow:
+                0 3px 12px
+                rgba(15, 23, 42, 0.025);
+
+            white-space: pre-line;
+        }
+
+
+        .empty-value {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           VITALS
+        ====================================================== */
+
+        .vitals-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+        }
+
+
+        .vital-card {
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                #e2e8f0;
+
+            border-radius: 14px;
+
+            background: #ffffff;
+
+            overflow: hidden;
+        }
+
+
+        .vital-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #2563eb,
+                    #60a5fa
+                );
+        }
+
+
+        .vital-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+
+            border-radius: 10px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            font-size: 18px;
+        }
+
+
+        .vital-label {
+            color: #64748b;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+
+        .vital-value {
+            margin-top: 5px;
+
+            color: #0f172a;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           FOLLOW UP
+        ====================================================== */
+
+        .follow-up-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                #bfdbfe;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #f8fbff
+                );
+        }
+
+
+        .follow-up-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .follow-up-icon {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #2563eb;
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            box-shadow:
+                0 7px 18px
+                rgba(37, 99, 235, 0.22);
+        }
+
+
+        .follow-up-label {
+            color: #64748b;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+
+        .follow-up-date {
+            margin-top: 3px;
+
+            color: #0f172a;
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+
+        .follow-up-status {
+            padding: 7px 11px;
+
+            border-radius: 8px;
+
+            background: #dcfce7;
+            color: #166534;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RECORD FOOTER
+        ====================================================== */
+
+        .record-footer {
+            margin-top: 35px;
+            padding-top: 23px;
+
+            border-top:
+                1px solid
+                #e2e8f0;
+        }
+
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+
+        .footer-label {
+            color: #94a3b8;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+
+        .footer-value {
+            color: #334155;
+
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+
+        .doctor-signature {
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           PRINT
+        ====================================================== */
+
+        @media print {
+
+            @page {
+                size: A4;
+                margin: 14mm;
+            }
+
+
+            body {
+                background: #ffffff !important;
+            }
+
+
+            .consultation-page {
+                max-width: 100%;
+                padding: 0;
+            }
+
+
+            .no-print {
+                display: none !important;
+            }
+
+
+            .record-card {
+                border: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+
+
+            .record-hero {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+
+            .appointment-card,
+            .vital-card,
+            .content-box,
+            .follow-up-card {
+                break-inside: avoid;
+            }
+
+
+            .section {
+                break-inside: avoid;
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 992px) {
+
+            .appointment-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .vitals-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .consultation-page {
+                padding:
+                    22px 12px 40px;
+            }
+
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .header-actions {
+                width: 100%;
+            }
+
+
+            .btn-back,
+            .btn-print {
+                flex: 1;
+            }
+
+
+            .record-hero {
+                padding: 23px 20px;
+            }
+
+
+            .hero-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .consultation-id {
+                text-align: left;
+            }
+
+
+            .record-body {
+                padding: 22px 18px;
+            }
+
+
+            .appointment-grid,
+            .vitals-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .follow-up-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .doctor-signature {
+                margin-top: 18px;
+                text-align: left;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .page-heading-icon {
+                width: 46px;
+                height: 46px;
+                font-size: 20px;
+            }
+
+
+            .page-heading h1 {
+                font-size: 22px;
+            }
+
+
+            .clinic-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 22px;
+            }
+
+
+            .clinic-title h2 {
+                font-size: 19px;
+            }
+
+
+            .record-body {
+                padding: 18px 14px;
+            }
+
+
+            .section {
+                margin-bottom: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="consultation-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="page-header no-print">
+
+
+        <div class="page-heading">
+
+            <div class="page-heading-icon">
+
+                <i class="bi bi-file-medical"></i>
+
+            </div>
+
+
+            <div>
+
+                <h1>
+                    Consultation
+                </h1>
+
+                <p>
+                    Complete medical consultation record
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+
+            <a
+                href="{{ url_for('appointments.list_appointments') }}"
+                class="btn btn-back"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Appointments
+
+            </a>
+
+
+            <button
+                type="button"
+                onclick="window.print()"
+                class="btn btn-print"
+            >
+
+                <i class="bi bi-printer me-1"></i>
+
+                Print Record
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN RECORD CARD
+    ====================================================== -->
+
+    <div class="record-card">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <div class="record-hero">
+
+
+            <div class="hero-content">
+
+
+                <div class="clinic-title">
+
+
+                    <div class="clinic-icon">
+
+                        <i class="bi bi-heart-pulse"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Doctor Clinic
+                        </h2>
+
+                        <p>
+                            Medical Consultation Record
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="consultation-id">
+
+
+                    <span class="consultation-id-label">
+
+                        Consultation ID
+
+                    </span>
+
+
+                    <span class="consultation-code">
+
+                        <i class="bi bi-hash"></i>
+
+                        {{ consultation.consultation_code }}
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             BODY
+        ================================================== -->
+
+        <div class="record-body">
+
+
+            <!-- =================================================
+                 PATIENT & APPOINTMENT
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-person-vcard"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Patient & Appointment Information
+                        </h3>
+
+                        <p>
+                            Basic information related to this consultation
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="appointment-grid">
+
+
+                    <!-- Patient -->
+
+                    <div class="appointment-card">
+
+
+                        <div class="appointment-label">
+
+                            <i class="bi bi-person"></i>
+
+                            Patient
+
+                        </div>
+
+
+                        <div class="appointment-value">
+
+                            {{ consultation.patient.full_name }}
+
+                        </div>
+
+
+                        <div class="appointment-sub">
+
+                            Patient Code:
+                            {{ consultation.patient.patient_code }}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Doctor -->
+
+                    <div class="appointment-card">
+
+
+                        <div class="appointment-label">
+
+                            <i class="bi bi-person-badge"></i>
+
+                            Doctor
+
+                        </div>
+
+
+                        <div class="appointment-value">
+
+                            Dr. {{ consultation.doctor.full_name }}
+
+                        </div>
+
+
+                        <div class="appointment-sub">
+
+                            {{ consultation.doctor.specialization or "-" }}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Appointment -->
+
+                    <div class="appointment-card">
+
+
+                        <div class="appointment-label">
+
+                            <i class="bi bi-calendar2-check"></i>
+
+                            Appointment
+
+                        </div>
+
+
+                        <div class="appointment-value">
+
+                            {{ consultation.appointment.appointment_code }}
+
+                        </div>
+
+
+                        <div class="appointment-sub">
+
+                            {{ consultation.appointment.appointment_date.strftime("%d %b %Y") }}
+
+                            at
+
+                            {{ consultation.appointment.appointment_time.strftime("%I:%M %p") }}
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SYMPTOMS
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-clipboard-pulse"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Symptoms / Complaints
+                        </h3>
+
+                        <p>
+                            Patient-reported symptoms
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="content-box">
+
+                    {% if consultation.symptoms %}
+
+                        {{ consultation.symptoms }}
+
+                    {% else %}
+
+                        <span class="empty-value">
+
+                            No symptoms recorded.
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 VITALS
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-heart-pulse"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Patient Vitals
+                        </h3>
+
+                        <p>
+                            Recorded during consultation
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="vitals-grid">
+
+
+                    <!-- Blood Pressure -->
+
+                    <div class="vital-card">
+
+
+                        <div class="vital-icon">
+
+                            <i class="bi bi-activity"></i>
+
+                        </div>
+
+
+                        <div class="vital-label">
+
+                            Blood Pressure
+
+                        </div>
+
+
+                        <div class="vital-value">
+
+                            {{ consultation.blood_pressure or "-" }}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Temperature -->
+
+                    <div class="vital-card">
+
+
+                        <div class="vital-icon">
+
+                            <i class="bi bi-thermometer-half"></i>
+
+                        </div>
+
+
+                        <div class="vital-label">
+
+                            Temperature
+
+                        </div>
+
+
+                        <div class="vital-value">
+
+                            {{ consultation.temperature or "-" }}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- Weight -->
+
+                    <div class="vital-card">
+
+
+                        <div class="vital-icon">
+
+                            <i class="bi bi-person-standing"></i>
+
+                        </div>
+
+
+                        <div class="vital-label">
+
+                            Weight
+
+                        </div>
+
+
+                        <div class="vital-value">
+
+                            {{ consultation.weight or "-" }}
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DIAGNOSIS
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-search-heart"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Diagnosis
+                        </h3>
+
+                        <p>
+                            Clinical assessment
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="content-box">
+
+                    {% if consultation.diagnosis %}
+
+                        {{ consultation.diagnosis }}
+
+                    {% else %}
+
+                        <span class="empty-value">
+
+                            No diagnosis recorded.
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CLINICAL NOTES
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-journal-medical"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Clinical Notes
+                        </h3>
+
+                        <p>
+                            Doctor's clinical observations
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="content-box">
+
+                    {% if consultation.clinical_notes %}
+
+                        {{ consultation.clinical_notes }}
+
+                    {% else %}
+
+                        <span class="empty-value">
+
+                            No clinical notes recorded.
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TREATMENT
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-bandaid"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Treatment
+                        </h3>
+
+                        <p>
+                            Recommended treatment and instructions
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="content-box">
+
+                    {% if consultation.treatment_notes %}
+
+                        {{ consultation.treatment_notes }}
+
+                    {% else %}
+
+                        <span class="empty-value">
+
+                            No treatment notes recorded.
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FOLLOW-UP
+            ================================================== -->
+
+            <section class="section">
+
+
+                <div class="section-heading">
+
+
+                    <div class="section-icon">
+
+                        <i class="bi bi-calendar-event"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Follow-up
+                        </h3>
+
+                        <p>
+                            Next recommended consultation date
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                {% if consultation.follow_up_date %}
+
+                    <div class="follow-up-card">
+
+
+                        <div class="follow-up-left">
+
+
+                            <div class="follow-up-icon">
+
+                                <i class="bi bi-calendar-check"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="follow-up-label">
+
+                                    Follow-up Date
+
+                                </div>
+
+
+                                <div class="follow-up-date">
+
+                                    {{ consultation.follow_up_date.strftime("%d %b %Y") }}
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="follow-up-status">
+
+                            <i class="bi bi-check-circle me-1"></i>
+
+                            Scheduled
+
+                        </div>
+
+
+                    </div>
+
+                {% else %}
+
+                    <div class="content-box">
+
+                        <span class="empty-value">
+
+                            No follow-up date specified.
+
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="record-footer">
+
+
+                <div class="row g-4">
+
+
+                    <div class="col-md-6">
+
+
+                        <div class="footer-item">
+
+
+                            <div class="footer-label">
+
+                                <i class="bi bi-clock me-1"></i>
+
+                                Created
+
+                            </div>
+
+
+                            <div class="footer-value">
+
+                                {{ consultation.created_at.strftime(
+                                    "%d %b %Y, %I:%M %p"
+                                ) }}
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="col-md-6">
+
+
+                        <div class="footer-item doctor-signature">
+
+
+                            <div class="footer-label">
+
+                                <i class="bi bi-person-badge me-1"></i>
+
+                                Consulting Doctor
+
+                            </div>
+
+
+                            <div class="footer-value">
+
+                                Dr. {{ consultation.doctor.full_name }}
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+====================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1209 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctor Schedule - Doctor Clinic
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+    /* =========================================================
+       DOCTOR SCHEDULE PAGE
+    ========================================================== */
+
+    .schedule-page {
+        padding-bottom: 30px;
+    }
+
+    /* =========================================================
+       HERO
+    ========================================================== */
+
+    .schedule-hero {
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, #0f172a 0%, #172554 52%, #1d4ed8 100%);
+        border-radius: 18px;
+        padding: 28px 30px;
+        margin-bottom: 24px;
+        color: #fff;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    .schedule-hero::before {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        right: -70px;
+        top: -90px;
+    }
+
+    .schedule-hero::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(96, 165, 250, 0.08);
+        right: 110px;
+        bottom: -90px;
+    }
+
+    .schedule-hero-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .schedule-profile {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+    .schedule-avatar {
+        width: 64px;
+        height: 64px;
+        min-width: 64px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        backdrop-filter: blur(8px);
+    }
+
+    .schedule-title {
+        font-size: 27px;
+        font-weight: 800;
+        margin: 0 0 5px;
+        letter-spacing: -0.4px;
+    }
+
+    .schedule-subtitle {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 14px;
+    }
+
+    .schedule-hero-actions {
+        display: flex;
+        gap: 10px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .hero-add-btn {
+        border: 0;
+        background: #fff;
+        color: #1d4ed8;
+        font-weight: 700;
+        padding: 11px 17px;
+        border-radius: 10px;
+        transition: all 0.2s ease;
+    }
+
+    .hero-add-btn:hover {
+        background: #eff6ff;
+        color: #1e40af;
+        transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       DOCTOR SUMMARY
+    ========================================================== */
+
+    .doctor-summary {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .doctor-summary-main {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .doctor-summary-avatar {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        border-radius: 14px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .doctor-summary-name {
+        font-size: 18px;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 3px;
+    }
+
+    .doctor-summary-specialization {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .schedule-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #dbeafe;
+        padding: 9px 13px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+       DAY GRID
+    ========================================================== */
+
+    .schedule-grid {
+        margin-bottom: 8px;
+    }
+
+    .day-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+        height: 100%;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.055);
+        transition: all 0.2s ease;
+    }
+
+    .day-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.09);
+    }
+
+    .day-header {
+        padding: 17px 18px;
+        border-bottom: 1px solid #edf0f4;
+        background: linear-gradient(180deg, #ffffff, #f8fafc);
+    }
+
+    .day-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .day-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .day-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+        color: #111827;
+    }
+
+    .slot-count {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        padding: 6px 9px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .day-body {
+        padding: 15px;
+    }
+
+    /* =========================================================
+       SLOT CARD
+    ========================================================== */
+
+    .slot-item {
+        border: 1px solid #e5e7eb;
+        border-radius: 13px;
+        padding: 15px;
+        margin-bottom: 12px;
+        background: #fff;
+        transition: all 0.2s ease;
+    }
+
+    .slot-item:hover {
+        border-color: #bfdbfe;
+        background: #fbfdff;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.06);
+    }
+
+    .slot-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .slot-time {
+        font-size: 17px;
+        font-weight: 800;
+        color: #1d4ed8;
+        letter-spacing: -0.2px;
+    }
+
+    .slot-time i {
+        font-size: 15px;
+    }
+
+    .slot-duration {
+        margin-top: 5px;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .slot-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 9px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .slot-status.active {
+        color: #15803d;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+    }
+
+    .slot-status.inactive {
+        color: #64748b;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    .slot-details {
+        margin-top: 13px;
+        padding-top: 12px;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .slot-detail-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #64748b;
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    .slot-detail-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .slot-detail-row i {
+        color: #94a3b8;
+        width: 15px;
+        text-align: center;
+    }
+
+    .slot-detail-row strong {
+        color: #334155;
+    }
+
+    /* =========================================================
+       ACTIONS
+    ========================================================== */
+
+    .slot-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 7px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .slot-btn {
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 7px 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .slot-btn-edit {
+        color: #2563eb;
+        border-color: #bfdbfe;
+        background: #fff;
+    }
+
+    .slot-btn-edit:hover {
+        color: #1d4ed8;
+        background: #eff6ff;
+        border-color: #93c5fd;
+    }
+
+    .slot-btn-disable {
+        color: #b45309;
+        border-color: #fde68a;
+        background: #fff;
+    }
+
+    .slot-btn-disable:hover {
+        color: #92400e;
+        background: #fffbeb;
+    }
+
+    .slot-btn-enable {
+        color: #15803d;
+        border-color: #bbf7d0;
+        background: #fff;
+    }
+
+    .slot-btn-enable:hover {
+        color: #166534;
+        background: #f0fdf4;
+    }
+
+    .slot-btn-delete {
+        color: #dc2626;
+        border-color: #fecaca;
+        background: #fff;
+    }
+
+    .slot-btn-delete:hover {
+        color: #b91c1c;
+        background: #fef2f2;
+    }
+
+    /* =========================================================
+       ADD SLOT
+    ========================================================== */
+
+    .add-slot-area {
+        text-align: center;
+        padding-top: 3px;
+    }
+
+    .add-slot-btn {
+        border: 1px dashed #cbd5e1;
+        color: #475569;
+        background: #f8fafc;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px 13px;
+        transition: all 0.2s ease;
+    }
+
+    .add-slot-btn:hover {
+        color: #2563eb;
+        border-color: #93c5fd;
+        background: #eff6ff;
+    }
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================== */
+
+    .empty-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 55px 25px;
+        text-align: center;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .empty-icon {
+        width: 78px;
+        height: 78px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+    }
+
+    .empty-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #111827;
+        margin-bottom: 7px;
+    }
+
+    .empty-text {
+        max-width: 500px;
+        margin: 0 auto 22px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .empty-add-btn {
+        border-radius: 9px;
+        font-weight: 700;
+        padding: 10px 16px;
+    }
+
+    /* =========================================================
+       INFO BOX
+    ========================================================== */
+
+    .schedule-info {
+        margin-top: 24px;
+        padding: 16px 18px;
+        border-radius: 13px;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        color: #334155;
+    }
+
+    .schedule-info-inner {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .schedule-info-icon {
+        color: #2563eb;
+        font-size: 19px;
+        margin-top: 1px;
+    }
+
+    .schedule-info-title {
+        color: #1e3a8a;
+        font-weight: 800;
+        font-size: 13px;
+    }
+
+    .schedule-info-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #475569;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================== */
+
+    @media (max-width: 991.98px) {
+        .schedule-hero-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .schedule-hero-actions {
+            width: 100%;
+        }
+
+        .hero-add-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .schedule-hero {
+            padding: 22px 18px;
+            border-radius: 14px;
+        }
+
+        .schedule-profile {
+            align-items: flex-start;
+        }
+
+        .schedule-avatar {
+            width: 54px;
+            height: 54px;
+            min-width: 54px;
+            font-size: 23px;
+        }
+
+        .schedule-title {
+            font-size: 22px;
+        }
+
+        .doctor-summary {
+            padding: 16px;
+        }
+
+        .doctor-summary-main {
+            align-items: flex-start;
+        }
+
+        .schedule-count-wrapper {
+            margin-top: 14px;
+        }
+
+        .schedule-count {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .slot-top {
+            flex-direction: column;
+        }
+
+        .slot-status {
+            align-self: flex-start;
+        }
+
+        .slot-actions {
+            justify-content: stretch;
+            flex-wrap: wrap;
+        }
+
+        .slot-actions form,
+        .slot-actions a,
+        .slot-actions button {
+            flex: 1;
+        }
+
+        .slot-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .schedule-page {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        .schedule-hero {
+            margin-bottom: 16px;
+        }
+
+        .schedule-title {
+            font-size: 20px;
+        }
+
+        .schedule-subtitle {
+            font-size: 12px;
+        }
+
+        .day-body {
+            padding: 11px;
+        }
+
+        .slot-item {
+            padding: 13px;
+        }
+
+        .slot-time {
+            font-size: 15px;
+        }
+    }
+
+    /* =========================================================
+       DARK MODE
+    ========================================================== */
+
+    @media (prefers-color-scheme: dark) {
+
+        .doctor-summary,
+        .day-card,
+        .slot-item,
+        .empty-card {
+            background: #111827;
+            border-color: #1f2937;
+        }
+
+        .doctor-summary-name,
+        .day-name,
+        .empty-title {
+            color: #f8fafc;
+        }
+
+        .doctor-summary-specialization,
+        .slot-duration,
+        .slot-detail-row,
+        .empty-text {
+            color: #94a3b8;
+        }
+
+        .day-header {
+            background: #0f172a;
+            border-color: #1f2937;
+        }
+
+        .day-icon,
+        .doctor-summary-avatar,
+        .empty-icon {
+            background: rgba(37, 99, 235, 0.15);
+        }
+
+        .slot-item:hover {
+            background: #0f172a;
+            border-color: #1e40af;
+        }
+
+        .slot-details,
+        .slot-actions {
+            border-color: #1f2937;
+        }
+
+        .slot-detail-row strong {
+            color: #cbd5e1;
+        }
+
+        .slot-count {
+            background: #1e293b;
+            border-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .add-slot-btn {
+            background: #0f172a;
+            border-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .schedule-info {
+            background: rgba(37, 99, 235, 0.12);
+            border-color: rgba(59, 130, 246, 0.25);
+        }
+
+        .schedule-info-text {
+            color: #cbd5e1;
+        }
+
+        .schedule-info-title {
+            color: #bfdbfe;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-3 schedule-page">
+
+```
+<!-- =====================================================
+     HERO HEADER
+====================================================== -->
+
+<div class="schedule-hero">
+
+    <div class="schedule-hero-content">
+
+        <div class="schedule-profile">
+
+            <div class="schedule-avatar">
+                <i class="bi bi-calendar-week"></i>
+            </div>
+
+            <div>
+                <h1 class="schedule-title">
+                    Doctor Schedule
+                </h1>
+
+                <p class="schedule-subtitle">
+                    <i class="bi bi-person-badge me-1"></i>
+                    Manage working hours for
+                    <strong>Dr. {{ doctor.full_name }}</strong>
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="schedule-hero-actions">
+
+            <a
+                href="{{ url_for(
+                    'doctors.add_availability',
+                    doctor_id=doctor.id
+                ) }}"
+                class="btn hero-add-btn"
+            >
+                <i class="bi bi-plus-lg me-1"></i>
+                Add Schedule Slot
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DOCTOR SUMMARY
+====================================================== -->
+
+<div class="doctor-summary">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <div class="doctor-summary-main">
+
+                <div class="doctor-summary-avatar">
+                    <i class="bi bi-person-badge-fill"></i>
+                </div>
+
+                <div>
+
+                    <div class="doctor-summary-name">
+                        Dr. {{ doctor.full_name }}
+                    </div>
+
+                    <div class="doctor-summary-specialization">
+
+                        <i class="bi bi-award me-1"></i>
+
+                        {% if doctor.specialization %}
+                            {{ doctor.specialization }}
+                        {% else %}
+                            General Physician
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 schedule-count-wrapper text-lg-end">
+
+            <span class="schedule-count">
+
+                <i class="bi bi-calendar-check"></i>
+
+                {{ availabilities|length }}
+
+                Schedule Slot{% if availabilities|length != 1 %}s{% endif %}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SCHEDULE
+====================================================== -->
+
+{% if availabilities %}
+
+    <div class="row g-4 schedule-grid">
+
+        {% for value, day_name in weekdays %}
+
+            {% set day_slots = [] %}
+
+            {% for availability in availabilities %}
+
+                {% if availability.weekday == value %}
+
+                    {% set _ = day_slots.append(availability) %}
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            {% if day_slots %}
+
+                <div class="col-xl-6 col-xxl-4">
+
+                    <div class="day-card">
+
+                        <!-- DAY HEADER -->
+
+                        <div class="day-header">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div class="day-header-left">
+
+                                    <div class="day-icon">
+                                        <i class="bi bi-calendar-day"></i>
+                                    </div>
+
+                                    <h2 class="day-name">
+                                        {{ day_name }}
+                                    </h2>
+
+                                </div>
+
+                                <span class="slot-count">
+
+                                    {{ day_slots|length }}
+
+                                    Slot{% if day_slots|length != 1 %}s{% endif %}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DAY BODY -->
+
+                        <div class="day-body">
+
+                            {% for availability in day_slots %}
+
+                                <div class="slot-item">
+
+                                    <!-- SLOT TOP -->
+
+                                    <div class="slot-top">
+
+                                        <div>
+
+                                            <div class="slot-time">
+
+                                                <i class="bi bi-clock me-1"></i>
+
+                                                {{
+                                                    availability.start_time.strftime(
+                                                        "%I:%M %p"
+                                                    )
+                                                }}
+
+                                                <span class="text-muted mx-1">
+                                                    -
+                                                </span>
+
+                                                {{
+                                                    availability.end_time.strftime(
+                                                        "%I:%M %p"
+                                                    )
+                                                }}
+
+                                            </div>
+
+                                            <div class="slot-duration">
+
+                                                <i class="bi bi-stopwatch me-1"></i>
+
+                                                {{ availability.appointment_duration }}
+                                                minute appointments
+
+                                            </div>
+
+                                        </div>
+
+
+                                        {% if availability.is_active %}
+
+                                            <span class="slot-status active">
+
+                                                <i class="bi bi-check-circle-fill"></i>
+
+                                                Active
+
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="slot-status inactive">
+
+                                                <i class="bi bi-pause-circle-fill"></i>
+
+                                                Inactive
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- SLOT DETAILS -->
+
+                                    <div class="slot-details">
+
+                                        <div class="slot-detail-row">
+
+                                            <i class="bi bi-calendar3"></i>
+
+                                            <span>
+                                                {{ day_name }}
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="slot-detail-row">
+
+                                            <i class="bi bi-hourglass-split"></i>
+
+                                            <span>
+                                                Appointment duration:
+                                            </span>
+
+                                            <strong>
+                                                {{ availability.appointment_duration }} min
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <div class="slot-actions">
+
+                                        <!-- EDIT -->
+
+                                        <a
+                                            href="{{ url_for(
+                                                'doctors.edit_availability',
+                                                availability_id=availability.id
+                                            ) }}"
+                                            class="btn btn-sm btn-outline-primary slot-btn slot-btn-edit"
+                                            title="Edit Schedule"
+                                        >
+
+                                            <i class="bi bi-pencil"></i>
+                                            Edit
+
+                                        </a>
+
+
+                                        <!-- TOGGLE -->
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'doctors.toggle_availability',
+                                                availability_id=availability.id
+                                            ) }}"
+                                            class="d-inline"
+                                        >
+
+                                            {% if availability.is_active %}
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-sm btn-outline-warning slot-btn slot-btn-disable"
+                                                    title="Deactivate Schedule"
+                                                >
+
+                                                    <i class="bi bi-pause-circle"></i>
+                                                    Disable
+
+                                                </button>
+
+                                            {% else %}
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-sm btn-outline-success slot-btn slot-btn-enable"
+                                                    title="Activate Schedule"
+                                                >
+
+                                                    <i class="bi bi-play-circle"></i>
+                                                    Enable
+
+                                                </button>
+
+                                            {% endif %}
+
+                                        </form>
+
+
+                                        <!-- DELETE -->
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'doctors.delete_availability',
+                                                availability_id=availability.id
+                                            ) }}"
+                                            class="d-inline"
+                                            onsubmit="return confirm(
+                                                'Are you sure you want to delete this schedule slot?'
+                                            );"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-sm btn-outline-danger slot-btn slot-btn-delete"
+                                                title="Delete Schedule"
+                                            >
+
+                                                <i class="bi bi-trash"></i>
+                                                Delete
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+
+                            <!-- ADD ANOTHER SLOT -->
+
+                            <div class="add-slot-area">
+
+                                <a
+                                    href="{{ url_for(
+                                        'doctors.add_availability',
+                                        doctor_id=doctor.id
+                                    ) }}"
+                                    class="btn add-slot-btn"
+                                >
+
+                                    <i class="bi bi-plus-circle me-1"></i>
+
+                                    Add Another Slot
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+
+{% else %}
+
+    <!-- =====================================================
+         EMPTY STATE
+    ====================================================== -->
+
+    <div class="empty-card">
+
+        <div class="empty-icon">
+
+            <i class="bi bi-calendar-x"></i>
+
+        </div>
+
+        <div class="empty-title">
+            No Schedule Added
+        </div>
+
+        <p class="empty-text">
+
+            No working hours have been configured for
+            Dr. {{ doctor.full_name }} yet.
+
+            Add the doctor's first working slot to start
+            accepting appointments.
+
+        </p>
+
+        <a
+            href="{{ url_for(
+                'doctors.add_availability',
+                doctor_id=doctor.id
+            ) }}"
+            class="btn btn-primary empty-add-btn"
+        >
+
+            <i class="bi bi-plus-lg me-1"></i>
+
+            Add First Schedule
+
+        </a>
+
+    </div>
+
+{% endif %}
+
+
+<!-- =====================================================
+     INFORMATION BOX
+====================================================== -->
+
+<div class="schedule-info">
+
+    <div class="schedule-info-inner">
+
+        <i class="bi bi-info-circle-fill schedule-info-icon"></i>
+
+        <div>
+
+            <div class="schedule-info-title">
+                Multiple Working Slots
+            </div>
+
+            <div class="schedule-info-text">
+
+                You can configure multiple working periods
+                for the same day.
+
+                For example:
+                <strong>09:00 AM - 12:00 PM</strong>
+                and
+                <strong>04:00 PM - 08:00 PM</strong>
+                on the same day.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}

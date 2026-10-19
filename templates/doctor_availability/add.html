@@ -1,0 +1,523 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Doctor Availability
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="bi bi-calendar-plus me-2"></i>
+
+                Add Doctor Availability
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Configure a doctor's weekly working hours
+                and appointment slot duration.
+
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <a
+                href="{{ url_for('doctor_availability.list_availability') }}"
+                class="btn btn-outline-secondary"
+            >
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                Back to Schedule
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-8 col-lg-9 col-md-11">
+
+            <div class="card border-0 shadow-sm">
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header bg-white py-3">
+
+                    <h5 class="fw-bold mb-1">
+
+                        <i class="bi bi-clock-history me-2"></i>
+
+                        Schedule Information
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Select the doctor, working day,
+                        working hours and appointment duration.
+
+                    </small>
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <div class="card-body p-4">
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'doctor_availability.add_availability'
+                        ) }}"
+                    >
+
+                        <!-- =====================================
+                             DOCTOR
+                        ====================================== -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="doctor_id"
+                                class="form-label fw-semibold"
+                            >
+
+                                Doctor
+
+                                <span class="text-danger">
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                name="doctor_id"
+                                id="doctor_id"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Doctor
+                                </option>
+
+
+                                {% for doctor in doctors %}
+
+                                    <option
+                                        value="{{ doctor.id }}"
+                                        {% if request.form.get('doctor_id') == doctor.id|string %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        Dr.
+                                        {{ doctor.full_name }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+
+                            <div class="form-text">
+
+                                Only active doctors are shown.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             DAY
+                        ====================================== -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="weekday"
+                                class="form-label fw-semibold"
+                            >
+
+                                Working Day
+
+                                <span class="text-danger">
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                name="weekday"
+                                id="weekday"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Day
+                                </option>
+
+
+                                {% for day_number, day_name in days %}
+
+                                    <option
+                                        value="{{ day_number }}"
+                                        {% if request.form.get('weekday') == day_number|string %}
+                                            selected
+                                        {% endif %}
+                                    >
+
+                                        {{ day_name }}
+
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+
+                            <div class="form-text">
+
+                                A doctor can have one availability
+                                entry per day.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             TIME
+                        ====================================== -->
+
+                        <div class="row g-3 mb-4">
+
+                            <!-- START TIME -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="start_time"
+                                    class="form-label fw-semibold"
+                                >
+
+                                    Start Time
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span
+                                        class="input-group-text"
+                                    >
+
+                                        <i class="bi bi-clock"></i>
+
+                                    </span>
+
+
+                                    <input
+                                        type="time"
+                                        name="start_time"
+                                        id="start_time"
+                                        class="form-control"
+                                        value="{{ request.form.get('start_time', '') }}"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- END TIME -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="end_time"
+                                    class="form-label fw-semibold"
+                                >
+
+                                    End Time
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+
+                                <div class="input-group">
+
+                                    <span
+                                        class="input-group-text"
+                                    >
+
+                                        <i class="bi bi-clock-fill"></i>
+
+                                    </span>
+
+
+                                    <input
+                                        type="time"
+                                        name="end_time"
+                                        id="end_time"
+                                        class="form-control"
+                                        value="{{ request.form.get('end_time', '') }}"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             APPOINTMENT DURATION
+                        ====================================== -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="appointment_duration"
+                                class="form-label fw-semibold"
+                            >
+
+                                Appointment Slot Duration
+
+                                <span class="text-danger">
+                                    *
+                                </span>
+
+                            </label>
+
+
+                            <select
+                                name="appointment_duration"
+                                id="appointment_duration"
+                                class="form-select"
+                                required
+                            >
+
+                                <option
+                                    value="15"
+                                    {% if request.form.get(
+                                        'appointment_duration',
+                                        '20'
+                                    ) == '15' %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    15 Minutes
+
+                                </option>
+
+
+                                <option
+                                    value="20"
+                                    {% if request.form.get(
+                                        'appointment_duration',
+                                        '20'
+                                    ) == '20' %}
+                                        selected
+                                    {% endif %}
+                                >
+
+                                    20 Minutes
+
+                                </option>
+
+                            </select>
+
+
+                            <div class="form-text">
+
+                                This duration will be used when
+                                generating appointment slots.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             ACTIVE STATUS
+                        ====================================== -->
+
+                        <div class="mb-4">
+
+                            <div
+                                class="
+                                    form-check
+                                    form-switch
+                                "
+                            >
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    name="is_active"
+                                    id="is_active"
+                                    checked
+                                >
+
+                                <label
+                                    class="form-check-label fw-semibold"
+                                    for="is_active"
+                                >
+
+                                    Active Schedule
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="form-text">
+
+                                Active schedules can be used for
+                                appointment booking.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             INFORMATION BOX
+                        ====================================== -->
+
+                        <div
+                            class="
+                                alert
+                                alert-info
+                                d-flex
+                                align-items-start
+                            "
+                        >
+
+                            <i
+                                class="
+                                    bi
+                                    bi-info-circle
+                                    me-2
+                                    mt-1
+                                "
+                            ></i>
+
+
+                            <div>
+
+                                <strong>
+                                    Schedule Rule
+                                </strong>
+
+                                <div class="small mt-1">
+
+                                    Each doctor can have one
+                                    availability record for each
+                                    day of the week.
+
+                                    Start time must be earlier
+                                    than end time.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             BUTTONS
+                        ====================================== -->
+
+                        <div
+                            class="
+                                d-flex
+                                justify-content-end
+                                gap-2
+                                pt-2
+                            "
+                        >
+
+                            <a
+                                href="{{ url_for(
+                                    'doctor_availability.list_availability'
+                                ) }}"
+                                class="btn btn-light border"
+                            >
+
+                                <i class="bi bi-x-circle me-1"></i>
+
+                                Cancel
+
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+
+                                <i class="bi bi-check-circle me-1"></i>
+
+                                Save Availability
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

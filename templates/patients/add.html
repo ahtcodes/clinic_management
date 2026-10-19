@@ -1,0 +1,1408 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Patient - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   ADD PATIENT PAGE
+========================================================= */
+
+.patient-add-page {
+    padding: 4px 2px 35px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.patient-add-header {
+    background:
+        linear-gradient(135deg, #0f172a 0%, #172554 55%, #1d4ed8 100%);
+    border-radius: 22px;
+    padding: 27px 30px;
+    color: #ffffff;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.16);
+}
+
+.patient-add-header::before {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    right: -70px;
+    top: -120px;
+}
+
+.patient-add-header::after {
+    content: "";
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    right: 210px;
+    bottom: -90px;
+}
+
+.patient-add-header-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.patient-add-title-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.patient-add-title-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.16);
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.patient-add-title {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+    color:white;
+}
+
+.patient-add-subtitle {
+    margin: 5px 0 0;
+    color: rgba(255,255,255,.72);
+    font-size: 13px;
+}
+
+.patient-back-btn {
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.22);
+    color: #ffffff;
+    padding: 10px 16px;
+    border-radius: 11px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.patient-back-btn:hover {
+    background: rgba(255,255,255,.18);
+    border-color: rgba(255,255,255,.30);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MAIN FORM CARD
+========================================================= */
+
+.patient-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(15,23,42,.06);
+}
+
+.patient-form-body {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section {
+    margin-bottom: 35px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #e8edf3;
+    margin-bottom: 22px;
+}
+
+.section-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.account-section .section-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.section-heading h5 {
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.section-heading small {
+    color: #64748b !important;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FORM LABELS
+========================================================= */
+
+.patient-form-label {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.patient-form-label .required {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   FORM INPUTS
+========================================================= */
+
+.patient-form-control,
+.patient-form-select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #dbe2ea;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #1e293b;
+    padding: 10px 13px;
+    font-size: 13px;
+    box-shadow: none !important;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.patient-form-control::placeholder {
+    color: #94a3b8;
+}
+
+.patient-form-control:hover,
+.patient-form-select:hover {
+    border-color: #cbd5e1;
+}
+
+.patient-form-control:focus,
+.patient-form-select:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
+    outline: none;
+}
+
+.patient-form-control[type="date"] {
+    color: #475569;
+}
+
+textarea.patient-form-control {
+    min-height: 105px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   INPUT GROUP
+========================================================= */
+
+.patient-input-group {
+    display: flex;
+    width: 100%;
+}
+
+.patient-input-icon {
+    min-width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #dbe2ea;
+    border-right: 0;
+    border-radius: 11px 0 0 11px;
+    color: #64748b;
+}
+
+.patient-input-group .patient-form-control {
+    border-radius: 0 11px 11px 0;
+}
+
+.patient-input-group:focus-within .patient-input-icon {
+    border-color: #2563eb;
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+
+/* =========================================================
+   ACCOUNT SECTION
+========================================================= */
+
+.account-section {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    padding: 25px;
+}
+
+.account-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 13px 15px;
+    border-radius: 11px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 21px;
+}
+
+.account-info i {
+    color: #2563eb;
+    font-size: 15px;
+    margin-top: 1px;
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.password-input-group {
+    display: flex;
+    width: 100%;
+}
+
+.password-input-group .patient-input-icon {
+    border-right: 0;
+}
+
+.password-input-group .patient-form-control {
+    border-radius: 0;
+}
+
+.password-toggle {
+    width: 47px;
+    height: 46px;
+    border: 1px solid #dbe2ea;
+    border-left: 0;
+    background: #ffffff;
+    color: #64748b;
+    border-radius: 0 11px 11px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.password-toggle:hover {
+    background: #f8fafc;
+    color: #2563eb;
+}
+
+.password-hint {
+    display: block;
+    margin-top: 7px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PASSWORD MESSAGE
+========================================================= */
+
+.password-message {
+    min-height: 22px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.password-match {
+    color: #059669;
+}
+
+.password-not-match {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   ACTION FOOTER
+========================================================= */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-top: 25px;
+    margin-top: 32px;
+    border-top: 1px solid #e8edf3;
+}
+
+.form-action-left {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.form-action-buttons {
+    display: flex;
+    gap: 9px;
+}
+
+.save-patient-btn {
+    min-height: 45px;
+    padding: 0 21px;
+    border-radius: 11px;
+    border: 0;
+    background: #2563eb;
+    font-weight: 700;
+    box-shadow: 0 7px 16px rgba(37,99,235,.18);
+    transition: all .2s ease;
+}
+
+.save-patient-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(37,99,235,.23);
+}
+
+.cancel-patient-btn {
+    min-height: 45px;
+    padding: 0 19px;
+    border-radius: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   REQUIRED NOTE
+========================================================= */
+
+.required-note {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.required-note span {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .patient-add-header {
+        padding: 23px;
+    }
+
+    .patient-form-body {
+        padding: 25px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .patient-add-page {
+        padding: 0 0 25px;
+    }
+
+    .patient-add-header {
+        border-radius: 17px;
+        padding: 20px;
+    }
+
+    .patient-add-title-area {
+        align-items: flex-start;
+    }
+
+    .patient-add-title-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 21px;
+        border-radius: 13px;
+    }
+
+    .patient-add-title {
+        font-size: 22px;
+    }
+
+    .patient-add-subtitle {
+        font-size: 11px;
+    }
+
+    .patient-header-button {
+        margin-top: 17px;
+        width: 100%;
+    }
+
+    .patient-back-btn {
+        width: 100%;
+    }
+
+    .patient-form-card {
+        border-radius: 16px;
+    }
+
+    .patient-form-body {
+        padding: 19px;
+    }
+
+    .account-section {
+        padding: 18px;
+    }
+
+    .form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .form-action-left {
+        text-align: center;
+    }
+
+    .form-action-buttons {
+        width: 100%;
+    }
+
+    .form-action-buttons .btn {
+        flex: 1;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .patient-add-title {
+        font-size: 20px;
+    }
+
+    .patient-add-title-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .section-heading {
+        gap: 10px;
+    }
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        font-size: 17px;
+    }
+
+    .section-heading h5 {
+        font-size: 15px;
+    }
+
+    .section-heading small {
+        font-size: 10px;
+    }
+
+    .account-info {
+        font-size: 11px;
+    }
+
+    .form-action-buttons {
+        flex-direction: column;
+    }
+
+    .form-action-buttons .btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid patient-add-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="patient-add-header">
+
+        <div class="patient-add-header-inner">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <div class="patient-add-title-area">
+
+                        <div class="patient-add-title-icon">
+
+                            <i class="bi bi-person-plus-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="patient-add-title">
+                                Add New Patient
+                            </h1>
+
+                            <p class="patient-add-subtitle">
+                                Register a patient and create their secure clinic account
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4 patient-header-button">
+
+                    <div class="d-flex justify-content-lg-end">
+
+                        <a
+                            href="{{ url_for('patients.list_patients') }}"
+                            class="btn patient-back-btn"
+                        >
+
+                            <i class="bi bi-arrow-left me-2"></i>
+
+                            Back to Patients
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN FORM
+    ====================================================== -->
+
+    <div class="patient-form-card">
+
+        <div class="patient-form-body">
+
+            <form method="POST">
+
+
+                <!-- =================================================
+                     PATIENT INFORMATION
+                ================================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+
+                            <i class="bi bi-person-vcard-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="mb-1">
+                                Patient Information
+                            </h5>
+
+                            <small>
+                                Enter the patient's basic personal and medical information
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+
+                                Full Name
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                class="patient-form-control"
+                                placeholder="Enter patient's full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- FATHER / HUSBAND -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+
+                                Father / Husband Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="father_name"
+                                class="patient-form-control"
+                                placeholder="Enter father / husband name"
+                            >
+
+                        </div>
+
+
+                        <!-- GENDER -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+                                Gender
+                            </label>
+
+                            <select
+                                name="gender"
+                                class="patient-form-select"
+                            >
+
+                                <option value="">
+                                    Select Gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DATE OF BIRTH -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+                                Date of Birth
+                            </label>
+
+                            <input
+                                type="date"
+                                name="date_of_birth"
+                                class="patient-form-control"
+                            >
+
+                        </div>
+
+
+                        <!-- BLOOD GROUP -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+                                Blood Group
+                            </label>
+
+                            <select
+                                name="blood_group"
+                                class="patient-form-select"
+                            >
+
+                                <option value="">
+                                    Select Blood Group
+                                </option>
+
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Phone
+                            </label>
+
+                            <div class="patient-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-telephone-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    class="patient-form-control"
+                                    placeholder="03XX-XXXXXXX"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Email
+                            </label>
+
+                            <div class="patient-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-envelope-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="patient-form-control"
+                                    placeholder="patient@example.com"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMERGENCY CONTACT -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Emergency Contact
+                            </label>
+
+                            <div class="patient-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-telephone-plus-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="emergency_contact"
+                                    class="patient-form-control"
+                                    placeholder="Emergency contact number"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Address
+                            </label>
+
+                            <textarea
+                                name="address"
+                                class="patient-form-control"
+                                rows="3"
+                                placeholder="Enter patient's address..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- MEDICAL HISTORY -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Medical History
+                            </label>
+
+                            <textarea
+                                name="medical_history"
+                                class="patient-form-control"
+                                rows="4"
+                                placeholder="Enter patient's medical history..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- ALLERGIES -->
+
+                        <div class="col-md-6">
+
+                            <label class="patient-form-label">
+                                Allergies
+                            </label>
+
+                            <textarea
+                                name="allergies"
+                                class="patient-form-control"
+                                rows="4"
+                                placeholder="Enter known allergies..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ACCOUNT SECTION
+                ================================================== -->
+
+                <div class="form-section account-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+
+                            <i class="bi bi-shield-lock-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="mb-1">
+                                Patient Login Account
+                            </h5>
+
+                            <small>
+                                Create secure login credentials for the patient
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACCOUNT INFORMATION -->
+
+                    <div class="account-info">
+
+                        <i class="bi bi-info-circle-fill"></i>
+
+                        <span>
+                            The patient will use these credentials to log in
+                            to their account and access appointments,
+                            messages and other available services.
+                        </span>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+
+                                Username
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <div class="patient-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-person-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="patient-form-control"
+                                    placeholder="Enter username"
+                                    autocomplete="username"
+                                    required
+                                >
+
+                            </div>
+
+                            <small class="password-hint">
+                                Username must be unique.
+                            </small>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+
+                                Password
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <div class="password-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-lock-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="patientPassword"
+                                    class="patient-form-control"
+                                    placeholder="Enter password"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword(
+                                        'patientPassword',
+                                        this
+                                    )"
+                                    title="Show password"
+                                >
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                            </div>
+
+                            <small class="password-hint">
+                                Minimum 6 characters.
+                            </small>
+
+                        </div>
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="col-md-4">
+
+                            <label class="patient-form-label">
+
+                                Confirm Password
+
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <div class="password-input-group">
+
+                                <span class="patient-input-icon">
+
+                                    <i class="bi bi-lock-fill"></i>
+
+                                </span>
+
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    id="confirmPatientPassword"
+                                    class="patient-form-control"
+                                    placeholder="Confirm password"
+                                    minlength="6"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword(
+                                        'confirmPatientPassword',
+                                        this
+                                    )"
+                                    title="Show password"
+                                >
+
+                                    <i class="bi bi-eye"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- PASSWORD MESSAGE -->
+
+                    <div
+                        id="passwordMessage"
+                        class="password-message mt-3"
+                    ></div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FORM ACTIONS
+                ================================================== -->
+
+                <div class="form-actions">
+
+                    <div class="form-action-left">
+
+                        <span class="required-note">
+                            <span>*</span>
+                            Required fields
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-action-buttons">
+
+                        <a
+                            href="{{ url_for('patients.list_patients') }}"
+                            class="btn btn-outline-secondary cancel-patient-btn"
+                        >
+
+                            <i class="bi bi-x-circle me-1"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary save-patient-btn"
+                            id="savePatientBtn"
+                        >
+
+                            <i class="bi bi-check-circle-fill me-1"></i>
+
+                            Save Patient
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   SHOW / HIDE PASSWORD
+========================================================= */
+
+function togglePassword(inputId, button) {
+
+    const input =
+        document.getElementById(inputId);
+
+    const icon =
+        button.querySelector("i");
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove(
+            "bi-eye"
+        );
+
+        icon.classList.add(
+            "bi-eye-slash"
+        );
+
+        button.title =
+            "Hide password";
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove(
+            "bi-eye-slash"
+        );
+
+        icon.classList.add(
+            "bi-eye"
+        );
+
+        button.title =
+            "Show password";
+
+    }
+
+}
+
+
+/* =========================================================
+   PASSWORD ELEMENTS
+========================================================= */
+
+const passwordInput =
+    document.getElementById(
+        "patientPassword"
+    );
+
+const confirmPasswordInput =
+    document.getElementById(
+        "confirmPatientPassword"
+    );
+
+const passwordMessage =
+    document.getElementById(
+        "passwordMessage"
+    );
+
+
+/* =========================================================
+   PASSWORD MATCH CHECK
+========================================================= */
+
+function checkPasswordMatch() {
+
+    const password =
+        passwordInput.value;
+
+    const confirmPassword =
+        confirmPasswordInput.value;
+
+
+    if (!confirmPassword) {
+
+        passwordMessage.textContent = "";
+
+        passwordMessage.className =
+            "password-message mt-3";
+
+        return;
+
+    }
+
+
+    if (password === confirmPassword) {
+
+        passwordMessage.innerHTML =
+            '<i class="bi bi-check-circle-fill me-1"></i> Passwords match.';
+
+        passwordMessage.className =
+            "password-message mt-3 password-match";
+
+    } else {
+
+        passwordMessage.innerHTML =
+            '<i class="bi bi-x-circle-fill me-1"></i> Passwords do not match.';
+
+        passwordMessage.className =
+            "password-message mt-3 password-not-match";
+
+    }
+
+}
+
+
+passwordInput.addEventListener(
+    "input",
+    checkPasswordMatch
+);
+
+
+confirmPasswordInput.addEventListener(
+    "input",
+    checkPasswordMatch
+);
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+const patientForm =
+    document.querySelector(
+        ".patient-form-card form"
+    );
+
+
+patientForm.addEventListener(
+    "submit",
+    function(event) {
+
+        const password =
+            passwordInput.value;
+
+        const confirmPassword =
+            confirmPasswordInput.value;
+
+
+        if (password !== confirmPassword) {
+
+            event.preventDefault();
+
+            passwordMessage.innerHTML =
+                '<i class="bi bi-x-circle-fill me-1"></i> Passwords do not match.';
+
+            passwordMessage.className =
+                "password-message mt-3 password-not-match";
+
+            confirmPasswordInput.focus();
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            event.preventDefault();
+
+            passwordMessage.innerHTML =
+                '<i class="bi bi-x-circle-fill me-1"></i> Password must be at least 6 characters.';
+
+            passwordMessage.className =
+                "password-message mt-3 password-not-match";
+
+            passwordInput.focus();
+
+            return;
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

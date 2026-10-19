@@ -1,0 +1,2015 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order Details - Doctor Clinic
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   ORDER DETAILS PAGE
+========================================================= */
+
+.order-details-page {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 8px 18px 35px;
+}
+
+/* =========================================================
+   PAGE HERO
+========================================================= */
+
+.order-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 28px 30px;
+    margin-bottom: 22px;
+    color: #ffffff;
+    background:
+        linear-gradient(135deg, #0f172a 0%, #172554 48%, #2563eb 100%);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+}
+
+.order-hero::before {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    right: -70px;
+    top: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.order-hero::after {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    right: 150px;
+    bottom: -100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.order-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.order-icon {
+    width: 54px;
+    height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 25px;
+    margin-right: 14px;
+    vertical-align: middle;
+}
+
+.order-hero h2 {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color:white;
+}
+
+.order-hero p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 14px;
+}
+
+.order-code-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 17px;
+    padding: 8px 13px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   HERO ACTIONS
+========================================================= */
+
+.hero-actions {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.hero-actions .btn {
+    min-height: 42px;
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 9px 15px;
+}
+
+.btn-hero-light {
+    color: #0f172a;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.btn-hero-light:hover {
+    color: #0f172a;
+    background: #f1f5f9;
+}
+
+.btn-hero-success {
+    color: #ffffff;
+    background: #16a34a;
+    border: 1px solid #16a34a;
+}
+
+.btn-hero-success:hover {
+    color: #ffffff;
+    background: #15803d;
+}
+
+.btn-hero-danger {
+    color: #ffffff;
+    background: rgba(220, 38, 38, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-hero-danger:hover {
+    color: #ffffff;
+    background: #b91c1c;
+}
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.summary-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 132px;
+    padding: 21px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 24px rgba(15, 23, 42, 0.09);
+}
+
+.summary-card::after {
+    content: "";
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    right: -25px;
+    bottom: -25px;
+    border-radius: 50%;
+    background: #f8fafc;
+}
+
+.summary-label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 9px;
+}
+
+.summary-value {
+    position: relative;
+    z-index: 2;
+    color: #0f172a;
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.summary-sub {
+    position: relative;
+    z-index: 2;
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.summary-icon {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    z-index: 2;
+    width: 39px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    color: #2563eb;
+    background: #eff6ff;
+    font-size: 18px;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.status-pending {
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+}
+
+.status-confirmed {
+    color: #166534;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+}
+
+.status-cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+}
+
+.status-default {
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.order-section {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 17px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.055);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 21px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.section-title i {
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.section-subtitle {
+    color: #64748b;
+    font-size: 12px;
+    margin: 4px 0 0 28px;
+}
+
+.section-body {
+    padding: 22px;
+}
+
+/* =========================================================
+   AUTOMATIC ORDER NOTICE
+========================================================= */
+
+.auto-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 17px 19px;
+    margin-bottom: 22px;
+    border: 1px solid #bfdbfe;
+    border-radius: 15px;
+    background: #eff6ff;
+    color: #1e3a8a;
+}
+
+.auto-notice-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.auto-notice strong {
+    color: #1e40af;
+}
+
+.auto-notice-text {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.auto-notice-code {
+    font-weight: 800;
+    color: #2563eb;
+}
+
+/* =========================================================
+   INFORMATION GRID
+========================================================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.info-item {
+    min-height: 80px;
+    padding: 15px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+    background: #f8fafc;
+}
+
+.info-label {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    margin-bottom: 7px;
+}
+
+.info-value {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.info-value a {
+    color: #2563eb;
+}
+
+.info-value a:hover {
+    color: #1d4ed8;
+}
+
+.info-muted {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    color: #1d4ed8;
+    background: #dbeafe;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.manual-badge {
+    color: #475569;
+    background: #f1f5f9;
+}
+
+/* =========================================================
+   MEDICINE TABLE
+========================================================= */
+
+.medicine-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    color: #1d4ed8;
+    background: #dbeafe;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.medicine-table {
+    margin: 0;
+}
+
+.medicine-table thead th {
+    padding: 14px 16px;
+    color: #475569;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    white-space: nowrap;
+}
+
+.medicine-table tbody td {
+    padding: 16px;
+    color: #334155;
+    border-bottom: 1px solid #eef2f7;
+    font-size: 13px;
+}
+
+.medicine-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.medicine-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.medicine-number {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: #2563eb;
+    background: #eff6ff;
+    font-weight: 800;
+}
+
+.medicine-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.medicine-name-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 35px;
+    border-radius: 9px;
+    color: #2563eb;
+    background: #eff6ff;
+    font-size: 16px;
+}
+
+.quantity-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: #334155;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    font-weight: 800;
+}
+
+.price-text {
+    color: #475569;
+    font-weight: 600;
+}
+
+.total-price {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.order-total-row td {
+    padding: 18px 16px !important;
+    background: #f8fafc !important;
+    border-top: 1px solid #e2e8f0;
+}
+
+.order-total-label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.order-total {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+/* =========================================================
+   EMPTY MEDICINES
+========================================================= */
+
+.empty-order {
+    padding: 55px 20px;
+    text-align: center;
+}
+
+.empty-order-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    color: #94a3b8;
+    background: #f1f5f9;
+    font-size: 31px;
+}
+
+.empty-order h5 {
+    color: #334155;
+    font-weight: 800;
+}
+
+.empty-order p {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* =========================================================
+   PRESCRIPTION
+========================================================= */
+
+.prescription-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.prescription-item {
+    padding: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 13px;
+    background: #f8fafc;
+}
+
+.prescription-label {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+}
+
+.prescription-value {
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.instructions-box {
+    margin-top: 18px;
+    padding: 17px;
+    border-left: 4px solid #2563eb;
+    border-radius: 11px;
+    background: #f8fafc;
+}
+
+.instructions-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.instructions-label i {
+    color: #2563eb;
+}
+
+.instructions-text {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+.notes-box {
+    padding: 18px;
+    border-left: 4px solid #64748b;
+    border-radius: 11px;
+    background: #f8fafc;
+}
+
+.notes-text {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+/* =========================================================
+   STOCK STATUS
+========================================================= */
+
+.stock-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 17px 19px;
+    margin-bottom: 0;
+    border-radius: 14px;
+}
+
+.stock-alert-icon {
+    width: 39px;
+    height: 39px;
+    flex: 0 0 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.stock-warning {
+    color: #78350f;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+}
+
+.stock-warning .stock-alert-icon {
+    color: #d97706;
+    background: #fef3c7;
+}
+
+.stock-success {
+    color: #14532d;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.stock-success .stock-alert-icon {
+    color: #16a34a;
+    background: #dcfce7;
+}
+
+.stock-danger {
+    color: #7f1d1d;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.stock-danger .stock-alert-icon {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+.stock-alert strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.stock-alert-text {
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .summary-card,
+[data-bs-theme="dark"] .order-section,
+[data-bs-theme="dark"] .section-header {
+    background: #111827;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .summary-value,
+[data-bs-theme="dark"] .info-value,
+[data-bs-theme="dark"] .section-title,
+[data-bs-theme="dark"] .medicine-name,
+[data-bs-theme="dark"] .total-price,
+[data-bs-theme="dark"] .order-total,
+[data-bs-theme="dark"] .prescription-value {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .summary-card::after {
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .summary-label,
+[data-bs-theme="dark"] .summary-sub,
+[data-bs-theme="dark"] .info-label,
+[data-bs-theme="dark"] .section-subtitle,
+[data-bs-theme="dark"] .price-text,
+[data-bs-theme="dark"] .order-total-label {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .info-item,
+[data-bs-theme="dark"] .prescription-item,
+[data-bs-theme="dark"] .instructions-box,
+[data-bs-theme="dark"] .notes-box {
+    background: #0f172a;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .medicine-table thead th,
+[data-bs-theme="dark"] .order-total-row td {
+    background: #172033 !important;
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .medicine-table tbody td {
+    color: #cbd5e1;
+    border-color: #263244;
+}
+
+[data-bs-theme="dark"] .medicine-table tbody tr:hover {
+    background: #172033;
+}
+
+[data-bs-theme="dark"] .instructions-text,
+[data-bs-theme="dark"] .notes-text {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .empty-order h5 {
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .empty-order-icon {
+    background: #172033;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .info-grid,
+    .prescription-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .order-details-page {
+        padding: 5px 10px 25px;
+    }
+
+    .order-hero {
+        padding: 22px 19px;
+        border-radius: 16px;
+    }
+
+    .order-hero h2 {
+        font-size: 21px;
+    }
+
+    .order-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        margin-right: 9px;
+    }
+
+    .hero-actions {
+        margin-top: 18px;
+        width: 100%;
+    }
+
+    .hero-actions .btn {
+        flex: 1 1 auto;
+    }
+
+    .summary-grid,
+    .info-grid,
+    .prescription-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .section-body {
+        padding: 16px;
+    }
+
+    .section-title {
+        font-size: 15px;
+    }
+
+    .section-subtitle {
+        margin-left: 27px;
+    }
+
+    .table-responsive {
+        border-radius: 0;
+    }
+
+    .medicine-table {
+        min-width: 780px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .hero-actions .btn {
+        width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .order-code-badge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .summary-card {
+        min-height: 118px;
+    }
+
+}
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    body {
+        background: #ffffff !important;
+    }
+
+    .order-details-page {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .order-hero {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border: 2px solid #0f172a;
+        box-shadow: none;
+    }
+
+    .order-hero p {
+        color: #475569 !important;
+    }
+
+    .hero-actions {
+        display: none !important;
+    }
+
+    .summary-card,
+    .order-section {
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+
+    .order-section {
+        border: 1px solid #cbd5e1;
+    }
+
+    .stock-alert {
+        break-inside: avoid;
+    }
+
+}
+
+</style>
+
+
+<div class="order-details-page">
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <div class="order-hero">
+
+        <div class="row align-items-center position-relative">
+
+            <div class="col-lg-7">
+
+                <div class="order-hero-content">
+
+                    <h2>
+                        <span class="order-icon">
+                            <i class="bi bi-cart-check"></i>
+                        </span>
+
+                        Order Details
+                    </h2>
+
+                    <p>
+                        View patient medicine order information,
+                        prescription details and stock status.
+                    </p>
+
+                    <div class="order-code-badge">
+
+                        <i class="bi bi-receipt"></i>
+
+                        {{ order.order_code }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-5">
+
+                <div class="hero-actions justify-content-lg-end">
+
+                    <a
+                        href="{{ url_for('orders.all_orders') }}"
+                        class="btn btn-hero-light"
+                    >
+
+                        <i class="bi bi-arrow-left me-1"></i>
+
+                        Back to Orders
+
+                    </a>
+
+
+                    {% if order.status == "pending"
+                          and current_user.role in ['super_admin', 'doctor'] %}
+
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'orders.confirm_order',
+                                order_id=order.id
+                            ) }}"
+                            class="d-inline"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-hero-success"
+                                onclick="return confirm(
+                                    'Confirm this order? Medicine stock will be reduced.'
+                                )"
+                            >
+
+                                <i class="bi bi-check-circle me-1"></i>
+
+                                Confirm
+
+                            </button>
+
+                        </form>
+
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'orders.cancel_order',
+                                order_id=order.id
+                            ) }}"
+                            class="d-inline"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-hero-danger"
+                                onclick="return confirm(
+                                    'Cancel this order?'
+                                )"
+                            >
+
+                                <i class="bi bi-x-circle me-1"></i>
+
+                                Cancel
+
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         AUTOMATIC ORDER NOTICE
+    ====================================================== -->
+
+    {% if order.prescription %}
+
+        <div class="auto-notice">
+
+            <div class="auto-notice-icon">
+
+                <i class="bi bi-info-circle-fill"></i>
+
+            </div>
+
+            <div class="auto-notice-text">
+
+                <strong>
+                    Automatic Medicine Order
+                </strong>
+
+                <div class="mt-1">
+
+                    This order was automatically created from
+                    prescription
+
+                    <span class="auto-notice-code">
+                        {{ order.prescription.prescription_code }}
+                    </span>.
+
+                    The medicines do not need to be added again manually.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <div class="summary-grid">
+
+
+        <!-- ORDER -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-receipt"></i>
+            </div>
+
+            <div class="summary-label">
+                Order
+            </div>
+
+            <div class="summary-value">
+                {{ order.order_code }}
+            </div>
+
+            <span class="summary-sub">
+                Order reference
+            </span>
+
+        </div>
+
+
+        <!-- PATIENT -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-person-heart"></i>
+            </div>
+
+            <div class="summary-label">
+                Patient
+            </div>
+
+            {% if order.patient %}
+
+                <div class="summary-value">
+                    {{ order.patient.full_name }}
+                </div>
+
+                {% if order.patient.patient_code %}
+
+                    <span class="summary-sub">
+                        {{ order.patient.patient_code }}
+                    </span>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="summary-value">
+                    N/A
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- DOCTOR -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+
+            <div class="summary-label">
+                Doctor
+            </div>
+
+            {% if order.doctor %}
+
+                <div class="summary-value">
+                    Dr. {{ order.doctor.full_name }}
+                </div>
+
+                <span class="summary-sub">
+                    Treating Doctor
+                </span>
+
+            {% else %}
+
+                <div class="summary-value">
+                    N/A
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="bi bi-activity"></i>
+            </div>
+
+            <div class="summary-label">
+                Status
+            </div>
+
+
+            {% if order.status == "pending" %}
+
+                <span class="order-status status-pending">
+
+                    <i class="bi bi-clock"></i>
+
+                    Pending
+
+                </span>
+
+
+            {% elif order.status == "confirmed" %}
+
+                <span class="order-status status-confirmed">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Confirmed
+
+                </span>
+
+
+            {% elif order.status == "cancelled" %}
+
+                <span class="order-status status-cancelled">
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Cancelled
+
+                </span>
+
+
+            {% else %}
+
+                <span class="order-status status-default">
+
+                    {{ order.status|capitalize }}
+
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDER INFORMATION
+    ====================================================== -->
+
+    <div class="order-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h5 class="section-title">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    Order Information
+
+                </h5>
+
+                <div class="section-subtitle">
+                    Important order reference and timeline information
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section-body">
+
+            <div class="info-grid">
+
+
+                <!-- CREATED -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Created At
+                    </span>
+
+                    <div class="info-value">
+
+                        {% if order.created_at %}
+
+                            {{ order.created_at.strftime(
+                                "%d %b %Y"
+                            ) }}
+
+                            <span class="info-muted">
+                                ·
+                                {{ order.created_at.strftime(
+                                    "%I:%M %p"
+                                ) }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="info-muted">
+                                N/A
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRMED -->
+
+                {% if order.confirmed_at %}
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Confirmed At
+                        </span>
+
+                        <div class="info-value">
+
+                            {{ order.confirmed_at.strftime(
+                                "%d %b %Y"
+                            ) }}
+
+                            <span class="info-muted">
+                                ·
+                                {{ order.confirmed_at.strftime(
+                                    "%I:%M %p"
+                                ) }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- CANCELLED -->
+
+                {% if order.cancelled_at %}
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Cancelled At
+                        </span>
+
+                        <div class="info-value">
+
+                            {{ order.cancelled_at.strftime(
+                                "%d %b %Y"
+                            ) }}
+
+                            <span class="info-muted">
+                                ·
+                                {{ order.cancelled_at.strftime(
+                                    "%I:%M %p"
+                                ) }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- PRESCRIPTION -->
+
+                {% if order.prescription %}
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Prescription
+                        </span>
+
+                        <div class="info-value">
+
+                            <a
+                                href="{{ url_for(
+                                    'prescriptions.view_prescription',
+                                    prescription_id=order.prescription.id
+                                ) }}"
+                                class="text-decoration-none"
+                            >
+
+                                <i class="bi bi-prescription2 me-1"></i>
+
+                                {{ order.prescription.prescription_code }}
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- CONSULTATION -->
+
+                {% if order.consultation %}
+
+                    <div class="info-item">
+
+                        <span class="info-label">
+                            Consultation
+                        </span>
+
+                        <div class="info-value">
+
+                            <i class="bi bi-journal-medical me-1"></i>
+
+                            {{ order.consultation.consultation_code }}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- ORDER SOURCE -->
+
+                <div class="info-item">
+
+                    <span class="info-label">
+                        Order Source
+                    </span>
+
+                    {% if order.prescription %}
+
+                        <span class="source-badge">
+
+                            <i class="bi bi-prescription2"></i>
+
+                            Prescription
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="source-badge manual-badge">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            Manual Order
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDERED MEDICINES
+    ====================================================== -->
+
+    <div class="order-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h5 class="section-title">
+
+                    <i class="bi bi-capsule"></i>
+
+                    Ordered Medicines
+
+                </h5>
+
+                <div class="section-subtitle">
+                    Medicines included in this order
+                </div>
+
+            </div>
+
+
+            <span class="medicine-count">
+
+                {{ order.items|length }}
+
+                {% if order.items|length == 1 %}
+                    Medicine
+                {% else %}
+                    Medicines
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="section-body p-0">
+
+            {% if order.items %}
+
+                <div class="table-responsive">
+
+                    <table class="table medicine-table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="px-3">
+                                    #
+                                </th>
+
+                                <th>
+                                    Medicine
+                                </th>
+
+                                <th>
+                                    Unit
+                                </th>
+
+                                <th>
+                                    Quantity
+                                </th>
+
+                                <th>
+                                    Unit Price
+                                </th>
+
+                                <th class="text-end px-3">
+                                    Total
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for item in order.items %}
+
+                                <tr>
+
+                                    <td class="px-3">
+
+                                        <span class="medicine-number">
+
+                                            {{ loop.index }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="medicine-name">
+
+                                            <span class="medicine-name-icon">
+
+                                                <i class="bi bi-capsule"></i>
+
+                                            </span>
+
+                                            {{ item.medicine_name }}
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="price-text">
+
+                                            {{ item.unit }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="quantity-badge">
+
+                                            {{ item.quantity }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="price-text">
+
+                                            Rs.
+                                            {{ "%.2f"|format(
+                                                item.unit_price or 0
+                                            ) }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td class="text-end px-3">
+
+                                        <span class="total-price">
+
+                                            Rs.
+                                            {{ "%.2f"|format(
+                                                item.total_price or 0
+                                            ) }}
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+
+                        <tfoot>
+
+                            <tr class="order-total-row">
+
+                                <td
+                                    colspan="5"
+                                    class="text-end"
+                                >
+
+                                    <span class="order-total-label">
+                                        Order Total
+                                    </span>
+
+                                </td>
+
+                                <td class="text-end px-3">
+
+                                    <span class="order-total">
+
+                                        Rs.
+                                        {{ "%.2f"|format(
+                                            order.total_amount or 0
+                                        ) }}
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-order">
+
+                    <div class="empty-order-icon">
+
+                        <i class="bi bi-cart-x"></i>
+
+                    </div>
+
+                    <h5>
+                        No Medicines
+                    </h5>
+
+                    <p class="mb-0">
+                        No medicines were added to this order.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRESCRIPTION DETAILS
+    ====================================================== -->
+
+    {% if order.prescription %}
+
+        <div class="order-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h5 class="section-title">
+
+                        <i class="bi bi-prescription2"></i>
+
+                        Prescription Instructions
+
+                    </h5>
+
+                    <div class="section-subtitle">
+                        Medicine usage information from the prescription
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="prescription-grid">
+
+
+                    <!-- DOSAGE -->
+
+                    <div class="prescription-item">
+
+                        <span class="prescription-label">
+                            Dosage
+                        </span>
+
+                        <div class="prescription-value">
+
+                            {% if order.prescription.dosage %}
+
+                                {{ order.prescription.dosage }}
+
+                            {% else %}
+
+                                <span class="info-muted">—</span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FREQUENCY -->
+
+                    <div class="prescription-item">
+
+                        <span class="prescription-label">
+                            Frequency
+                        </span>
+
+                        <div class="prescription-value">
+
+                            {% if order.prescription.frequency %}
+
+                                {{ order.prescription.frequency }}
+
+                            {% else %}
+
+                                <span class="info-muted">—</span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DURATION -->
+
+                    <div class="prescription-item">
+
+                        <span class="prescription-label">
+                            Duration
+                        </span>
+
+                        <div class="prescription-value">
+
+                            {% if order.prescription.duration %}
+
+                                {{ order.prescription.duration }}
+
+                            {% else %}
+
+                                <span class="info-muted">—</span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {% if order.prescription.instructions %}
+
+                    <div class="instructions-box">
+
+                        <div class="instructions-label">
+
+                            <i class="bi bi-info-circle"></i>
+
+                            Instructions
+
+                        </div>
+
+                        <div class="instructions-text">
+
+                            {{ order.prescription.instructions }}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         NOTES
+    ====================================================== -->
+
+    {% if order.notes %}
+
+        <div class="order-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h5 class="section-title">
+
+                        <i class="bi bi-chat-left-text"></i>
+
+                        Notes
+
+                    </h5>
+
+                    <div class="section-subtitle">
+                        Additional information attached to this order
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section-body">
+
+                <div class="notes-box">
+
+                    <div class="notes-text">
+
+                        {{ order.notes }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         STOCK INFORMATION
+    ====================================================== -->
+
+    {% if order.status == "pending" %}
+
+        <div class="stock-alert stock-warning">
+
+            <div class="stock-alert-icon">
+
+                <i class="bi bi-exclamation-triangle"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Stock is not reduced yet.
+                </strong>
+
+                <div class="stock-alert-text">
+
+                    Medicine stock will be reduced only after
+                    this order is confirmed.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    {% elif order.status == "confirmed" %}
+
+        <div class="stock-alert stock-success">
+
+            <div class="stock-alert-icon">
+
+                <i class="bi bi-check-circle"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Order confirmed.
+                </strong>
+
+                <div class="stock-alert-text">
+
+                    The ordered medicine quantity has been
+                    deducted from the doctor's stock.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    {% elif order.status == "cancelled" %}
+
+        <div class="stock-alert stock-danger">
+
+            <div class="stock-alert-icon">
+
+                <i class="bi bi-x-circle"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Order cancelled.
+                </strong>
+
+                <div class="stock-alert-text">
+
+                    Medicine stock was not deducted for
+                    this order.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1947 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Doctor - Doctor Clinic
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   ADD DOCTOR PAGE
+========================================================= */
+
+.add-doctor-page {
+    padding: 8px 0 35px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.add-doctor-header {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    padding: 28px 30px;
+
+    margin-bottom: 24px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a 0%,
+            #172554 52%,
+            #2563eb 100%
+        );
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, 0.18);
+}
+
+.add-doctor-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    right: -80px;
+    top: -130px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.07);
+}
+
+.add-doctor-header::after {
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: 140px;
+    bottom: -115px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.05);
+}
+
+.add-doctor-header-content {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.add-doctor-title-area {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+.add-doctor-header-icon {
+    width: 64px;
+    height: 64px;
+
+    min-width: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.14);
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    font-size: 28px;
+
+    backdrop-filter: blur(8px);
+}
+
+.add-doctor-header h2 {
+    margin: 0;
+
+    font-size: 27px;
+    color:white;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+.add-doctor-header p {
+    margin: 5px 0 0;
+
+    color: rgba(255,255,255,0.72);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-doctors-btn {
+    position: relative;
+
+    z-index: 3;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 11px 17px;
+
+    border-radius: 11px;
+
+    border: 1px solid rgba(255,255,255,0.25);
+
+    background: rgba(255,255,255,0.10);
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    backdrop-filter: blur(8px);
+
+    transition: all 0.25s ease;
+}
+
+.back-doctors-btn:hover {
+    background: rgba(255,255,255,0.18);
+
+    color: #ffffff;
+
+    transform: translateX(-2px);
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.doctor-form-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 30px rgba(15,23,42,0.07);
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.doctor-form-body {
+    padding: 30px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.doctor-section {
+    margin-bottom: 8px;
+}
+
+.doctor-section-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 16px;
+
+    margin-bottom: 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.doctor-section-icon {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 18px;
+}
+
+.doctor-section-heading h5 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+.doctor-section-heading p {
+    margin: 3px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACCOUNT SECTION
+========================================================= */
+
+.doctor-account-section {
+    margin-top: 34px;
+
+    padding-top: 30px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.doctor-account-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 9px;
+}
+
+.doctor-account-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #ecfdf5;
+
+    color: #059669;
+
+    font-size: 18px;
+}
+
+.doctor-account-heading h5 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 17px;
+
+    font-weight: 800;
+}
+
+.doctor-account-description {
+    margin: 0 0 23px 55px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.doctor-field {
+    margin-bottom: 2px;
+}
+
+.doctor-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #334155;
+
+    font-size: 13px;
+
+    font-weight: 750;
+}
+
+.required-star {
+    color: #dc2626;
+
+    margin-left: 2px;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.doctor-input,
+.doctor-select,
+.doctor-textarea {
+    width: 100%;
+
+    border: 1px solid #dbe2ea;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #0f172a;
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.doctor-input,
+.doctor-select {
+    min-height: 45px;
+
+    padding: 10px 13px;
+}
+
+.doctor-textarea {
+    padding: 12px 13px;
+
+    resize: vertical;
+}
+
+.doctor-input::placeholder,
+.doctor-textarea::placeholder {
+    color: #a3afbf;
+}
+
+.doctor-input:hover,
+.doctor-select:hover,
+.doctor-textarea:hover {
+    border-color: #b8c4d4;
+}
+
+.doctor-input:focus,
+.doctor-select:focus,
+.doctor-textarea:focus {
+    outline: none;
+
+    border-color: #2563eb;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.10);
+}
+
+
+/* =========================================================
+   INPUT WITH ICON
+========================================================= */
+
+.doctor-input-group {
+    display: flex;
+
+    align-items: stretch;
+}
+
+.doctor-input-icon {
+    width: 45px;
+
+    min-width: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #dbe2ea;
+
+    border-right: 0;
+
+    border-radius: 11px 0 0 11px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+.doctor-input-group .doctor-input {
+    border-radius: 0 11px 11px 0;
+}
+
+.doctor-input-group:focus-within .doctor-input-icon {
+    border-color: #2563eb;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   FEE INPUT
+========================================================= */
+
+.fee-prefix {
+    width: 52px;
+
+    min-width: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #dbe2ea;
+
+    border-right: 0;
+
+    border-radius: 11px 0 0 11px;
+
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.fee-prefix + .doctor-input {
+    border-radius: 0 11px 11px 0;
+}
+
+
+/* =========================================================
+   HELP TEXT
+========================================================= */
+
+.doctor-help {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   LOGIN EMAIL DISPLAY
+========================================================= */
+
+.login-email-box {
+    position: relative;
+}
+
+.login-email-box::before {
+    content: "";
+
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 2;
+
+    color: #64748b;
+
+    font-family: "bootstrap-icons";
+
+    content: "\f32f";
+}
+
+.login-email-box .doctor-input {
+    padding-left: 39px;
+
+    background: #f8fafc;
+
+    color: #475569;
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.password-group {
+    position: relative;
+
+    display: flex;
+}
+
+.password-group .doctor-input {
+    padding-right: 48px;
+
+    border-radius: 11px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 7px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #64748b;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.password-toggle:hover {
+    background: #eff6ff;
+
+    color: #2563eb;
+}
+
+
+/* =========================================================
+   PASSWORD MESSAGE
+========================================================= */
+
+.password-match-message {
+    display: block;
+
+    min-height: 18px;
+
+    margin-top: 7px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.password-match-message.success {
+    color: #16a34a;
+}
+
+.password-match-message.error {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   INFO BOX
+========================================================= */
+
+.account-info-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    margin-bottom: 25px;
+
+    padding: 14px 16px;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    color: #1e40af;
+}
+
+.account-info-box i {
+    margin-top: 1px;
+
+    font-size: 17px;
+}
+
+.account-info-box span {
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   STATUS SELECT
+========================================================= */
+
+.status-wrapper {
+    position: relative;
+}
+
+.status-wrapper .doctor-select {
+    padding-left: 40px;
+}
+
+.status-icon {
+    position: absolute;
+
+    left: 14px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 2;
+
+    color: #16a34a;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FORM FOOTER
+========================================================= */
+
+.doctor-form-footer {
+    margin-top: 35px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #e5e7eb;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.cancel-doctor-btn,
+.save-doctor-btn {
+    min-height: 44px;
+
+    padding: 10px 19px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+
+    font-weight: 750;
+
+    transition: all 0.2s ease;
+}
+
+.cancel-doctor-btn {
+    border: 1px solid #dbe2ea;
+
+    color: #475569;
+
+    background: #ffffff;
+
+    text-decoration: none;
+}
+
+.cancel-doctor-btn:hover {
+    background: #f8fafc;
+
+    color: #334155;
+
+    border-color: #cbd5e1;
+}
+
+.save-doctor-btn {
+    border: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 17px rgba(37,99,235,0.22);
+}
+
+.save-doctor-btn:hover {
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 22px rgba(37,99,235,0.30);
+}
+
+
+/* =========================================================
+   REQUIRED NOTICE
+========================================================= */
+
+.required-notice {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    margin-right: auto;
+}
+
+.required-notice span {
+    color: #dc2626;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .add-doctor-header {
+        padding: 23px;
+
+        border-radius: 17px;
+    }
+
+    .add-doctor-header-content {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .back-doctors-btn {
+        justify-content: center;
+
+        width: 100%;
+    }
+
+    .add-doctor-header h2 {
+        font-size: 22px;
+    }
+
+    .add-doctor-header-icon {
+        width: 54px;
+        height: 54px;
+
+        min-width: 54px;
+
+        font-size: 23px;
+    }
+
+    .doctor-form-body {
+        padding: 22px 18px;
+    }
+
+    .doctor-account-description {
+        margin-left: 0;
+
+        margin-top: 9px;
+    }
+
+    .doctor-form-footer {
+        flex-wrap: wrap;
+    }
+
+    .required-notice {
+        width: 100%;
+
+        margin-bottom: 5px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .add-doctor-page {
+        padding-top: 0;
+    }
+
+    .add-doctor-title-area {
+        align-items: flex-start;
+
+        gap: 13px;
+    }
+
+    .add-doctor-header p {
+        font-size: 12px;
+    }
+
+    .doctor-form-card {
+        border-radius: 15px;
+    }
+
+    .doctor-form-body {
+        padding: 20px 15px;
+    }
+
+    .doctor-section-heading {
+        margin-bottom: 20px;
+    }
+
+    .doctor-form-footer {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .cancel-doctor-btn,
+    .save-doctor-btn {
+        width: 100%;
+
+        text-align: center;
+
+        justify-content: center;
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-bs-theme="dark"] .doctor-form-card {
+    background: #111827;
+
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .doctor-section-heading,
+[data-bs-theme="dark"] .doctor-account-section,
+[data-bs-theme="dark"] .doctor-form-footer {
+    border-color: #1f2937;
+}
+
+[data-bs-theme="dark"] .doctor-section-heading h5,
+[data-bs-theme="dark"] .doctor-account-heading h5 {
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .doctor-section-heading p,
+[data-bs-theme="dark"] .doctor-account-description,
+[data-bs-theme="dark"] .doctor-help,
+[data-bs-theme="dark"] .required-notice {
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .doctor-field label {
+    color: #cbd5e1;
+}
+
+[data-bs-theme="dark"] .doctor-input,
+[data-bs-theme="dark"] .doctor-select,
+[data-bs-theme="dark"] .doctor-textarea {
+    background: #0f172a;
+
+    color: #f8fafc;
+
+    border-color: #374151;
+}
+
+[data-bs-theme="dark"] .doctor-input:focus,
+[data-bs-theme="dark"] .doctor-select:focus,
+[data-bs-theme="dark"] .doctor-textarea:focus {
+    background: #111827;
+}
+
+[data-bs-theme="dark"] .doctor-input-icon,
+[data-bs-theme="dark"] .fee-prefix {
+    background: #1e293b;
+
+    border-color: #374151;
+
+    color: #94a3b8;
+}
+
+[data-bs-theme="dark"] .login-email-box .doctor-input {
+    background: #1e293b;
+}
+
+[data-bs-theme="dark"] .cancel-doctor-btn {
+    background: #111827;
+
+    border-color: #374151;
+
+    color: #cbd5e1;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid add-doctor-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="add-doctor-header">
+
+        <div class="add-doctor-header-content">
+
+            <div class="add-doctor-title-area">
+
+                <div class="add-doctor-header-icon">
+
+                    <i class="bi bi-person-plus-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Add New Doctor
+                    </h2>
+
+                    <p>
+                        Register a doctor and create their secure clinic account
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('doctors.list_doctors') }}"
+                class="back-doctors-btn"
+            >
+
+                <i class="bi bi-arrow-left"></i>
+
+                Back to Doctors
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <div class="doctor-form-card">
+
+        <div class="doctor-form-body">
+
+            <form
+                method="POST"
+                id="doctorForm"
+            >
+
+
+                <!-- =================================================
+                     DOCTOR INFORMATION
+                ================================================== -->
+
+                <div class="doctor-section">
+
+                    <div class="doctor-section-heading">
+
+                        <div class="doctor-section-icon">
+
+                            <i class="bi bi-person-vcard-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5>
+                                Doctor Information
+                            </h5>
+
+                            <p>
+                                Enter the doctor's professional and contact details
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row g-4">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="full_name">
+
+                                    Full Name
+
+                                    <span class="required-star">*</span>
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-person-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="full_name"
+                                        name="full_name"
+                                        class="doctor-input"
+                                        placeholder="Enter doctor name"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- SPECIALIZATION -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="specialization">
+
+                                    Specialization
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-heart-pulse-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="specialization"
+                                        name="specialization"
+                                        class="doctor-input"
+                                        placeholder="e.g. General Physician"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PHONE -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="phone">
+
+                                    Phone
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-telephone-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="phone"
+                                        name="phone"
+                                        class="doctor-input"
+                                        placeholder="03XX-XXXXXXX"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- EMAIL -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="email">
+
+                                    Email
+
+                                    <span class="required-star">*</span>
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-envelope-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        class="doctor-input"
+                                        placeholder="doctor@example.com"
+                                        required
+                                    >
+
+                                </div>
+
+                                <span class="doctor-help">
+
+                                    This email will also be used for the doctor's login account.
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- QUALIFICATION -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="qualification">
+
+                                    Qualification
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-mortarboard-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="qualification"
+                                        name="qualification"
+                                        class="doctor-input"
+                                        placeholder="e.g. MBBS, FCPS"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- EXPERIENCE -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="experience">
+
+                                    Experience
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-briefcase-fill"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="experience"
+                                        name="experience"
+                                        class="doctor-input"
+                                        placeholder="e.g. 5 Years"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- CONSULTATION FEE -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="consultation_fee">
+
+                                    Consultation Fee
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="fee-prefix">
+                                        Rs.
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        id="consultation_fee"
+                                        name="consultation_fee"
+                                        class="doctor-input"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="0"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- STATUS -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="is_active">
+
+                                    Status
+
+                                </label>
+
+                                <div class="status-wrapper">
+
+                                    <i class="bi bi-check-circle-fill status-icon"></i>
+
+                                    <select
+                                        id="is_active"
+                                        name="is_active"
+                                        class="doctor-select"
+                                    >
+
+                                        <option value="1" selected>
+                                            Active
+                                        </option>
+
+                                        <option value="0">
+                                            Inactive
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="col-12">
+
+                            <div class="doctor-field">
+
+                                <label for="address">
+
+                                    Address
+
+                                </label>
+
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    class="doctor-textarea"
+                                    rows="3"
+                                    placeholder="Enter doctor address"
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- NOTES -->
+
+                        <div class="col-12">
+
+                            <div class="doctor-field">
+
+                                <label for="notes">
+
+                                    Notes
+
+                                </label>
+
+                                <textarea
+                                    id="notes"
+                                    name="notes"
+                                    class="doctor-textarea"
+                                    rows="4"
+                                    placeholder="Additional information about the doctor..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     DOCTOR LOGIN ACCOUNT
+                ================================================== -->
+
+                <div class="doctor-account-section">
+
+
+                    <div class="doctor-account-heading">
+
+                        <div class="doctor-account-icon">
+
+                            <i class="bi bi-shield-lock-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5>
+                                Doctor Login Account
+                            </h5>
+
+                        </div>
+
+                    </div>
+
+
+                    <p class="doctor-account-description">
+
+                        Create the credentials that the doctor will use
+                        to access the Doctor Portal.
+
+                    </p>
+
+
+
+                    <!-- INFO -->
+
+                    <div class="account-info-box">
+
+                        <i class="bi bi-info-circle-fill"></i>
+
+                        <span>
+
+                            The doctor's email will automatically be used
+                            as the login email. Make sure the username is unique
+                            and keep the password secure.
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="row g-4">
+
+
+                        <!-- USERNAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="username">
+
+                                    Username
+
+                                    <span class="required-star">*</span>
+
+                                </label>
+
+                                <div class="doctor-input-group">
+
+                                    <span class="doctor-input-icon">
+
+                                        <i class="bi bi-person-circle"></i>
+
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        class="doctor-input"
+                                        placeholder="e.g. dr.ahmed"
+                                        autocomplete="username"
+                                        required
+                                    >
+
+                                </div>
+
+                                <span class="doctor-help">
+
+                                    Username must be unique.
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- LOGIN EMAIL -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="loginEmailDisplay">
+
+                                    Login Email
+
+                                </label>
+
+                                <div class="login-email-box">
+
+                                    <input
+                                        type="text"
+                                        class="doctor-input"
+                                        id="loginEmailDisplay"
+                                        readonly
+                                        placeholder="Doctor email will appear here"
+                                    >
+
+                                </div>
+
+                                <span class="doctor-help">
+
+                                    Login email is the same email entered above.
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="password">
+
+                                    Password
+
+                                    <span class="required-star">*</span>
+
+                                </label>
+
+                                <div class="password-group">
+
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="doctor-input"
+                                        placeholder="Enter password"
+                                        autocomplete="new-password"
+                                        required
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('password', this)"
+                                        aria-label="Show password"
+                                    >
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="col-md-6">
+
+                            <div class="doctor-field">
+
+                                <label for="confirm_password">
+
+                                    Confirm Password
+
+                                    <span class="required-star">*</span>
+
+                                </label>
+
+                                <div class="password-group">
+
+                                    <input
+                                        type="password"
+                                        id="confirm_password"
+                                        name="confirm_password"
+                                        class="doctor-input"
+                                        placeholder="Confirm password"
+                                        autocomplete="new-password"
+                                        required
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('confirm_password', this)"
+                                        aria-label="Show password"
+                                    >
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                                <div
+                                    id="passwordMatchMessage"
+                                    class="password-match-message"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FORM FOOTER
+                ================================================== -->
+
+                <div class="doctor-form-footer">
+
+
+                    <div class="required-notice">
+
+                        <span>*</span>
+                        Required fields
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('doctors.list_doctors') }}"
+                        class="cancel-doctor-btn"
+                    >
+
+                        <i class="bi bi-x-lg me-1"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="save-doctor-btn"
+                        id="saveDoctorBtn"
+                    >
+
+                        <i class="bi bi-check-circle-fill me-1"></i>
+
+                        Create Doctor & Account
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const emailInput =
+            document.getElementById("email");
+
+        const loginEmailDisplay =
+            document.getElementById("loginEmailDisplay");
+
+        const password =
+            document.getElementById("password");
+
+        const confirmPassword =
+            document.getElementById("confirm_password");
+
+        const passwordMatchMessage =
+            document.getElementById(
+                "passwordMatchMessage"
+            );
+
+        const doctorForm =
+            document.getElementById("doctorForm");
+
+
+
+        /* =====================================================
+           COPY EMAIL TO LOGIN EMAIL DISPLAY
+        ===================================================== */
+
+        function updateLoginEmail() {
+
+            loginEmailDisplay.value =
+                emailInput.value.trim();
+
+        }
+
+
+        emailInput.addEventListener(
+            "input",
+            updateLoginEmail
+        );
+
+
+
+        /* =====================================================
+           PASSWORD MATCH CHECK
+        ===================================================== */
+
+        function checkPasswordMatch() {
+
+            const passwordValue =
+                password.value;
+
+            const confirmPasswordValue =
+                confirmPassword.value;
+
+
+            if (!confirmPasswordValue) {
+
+                passwordMatchMessage.textContent = "";
+
+                passwordMatchMessage.className =
+                    "password-match-message";
+
+                return;
+
+            }
+
+
+            if (
+                passwordValue ===
+                confirmPasswordValue
+            ) {
+
+                passwordMatchMessage.textContent =
+                    "✓ Passwords match.";
+
+                passwordMatchMessage.className =
+                    "password-match-message success";
+
+            } else {
+
+                passwordMatchMessage.textContent =
+                    "✕ Passwords do not match.";
+
+                passwordMatchMessage.className =
+                    "password-match-message error";
+
+            }
+
+        }
+
+
+        password.addEventListener(
+            "input",
+            checkPasswordMatch
+        );
+
+
+        confirmPassword.addEventListener(
+            "input",
+            checkPasswordMatch
+        );
+
+
+
+        /* =====================================================
+           FORM VALIDATION
+        ===================================================== */
+
+        doctorForm.addEventListener(
+            "submit",
+            function (event) {
+
+                if (
+                    password.value !==
+                    confirmPassword.value
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Passwords do not match."
+                    );
+
+                    confirmPassword.focus();
+
+                    return false;
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   SHOW / HIDE PASSWORD
+========================================================= */
+
+function togglePassword(
+    inputId,
+    button
+) {
+
+    const input =
+        document.getElementById(inputId);
+
+    const icon =
+        button.querySelector("i");
+
+
+    if (
+        input.type === "password"
+    ) {
+
+        input.type = "text";
+
+        icon.classList.remove(
+            "bi-eye"
+        );
+
+        icon.classList.add(
+            "bi-eye-slash"
+        );
+
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove(
+            "bi-eye-slash"
+        );
+
+        icon.classList.add(
+            "bi-eye"
+        );
+
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}
